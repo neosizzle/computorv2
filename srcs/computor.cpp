@@ -7,15 +7,19 @@ void computor()
 
 	while (true)
 	{
-		// Read line
-		std::string line;
-		
+		char 		*rl_buff;
+		std::string  line;
 
-		std::cout << PROMPT;
-		std::getline(std::cin, line);
+		rl_buff = readline(PROMPT.c_str());
+		if (rl_buff == NULL)
+		{
+			free(rl_buff);
+			break ;
+		}
+		line = std::string(rl_buff);
 
 		// exit command
-		if (!std::cin || line == "exit") break ;
+		if (line == "exit") break ;
 
 		// manage commands
 		if (std::find(COMMANDS.begin(), COMMANDS.end(), line) != COMMANDS.end())
@@ -23,14 +27,21 @@ void computor()
 		else
 		{
 			// tokenize string
-			tokenize(line);
+			
 
 			// parse tokens
+			parse_tokens(tokenize(line));
+			
 		}
 		
-		// add to history
 
-		
+		// add history for rl
+		add_history(rl_buff);
+
+		// add history for computor
+
+		free(rl_buff);
 	}
+	
 	std::cout << "End\n";
 }

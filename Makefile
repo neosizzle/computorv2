@@ -1,7 +1,7 @@
 NAME = computor
 CPP = c++ -fsanitize=address -g3
 INCS = inc
-CPP_FLAGS = -I${INCS}
+CPP_FLAGS = -I${INCS} -lreadline
 SRCS = srcs/*.cpp
 
 # Style constants

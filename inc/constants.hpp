@@ -30,6 +30,7 @@ const std::vector<std::string> COMMANDS = {"list", "history"};
 #define R_PARENTHESIS 1
 #define OPERATOR_PLUS 2
 #define OPERATOR_MINUS 3
+#define OPERATOR_EQ 4
 #define OPERATOR_MULT 5
 #define OPERATOR_DIV 6
 #define OPERATOR_POW 7
@@ -54,6 +55,7 @@ const std::map<std::string, int> LEX_TOKENS_MAP = {
 	{"-", OPERATOR_MINUS},
 	{"*", OPERATOR_MULT},
 	{"/", OPERATOR_DIV},
+	{"=", OPERATOR_EQ},
 	{"%", OPERATOR_MOD},
 	{"^", OPERATOR_POW},
 	{"**", OPERATOR_MAT_MULT},
