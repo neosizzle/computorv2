@@ -26,12 +26,11 @@ void computor()
 			std::cout << line << " is a command \n";
 		else
 		{
-			// tokenize string
-			
 
-			// parse tokens
+			// tokenize string parse tokens
 			parse_tokens(tokenize(line));
 			
+			// 
 		}
 		
 

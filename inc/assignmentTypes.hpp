@@ -54,10 +54,15 @@ class RationalNumber : public BaseAssignmentType {
 		RationalNumber operator / (RationalNumber rhs)
 		{
 			RationalNumber res;
+			float divResult;
 
-			res.is_float = this->is_float || rhs.is_float;
 			res.int_value = this->int_value / rhs.int_value;
 			res.float_value = this->float_value / rhs.float_value;
+			if (rhs.int_value % this->int_value == 0 && !rhs.is_float && !this->is_float)
+				res.is_float = this->is_float || rhs.is_float;
+			else
+				res.is_float = true;
+			
 			return res;
 		}
 
@@ -84,7 +89,11 @@ class RationalNumber : public BaseAssignmentType {
 		}
 
 		// comparison operators
-		
+		bool operator > (RationalNumber rhs){return this->float_value > rhs.float_value;}
+		bool operator < (RationalNumber rhs){return this->float_value < rhs.float_value;}
+		bool operator >= (RationalNumber rhs){return this->float_value >= rhs.float_value;}
+		bool operator == (RationalNumber rhs){return this->float_value == rhs.float_value;}
+		bool operator != (RationalNumber rhs){return this->float_value != rhs.float_value;}
 
 		// constructors
 		RationalNumber(){
@@ -102,15 +111,108 @@ class RationalNumber : public BaseAssignmentType {
 
 		RationalNumber(float x)
 		{
-			this->is_float = false;
+			this->is_float = true;
 			this->int_value = x;
 			this->float_value = x;
 		}
+
+		// assignment operators
+		void	operator = (RationalNumber other)
+		{
+			this->is_float = other.is_float;
+			this->int_value = other.int_value;
+			this->float_value = other.float_value;
+		}
+		
 };
 
 class ImaginaryNumber : public BaseAssignmentType {
 	public :
+		RationalNumber imaginary_part;
+		int			   power;
+
+	public :
 		std::string toString() {
-			return "imagine";
+			std::string res = imaginary_part.toString() + "i";
+
+			if (power > 1) res += (std::string("^") + std::to_string(power)); 
+			return res;
+		}
+
+		// operators
+		// ImaginaryNumber +ImaginaryNumber 
+		ImaginaryNumber operator + (ImaginaryNumber rhs)
+		{
+			ImaginaryNumber res;
+
+			res.imaginary_part = rhs.imaginary_part + this->imaginary_part;
+
+			return res;
+		}
+
+		// ImaginaryNumber -ImaginaryNumber 
+		ImaginaryNumber operator - (ImaginaryNumber rhs)
+		{
+			ImaginaryNumber res;
+
+			res.imaginary_part = this->imaginary_part - rhs.imaginary_part;
+			return res;
+		}
+
+		// ImaginaryNumber *ImaginaryNumber 
+		ImaginaryNumber operator * (ImaginaryNumber rhs)
+		{
+			ImaginaryNumber res;
+
+			res.imaginary_part = rhs.imaginary_part * this->imaginary_part;
+			res.power = this->power + rhs.power;
+			return res;
+		}
+
+		// ImaginaryNumber /ImaginaryNumber 
+		ImaginaryNumber operator / (ImaginaryNumber rhs)
+		{
+			ImaginaryNumber res;
+
+			res.imaginary_part = this->imaginary_part / rhs.imaginary_part;
+			res.power = this->power - rhs.power;
+			
+			return res;
+		}
+
+		// ImaginaryNumber ^ImaginaryNumber 
+		ImaginaryNumber operator ^ (ImaginaryNumber rhs)
+		{
+			ImaginaryNumber res;
+
+			res.imaginary_part = this->imaginary_part ^ rhs.imaginary_part;
+			res.power = this->power + rhs.power;
+			return res;
+		}
+
+		// comparison operators
+		bool operator > (ImaginaryNumber rhs){return this->imaginary_part > rhs.imaginary_part;}
+		bool operator < (ImaginaryNumber rhs){return this->imaginary_part < rhs.imaginary_part;}
+		bool operator >= (ImaginaryNumber rhs){return this->imaginary_part >= rhs.imaginary_part;}
+		bool operator == (ImaginaryNumber rhs){return this->imaginary_part == rhs.imaginary_part;}
+		bool operator != (ImaginaryNumber rhs){return this->imaginary_part != rhs.imaginary_part;}
+
+		// constructors
+		ImaginaryNumber(){
+			this->imaginary_part = RationalNumber(1);
+			this->power = 1;
+		}
+
+		ImaginaryNumber(float x)
+		{
+			this->imaginary_part = RationalNumber(x);
+			this->power = 1;
+		}
+
+		// assignment operators
+		void	operator = (ImaginaryNumber other)
+		{
+			this->imaginary_part = other.imaginary_part;
+			this->power = other.power;
 		}
 };
