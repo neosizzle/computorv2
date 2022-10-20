@@ -2,13 +2,40 @@
 
 void parse_tokens(std::vector<TokenBase> tokens)
 {
-	
+	std::vector<BaseAssignmentType *> parsed_tokens;
+
+	for (std::vector<TokenBase>::iterator iter = tokens.begin(); iter != tokens.end(); ++iter)
+	{
+		const TokenBase currr_token_base = *iter;
+
+		// create new rational number type
+		if (currr_token_base.type == N_RATIONAL)
+		{
+		parsed_tokens.push_back(currr_token_base.string.find('.') != std::string::npos ? new RationalNumber((float)atof(currr_token_base.string.c_str()))
+			: new RationalNumber(atoi(currr_token_base.string.c_str())));
+		}
+		// craete new iimaginery number type
+		else if (currr_token_base.type == N_IMAGINARY)
+		{
+		parsed_tokens.push_back(currr_token_base.string.find('.') != std::string::npos ? new ImaginaryNumber((float)atof(currr_token_base.string.c_str()))
+			: new ImaginaryNumber(atoi(currr_token_base.string.c_str())));
+		}
+		// create new operator type
+		else if (OPERATORS_MAP.find(currr_token_base.string) != OPERATORS_MAP.end())
+			parsed_tokens.push_back(new Operator(currr_token_base.string));
+		// others
+		else
+		{
+			parsed_tokens.push_back(nullptr);
+		}
+	}
+	print_parsed_tokens(parsed_tokens);
 }
 
 /**
  * @brief Takes a string and splits them into tokens
- * 
- * @param line 
+ *
+ * @param line
  */
 std::vector<TokenBase> tokenize(std::string line)
 {
@@ -129,16 +156,16 @@ std::vector<TokenBase> tokenize(std::string line)
 			{
 				while (var_iter != line.end() && *var_iter != ')')
 					++var_iter;
-				if (var_iter != line.end()) ++ var_iter;
+				if (var_iter != line.end())
+					++var_iter;
 				is_func = 1;
 			}
 
 			var_str = std::string(line_iter, var_iter);
 
 			// convert string to lowercase
-			std::for_each(var_str.begin(), var_str.end(), [](char & c) {
-				c = ::tolower(c);
-			});
+			std::for_each(var_str.begin(), var_str.end(), [](char &c)
+						  { c = ::tolower(c); });
 			tokens.push_back({
 				type : is_func ? FUNC : VAR,
 				string : var_str
@@ -158,17 +185,17 @@ std::vector<TokenBase> tokenize(std::string line)
 
 		{
 			// variable add *
-			if (i != tokens.begin() && token.type == VAR && std::find(operator_types.begin(), operator_types.end(), (*(i-1)).type) == operator_types.end())
+			if (i != tokens.begin() && token.type == VAR && std::find(operator_types.begin(), operator_types.end(), (*(i - 1)).type) == operator_types.end())
 				i = tokens.insert(i, {type : OPERATOR_MULT, string : "*"});
-			else if (i+1 != tokens.end() && token.type == VAR && std::find(operator_types.begin(), operator_types.end(), (*(i+1)).type) == operator_types.end())
+			else if (i + 1 != tokens.end() && token.type == VAR && std::find(operator_types.begin(), operator_types.end(), (*(i + 1)).type) == operator_types.end())
 				i = tokens.insert(i + 1, {type : OPERATOR_MULT, string : "*"});
 
 			// left parenthesis add *
-			if (i != tokens.begin() && token.type == L_PARENTHESIS && std::find(operator_types.begin(), operator_types.end(), (*(i-1)).type) == operator_types.end())
+			if (i != tokens.begin() && token.type == L_PARENTHESIS && std::find(operator_types.begin(), operator_types.end(), (*(i - 1)).type) == operator_types.end())
 				i = tokens.insert(i, {type : OPERATOR_MULT, string : "*"});
 
 			// right parenthesis add *
-			if (i+1 != tokens.end() && token.type == R_PARENTHESIS && std::find(operator_types.begin(), operator_types.end(), (*(i+1)).type) == operator_types.end())
+			if (i + 1 != tokens.end() && token.type == R_PARENTHESIS && std::find(operator_types.begin(), operator_types.end(), (*(i + 1)).type) == operator_types.end())
 				i = tokens.insert(i + 1, {type : OPERATOR_MULT, string : "*"});
 		}
 	}

@@ -21,7 +21,7 @@ bonus : ${NAME}
 
 ${NAME}:
 	@echo "${GREEN}📇  Compiling All sources..${NC}"
-	@${CPP} ${CPP_FLAGS} ${SRCS} -o ${NAME}
+	@${CPP} ${SRCS} ${CPP_FLAGS} -o ${NAME}
 
 clean : 
 	@echo "${YELLOW}🗑️  Removing Objects..${NC}"

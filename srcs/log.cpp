@@ -1,8 +1,6 @@
 #include "main.hpp"
 
-void print_unparsed_tokens(std::vector<TokenBase> tokens)
-{
-	const std::map<int, std::string> TYPE_MAP = {
+const std::map<int, std::string> TYPE_MAP = {
 		{L_PARENTHESIS, "L_PARENTHESIS"},
 		{R_PARENTHESIS, "R_PARENTHESIS"},
 		{OPERATOR_PLUS, "OPERATOR_PLUS"},
@@ -25,6 +23,22 @@ void print_unparsed_tokens(std::vector<TokenBase> tokens)
 		{MATRIX_SEP, "MATRIX_SEP"},
 	};
 
+void print_unparsed_tokens(std::vector<TokenBase> tokens)
+{
 	for (std::vector<TokenBase>::iterator i = tokens.begin(); i != tokens.end(); i++)
 		std::cout << "Token string: " << i->string << " | Token type: " << (TYPE_MAP.find(i->type) == TYPE_MAP.end() ? "unknown" : TYPE_MAP.find(i->type)->second) << "\n";
+}
+
+void print_parsed_tokens(std::vector<BaseAssignmentType *> tokens)
+{
+	for (std::vector<BaseAssignmentType *>::iterator i = tokens.begin(); i != tokens.end(); i++)
+	{
+		if ( !*i)
+		{
+			std::cout << "Token string:  null | Token type: null \n";
+			continue ;
+		}
+
+			std::cout << "Token string: " << (*i)->toString() << " | Token type: " << (TYPE_MAP.find((*i)->getType()) == TYPE_MAP.end() ? "unknown" : TYPE_MAP.find((*i)->getType())->second) << "\n";
+	}
 }

@@ -65,3 +65,15 @@ const std::map<std::string, int> LEX_TOKENS_MAP = {
 	{";", MATRIX_NL},
 	{",", MATRIX_SEP},
 };
+
+// operators map
+const std::map<std::string, int> OPERATORS_MAP = {
+	{"+", OPERATOR_PLUS},
+	{"-", OPERATOR_MINUS},
+	{"*", OPERATOR_MULT},
+	{"/", OPERATOR_DIV},
+	{"=", OPERATOR_EQ},
+	{"%", OPERATOR_MOD},
+	{"^", OPERATOR_POW},
+	{"**", OPERATOR_MAT_MULT},
+};

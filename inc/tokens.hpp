@@ -12,8 +12,8 @@ class TokenParsed {
 	
 	// typedefs
 	public :
-		typedef	T value_type;
-		typedef	T& value_ref;
+		// typedef	T value_type;
+		// typedef	T& value_ref;
 
 	// private attribs
 	private :
