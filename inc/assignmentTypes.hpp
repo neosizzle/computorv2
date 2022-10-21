@@ -216,3 +216,15 @@ class ImaginaryNumber : public BaseAssignmentType {
 			this->power = other.power;
 		}
 };
+
+class Variable : public BaseAssignmentType {
+	public:
+		std::string	name;
+
+		std::string toString(){return this->name;}
+
+		//constructors
+		Variable(){this->name = "";}
+
+		Variable(std::string name){this->name = name;}
+};
