@@ -1,3 +1,5 @@
+#ifndef __TOKENS__H__
+#define __TOKENS__H__
 #include "libraries.hpp"
 #include "assignmentTypes.hpp"
 
@@ -32,3 +34,4 @@ class TokenParsed {
 			this->type = type;
 		}
 };
+#endif  //!__TOKENS__H__

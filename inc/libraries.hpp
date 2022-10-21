@@ -1,3 +1,5 @@
+#ifndef __LIBRARIES__H__
+#define __LIBRARIES__H__
 #include <iostream>
 #include <vector>
 #include <map>
@@ -5,3 +7,4 @@
 #include <csignal>
 #include <readline/readline.h>
 #include <readline/history.h>
+#endif  //!__LIBRARIES__H__

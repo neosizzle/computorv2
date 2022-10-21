@@ -1,3 +1,5 @@
+#ifndef __CONSTANTS__H__
+#define __CONSTANTS__H__
 #include "libraries.hpp"
 
 // colors
@@ -47,6 +49,11 @@ const std::vector<std::string> COMMANDS = {"list", "history"};
 #define MATRIX_NL 18
 #define MATRIX_SEP 19
 
+// error types
+#define FT_ERR_OK 0
+#define FT_ERR_NOT_FOUND 1
+#define FT_ERR_MISC 69
+
 // lexicographical tokens
 const std::map<std::string, int> LEX_TOKENS_MAP = {
 	{"(", L_PARENTHESIS},
@@ -77,3 +84,11 @@ const std::map<std::string, int> OPERATORS_MAP = {
 	{"^", OPERATOR_POW},
 	{"**", OPERATOR_MAT_MULT},
 };
+
+// errors map
+const std::map<int, std::string> ERRORS_MAP = {
+	{FT_ERR_MISC, "FT_ERR_MISC"},
+	{FT_ERR_NOT_FOUND, "FT_ERR_NOT_FOUND"},
+	{FT_ERR_OK, "FT_ERR_OK"},
+};
+#endif  //!__CONSTANTS__H__

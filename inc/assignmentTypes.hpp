@@ -1,3 +1,5 @@
+#ifndef __ASSIGNMENTTYPES__H__
+#define __ASSIGNMENTTYPES__H__
 #include "libraries.hpp"
 
 class BaseAssignmentType
@@ -17,18 +19,127 @@ public:
 /////////////////
 class Operator : public BaseAssignmentType
 {
-	private:
-		std::string value;
+private:
+	std::string value;
 
-	public:
-		std::string toString(){return value;}
+public:
+	std::string toString() { return value; }
 
-		Operator(std::string value){
-			std::map<std::string, int>::const_iterator found = OPERATORS_MAP.find(value);
+	// constructors
+	Operator(std::string value)
+	{
+		std::map<std::string, int>::const_iterator found = OPERATORS_MAP.find(value);
 
-			this->value = value;
-			this->type = found != OPERATORS_MAP.end() ? found->second : -1;
-		}
+		this->value = value;
+		this->type = found != OPERATORS_MAP.end() ? found->second : -1;
+	}
+
+	Operator(Operator &other)
+	{
+		this->value = other.value;
+		this->type = other.type;
+	}
+
+	// operator overload
+	Operator &operator=(const Operator &other)
+	{
+		this->value = other.value;
+		this->type = other.type;
+		return *this;
+	}
+};
+
+class Parenthesis : public BaseAssignmentType
+{
+public:
+	std::string toString()
+	{
+		return this->type == L_PARENTHESIS ? std::string("(") : std::string(")");
+	}
+
+public:
+	// constructors
+	Parenthesis(std::string symbol)
+	{
+		if (symbol == "(")
+			this->type = L_PARENTHESIS;
+		else
+			this->type = R_PARENTHESIS;
+	}
+
+	Parenthesis(Parenthesis &other)
+	{
+		this->type = other.type;
+	}
+
+	// operator overloads
+	Parenthesis &operator=(const Parenthesis &other)
+	{
+		this->type = other.type;
+		return *this;
+	}
+};
+
+class Variable : public BaseAssignmentType
+{
+public:
+	std::string name;
+
+	std::string toString() { return this->name; }
+
+	// constructors
+	Variable()
+	{
+		this->name = "";
+		this->type = VAR;
+	}
+
+	Variable(std::string name)
+	{
+		this->name = name;
+		this->type = VAR;
+	}
+
+	Variable(Variable &other)
+	{
+		this->name = other.name;
+	}
+
+	// operator overloads
+	Variable &operator=(const Variable &other)
+	{
+		this->name = other.name;
+		return *this;
+	}
+};
+
+
+class QMark : public BaseAssignmentType
+{
+public:
+	std::string toString()
+	{
+		return "?";
+	}
+
+public:
+	// constructors
+	QMark()
+	{
+		this->type = Q_MARK;
+	}
+
+	QMark(QMark &other)
+	{
+		this->type = other.type;
+	}
+
+	// operator overloads
+	QMark &operator=(const QMark &other)
+	{
+		this->type = other.type;
+		return *this;
+	}
 };
 
 /////////////////
@@ -151,12 +262,20 @@ public:
 		this->type = N_RATIONAL;
 	}
 
-	// assignment operators
-	void operator=(RationalNumber other)
+	RationalNumber(RationalNumber &other)
 	{
 		this->is_float = other.is_float;
 		this->int_value = other.int_value;
 		this->float_value = other.float_value;
+	}
+
+	// assignment operators
+	RationalNumber &operator=(const RationalNumber &other)
+	{
+		this->is_float = other.is_float;
+		this->int_value = other.int_value;
+		this->float_value = other.float_value;
+		return *this;
 	}
 };
 
@@ -249,22 +368,18 @@ public:
 		this->type = N_IMAGINARY;
 	}
 
-	// assignment operators
-	void operator=(ImaginaryNumber other)
+	ImaginaryNumber(ImaginaryNumber &other)
 	{
 		this->imaginary_part = other.imaginary_part;
 		this->power = other.power;
 	}
+
+	// assignment operators
+	ImaginaryNumber &operator=(const ImaginaryNumber &other)
+	{
+		this->imaginary_part = other.imaginary_part;
+		this->power = other.power;
+		return *this;
+	}
 };
-
-class Variable : public BaseAssignmentType {
-	public:
-		std::string	name;
-
-		std::string toString(){return this->name;}
-
-		//constructors
-		Variable(){this->name = "";}
-
-		Variable(std::string name){this->name = name;}
-};
+#endif  //!__ASSIGNMENTTYPES__H__

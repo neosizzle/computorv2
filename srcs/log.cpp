@@ -39,6 +39,17 @@ void print_parsed_tokens(std::vector<BaseAssignmentType *> tokens)
 			continue ;
 		}
 
-			std::cout << "Token string: " << (*i)->toString() << " | Token type: " << (TYPE_MAP.find((*i)->getType()) == TYPE_MAP.end() ? "unknown" : TYPE_MAP.find((*i)->getType())->second) << "\n";
+		// if ((*i)->getType() == VAR)
+		// {
+		// 	Variable *test = dynamic_cast<Variable *>(*i); // dynamic cast needed
+		// 	std::cout << "oo im a var my value is " << test->name << "\n";
+		// }
+		std::cout << "Token string: " << (*i)->toString() << " | Token type: " << (TYPE_MAP.find((*i)->getType()) == TYPE_MAP.end() ? "unknown" : TYPE_MAP.find((*i)->getType())->second) << "\n";
 	}
+}
+
+
+void	ft_perror(Ft_error e)
+{
+	std::cout << BOLDRED << "[ft_error] " << RESET << RED << e.getMessage() << RESET << "\n";
 }

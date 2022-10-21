@@ -1,6 +1,12 @@
 #include "main.hpp"
 
-void parse_tokens(std::vector<TokenBase> tokens)
+/**
+ * @brief Creates a list of typed value tokens
+ * 
+ * @param tokens 
+ * @return std::vector<BaseAssignmentType *> 
+ */
+std::vector<BaseAssignmentType *> parse_tokens(std::vector<TokenBase> tokens)
 {
 	std::vector<BaseAssignmentType *> parsed_tokens;
 
@@ -14,7 +20,7 @@ void parse_tokens(std::vector<TokenBase> tokens)
 		parsed_tokens.push_back(currr_token_base.string.find('.') != std::string::npos ? new RationalNumber((float)atof(currr_token_base.string.c_str()))
 			: new RationalNumber(atoi(currr_token_base.string.c_str())));
 		}
-		// craete new iimaginery number type
+		// craete new imaginery number type
 		else if (currr_token_base.type == N_IMAGINARY)
 		{
 		parsed_tokens.push_back(currr_token_base.string.find('.') != std::string::npos ? new ImaginaryNumber((float)atof(currr_token_base.string.c_str()))
@@ -23,13 +29,22 @@ void parse_tokens(std::vector<TokenBase> tokens)
 		// create new operator type
 		else if (OPERATORS_MAP.find(currr_token_base.string) != OPERATORS_MAP.end())
 			parsed_tokens.push_back(new Operator(currr_token_base.string));
+		// create new variable type
+		else if (currr_token_base.type == VAR)
+			parsed_tokens.push_back(new Variable(currr_token_base.string));
+		// create parentheses type
+		else if (currr_token_base.type == L_PARENTHESIS || currr_token_base.type == R_PARENTHESIS)
+			parsed_tokens.push_back(new Parenthesis(currr_token_base.string));
+		// create qmark type
+		else if (currr_token_base.type == Q_MARK)
+			parsed_tokens.push_back(new QMark());
 		// others
 		else
 		{
 			parsed_tokens.push_back(nullptr);
 		}
 	}
-	print_parsed_tokens(parsed_tokens);
+	return parsed_tokens;
 }
 
 /**
