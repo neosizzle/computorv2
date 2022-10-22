@@ -8,11 +8,14 @@ void computor()
 	// variables (variablename, variable type with values and stuff)
 	std::map<std::string, BaseAssignmentType *> variables;
 
+	variables.insert({"x", new RationalNumber(69)});
 	while (true)
 	{
-		char 		*rl_buff;
-		std::string  line;
+		char 		*rl_buff; // line buffer
+		std::string  line; // line cpp
+		bool		 is_compute_action; // is this action a compute action or assign action
 
+		is_compute_action = false;
 		rl_buff = readline(PROMPT.c_str());
 		if (rl_buff == NULL)
 		{
@@ -22,7 +25,11 @@ void computor()
 		line = std::string(rl_buff);
 
 		// exit command
-		if (line == "exit") break ;
+		if (line == "exit")
+		{
+			// free(rl_buff) ;
+			break ;
+		}
 
 		// manage commands
 		if (std::find(COMMANDS.begin(), COMMANDS.end(), line) != COMMANDS.end())
@@ -33,30 +40,45 @@ void computor()
 			std::vector<BaseAssignmentType *> tokens;
 
 			tokens = parse_tokens(tokenize(line));
-			print_parsed_tokens(tokens);
 
-			// expand variables
+			// determine if last token is qmark
+			if(tokens.size() > 0 && tokens.back()->getType() == Q_MARK)
+				is_compute_action = true;
+
 			try
 			{
-				expand_variables(tokens, variables);
+				// expand variables
+				expand_variables(tokens, variables, is_compute_action);
+
+				print_parsed_tokens(tokens);
+				// validate tokens
+				validate_tokens(tokens, is_compute_action);
 			}
 			catch(const Ft_error &e)
 			{
 				// free tokens
-
+				free_tokens(tokens);
 				ft_perror(e);
+
+				// add history for rl
+				add_history(rl_buff);
+
+				// add history for computor
+
+				free(rl_buff);
 				continue ;
 			}
+			catch (const std::runtime_error& e)
+			{
+			// your error handling code here
+			}
 			
-			// see if last token is a qmark
-
-			// validate tokens
-
 			// do evaluation
 
 			// assign or display result
 
 			// free tokens
+			free_tokens(tokens);
 		}
 		
 
@@ -69,5 +91,6 @@ void computor()
 	}
 	
 	// free variables
+	free_variables(variables);
 	std::cout << "End\n";
 }

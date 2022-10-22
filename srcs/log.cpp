@@ -23,12 +23,22 @@ const std::map<int, std::string> TYPE_MAP = {
 		{MATRIX_SEP, "MATRIX_SEP"},
 	};
 
+/**
+ * @brief Prints unparsed tokens
+ * 
+ * @param tokens 
+ */
 void print_unparsed_tokens(std::vector<TokenBase> tokens)
 {
 	for (std::vector<TokenBase>::iterator i = tokens.begin(); i != tokens.end(); i++)
 		std::cout << "Token string: " << i->string << " | Token type: " << (TYPE_MAP.find(i->type) == TYPE_MAP.end() ? "unknown" : TYPE_MAP.find(i->type)->second) << "\n";
 }
 
+/**
+ * @brief Prints parsed tokens
+ * 
+ * @param tokens 
+ */
 void print_parsed_tokens(std::vector<BaseAssignmentType *> tokens)
 {
 	for (std::vector<BaseAssignmentType *>::iterator i = tokens.begin(); i != tokens.end(); i++)
@@ -48,8 +58,22 @@ void print_parsed_tokens(std::vector<BaseAssignmentType *> tokens)
 	}
 }
 
-
+/**
+ * @brief Prints error message
+ * 
+ * @param e 
+ */
 void	ft_perror(Ft_error e)
 {
 	std::cout << BOLDRED << "[ft_error] " << RESET << RED << e.getMessage() << RESET << "\n";
+}
+
+/**
+ * @brief Prints info message
+ * 
+ * @param msg 
+ */
+void	ft_pinfo(std::string msg)
+{
+	std::cout << BOLDWHITE << "[ft_info] " << RESET << WHITE << msg << RESET << "\n";
 }

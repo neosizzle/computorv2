@@ -1,5 +1,10 @@
 #include "libraries.hpp"
 
+/**
+ * @brief Handles sigint
+ * 
+ * @param signal 
+ */
 void sigint_handler(int signal)
 {
 	std::cout << "\n";

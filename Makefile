@@ -1,7 +1,9 @@
 NAME = computor
 CPP = c++ -fsanitize=address -g3
-INCS = inc
-CPP_FLAGS = -I${INCS} -lreadline
+INCS_ROOT = inc
+INCS_CORE = inc/core_types
+INCS_MISC = inc/misc_types
+CPP_FLAGS = -I${INCS_ROOT} -I${INCS_CORE} -I${INCS_MISC} -lreadline
 SRCS = srcs/*.cpp
 
 # Style constants
