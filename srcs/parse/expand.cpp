@@ -67,12 +67,16 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 			// find the actual token inside the variables
 			found_var_iter = variables.find(curr_token->toString());
 
-			// if token is found, expand
+			// if token is found and is NOT compute action and NOT polynimial var, expand
+			if ((is_compute_action && curr_token->toString() == std::string(1, POLYNOMIAL_VAR))) continue ;
 			if (found_var_iter != variables.end()){
-				//expand
-				std::replace (tokens_iter_init, tokens.end(), curr_token , found_var_iter->second);
+				// Clone new token
+				BaseAssignmentType *new_token = clone_token(found_var_iter->second);
 
-				// free curr token
+				// reaplce variable with cloned token
+				std::replace (tokens_iter_init, tokens.end(), curr_token , new_token);
+
+				// free old variable token
 				free_token(curr_token);
 			}
 		}

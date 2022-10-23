@@ -54,6 +54,9 @@ const std::vector<std::string> COMMANDS = {"list", "history"};
 #define FT_ERR_NOT_FOUND 1
 #define FT_ERR_MISC 69
 
+// polynimial var
+#define POLYNOMIAL_VAR 'x'
+
 // lexicographical tokens
 const std::map<std::string, int> LEX_TOKENS_MAP = {
 	{"(", L_PARENTHESIS},

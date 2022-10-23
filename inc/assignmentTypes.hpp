@@ -17,5 +17,6 @@
 #include "Parenthesis.hpp"
 #include "QMark.hpp"
 #include "Variable.hpp"
+#include "ParseTreeNode.hpp"
 
 #endif  //!__ASSIGNMENTTYPES__H__

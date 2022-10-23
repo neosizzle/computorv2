@@ -27,7 +27,7 @@ void computor()
 		// exit command
 		if (line == "exit")
 		{
-			// free(rl_buff) ;
+			free(rl_buff) ;
 			break ;
 		}
 
@@ -50,9 +50,11 @@ void computor()
 				// expand variables
 				expand_variables(tokens, variables, is_compute_action);
 
-				print_parsed_tokens(tokens);
 				// validate tokens
 				validate_tokens(tokens, is_compute_action);
+
+				// evaluate
+				evalaute(tokens, is_compute_action);
 			}
 			catch(const Ft_error &e)
 			{
@@ -73,8 +75,6 @@ void computor()
 			// your error handling code here
 			}
 			
-			// do evaluation
-
 			// assign or display result
 
 			// free tokens

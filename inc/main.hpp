@@ -18,8 +18,14 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 // validation
 void	validate_tokens(std::vector<BaseAssignmentType *> tokens, bool is_compute_action);
 
+// evaulation
+std::string evalaute(std::vector<BaseAssignmentType *> tokens, bool is_compute_action);
+void	token_preprocess(std::vector<BaseAssignmentType *>::iterator start, std::vector<BaseAssignmentType *>::iterator end, std::vector<BaseAssignmentType *> tokens);
+ParseTreeNode *generate_parse_tree(std::vector<BaseAssignmentType *>::iterator start, std::vector<BaseAssignmentType *>::iterator end);
+
 // utils
 float ft_pow(float a, int power);
+BaseAssignmentType *clone_token(BaseAssignmentType * token);
 
 // logging
 void	print_unparsed_tokens(std::vector<TokenBase> tokens);
