@@ -1,5 +1,12 @@
 #include "main.hpp"
 
+/**
+ * @brief Determine start iter for assignment or compute equations 
+ * 
+ * @param tokens 
+ * @param is_compute_action 
+ * @return std::vector<BaseAssignmentType *>::iterator 
+ */
 static std::vector<BaseAssignmentType *>::iterator determine_start_iter (std::vector<BaseAssignmentType *> &tokens, bool is_compute_action)
 {
 	std::vector<BaseAssignmentType *>::iterator res = tokens.begin();
@@ -12,6 +19,13 @@ static std::vector<BaseAssignmentType *>::iterator determine_start_iter (std::ve
 	}
 }
 
+/**
+ * @brief Determine end iter for assignment or compute equations 
+ * 
+ * @param tokens 
+ * @param is_compute_action 
+ * @return std::vector<BaseAssignmentType *>::iterator 
+ */
 static std::vector<BaseAssignmentType *>::iterator determine_end_iter (std::vector<BaseAssignmentType *> &tokens, bool is_compute_action)
 {
 	std::vector<BaseAssignmentType *>::iterator res = tokens.end();
@@ -25,6 +39,13 @@ static std::vector<BaseAssignmentType *>::iterator determine_end_iter (std::vect
 	}
 }
 
+/**
+ * @brief Looks for other parenthesis pair
+ * 
+ * @param curr 
+ * @param end 
+ * @return std::vector<BaseAssignmentType *>::iterator 
+ */
 static std::vector<BaseAssignmentType *>::iterator	find_parenthesis_pair(std::vector<BaseAssignmentType *>::iterator curr, std::vector<BaseAssignmentType *>::iterator end)
 {
 	int		stack_cnt;
@@ -35,10 +56,7 @@ static std::vector<BaseAssignmentType *>::iterator	find_parenthesis_pair(std::ve
 	stack_cnt = 1;
 	l2r_direction = true;
 	if ((*curr)->getType() != L_PARENTHESIS && (*curr)->getType() != R_PARENTHESIS)
-	{
-		ft_pinfo(std::to_string((*curr)->getType()));
 		return end;
-	}
 	if ((*curr)->getType() == R_PARENTHESIS) l2r_direction = false;
 	res = l2r_direction ? ++curr : --curr;
 	while (stack_cnt != 0)
@@ -57,6 +75,33 @@ static std::vector<BaseAssignmentType *>::iterator	find_parenthesis_pair(std::ve
 		}
 	}
 	return res;
+}
+
+static int count_sigificant_terms(std::vector<BaseAssignmentType *>::iterator start, std::vector<BaseAssignmentType *>::iterator end)
+{
+	int	terms;
+	std::vector<BaseAssignmentType *>::iterator curr_iter;
+	BaseAssignmentType * curr_token;
+
+	terms = 0;
+	curr_iter = start;
+	while (curr_iter != end)
+	{
+		curr_token = *curr_iter;
+
+		++terms;
+		
+		// curr term is backet
+		if (curr_token->getType() == L_PARENTHESIS)
+			curr_iter = find_parenthesis_pair(curr_iter, end);
+		
+		// move iter till operator
+		while (curr_iter != end && !is_operator(curr_token))
+			curr_token = *(curr_iter++);
+		
+	}
+	
+	return terms;
 }
 
 /**
@@ -125,8 +170,6 @@ static void token_populate(std::vector<BaseAssignmentType *>::iterator &start, s
 		curr++;
 	}
 
-	print_parsed_tokens_no_format(tokens);
-
 	// restore start
 	start = tokens.begin() + start_offset;
 	
@@ -170,6 +213,12 @@ static void token_populate(std::vector<BaseAssignmentType *>::iterator &start, s
 	
 }
 
+/**
+ * @brief Processes tokens for parse tree generation
+ * 
+ * @param tokens 
+ * @param is_compute_action 
+ */
 void	token_preprocess(std::vector<BaseAssignmentType *> &tokens, bool is_compute_action)
 {
 	std::vector<BaseAssignmentType *>::iterator start_iter;
@@ -185,6 +234,9 @@ void	token_preprocess(std::vector<BaseAssignmentType *> &tokens, bool is_compute
 	// redetermine start and end iter since token changed
 	start_iter = determine_start_iter(tokens, is_compute_action);
 	end_iter = determine_end_iter(tokens, is_compute_action);
+
+	// ft_pinfo("calling cntsigterm");
+	ft_pinfo("Sig terms : " + std::to_string(count_sigificant_terms(start_iter, end_iter)));
 
 	// pair tokens
 }

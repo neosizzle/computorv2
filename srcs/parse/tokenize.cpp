@@ -193,7 +193,7 @@ std::vector<TokenBase> tokenize(std::string line)
 	}
 
 	// free form optimization
-	std::vector<int> operator_types = {OPERATOR_DIV, OPERATOR_EQ, OPERATOR_MAT_MULT, OPERATOR_MINUS, OPERATOR_MOD, OPERATOR_MULT, OPERATOR_PLUS, OPERATOR_POW, Q_MARK};
+	std::vector<int> operator_types = {OPERATOR_DIV, OPERATOR_EQ, OPERATOR_MAT_MULT, OPERATOR_MINUS, OPERATOR_MOD, OPERATOR_MULT, OPERATOR_PLUS, OPERATOR_POW, Q_MARK, L_PARENTHESIS, R_PARENTHESIS};
 	for (std::vector<TokenBase>::iterator i = tokens.begin(); i != tokens.end(); ++i)
 	{
 		const TokenBase token = *i;

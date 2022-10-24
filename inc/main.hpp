@@ -26,6 +26,8 @@ ParseTreeNode *generate_parse_tree(std::vector<BaseAssignmentType *>::iterator s
 // utils
 float ft_pow(float a, int power);
 BaseAssignmentType *clone_token(BaseAssignmentType * token);
+bool is_operator(BaseAssignmentType* token);
+bool is_eq(BaseAssignmentType* token);
 
 // logging
 void	print_unparsed_tokens(std::vector<TokenBase> tokens);

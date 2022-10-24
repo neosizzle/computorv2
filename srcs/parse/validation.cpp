@@ -1,20 +1,5 @@
 #include "main.hpp"
 
-static bool is_operator(BaseAssignmentType* token)
-{
-	if (token->getType() == OPERATOR_DIV || token->getType() == OPERATOR_EQ
-	|| token->getType() == OPERATOR_MAT_MULT || token->getType() == OPERATOR_MINUS || token->getType() == OPERATOR_MOD
-	|| token->getType() == OPERATOR_MULT || token->getType() == OPERATOR_PLUS || token->getType() == OPERATOR_POW)
-		return true;
-
-	return false;
-}
-
-static bool is_eq(BaseAssignmentType* token)
-{
-	return token->getType() == OPERATOR_EQ;
-}
-
 void	validate_tokens(std::vector<BaseAssignmentType *> tokens, bool is_compute_action)
 {
 	int	parenthesis_stk_cnt;
@@ -46,9 +31,20 @@ void	validate_tokens(std::vector<BaseAssignmentType *> tokens, bool is_compute_a
 		if (curr_token->getType() == VAR && curr_token->toString() == "i") throw Ft_error("Variable name 'i' is forbidden");
 
 		// if curr token is a left parenthesis, increm stack cnt and vice versa
-		if (curr_token->getType() == L_PARENTHESIS) ++parenthesis_stk_cnt;
+		if (curr_token->getType() == L_PARENTHESIS)
+		{
+			++parenthesis_stk_cnt;
 
-		if (curr_token->getType() == R_PARENTHESIS) --parenthesis_stk_cnt;
+			// check for empty parenthesis
+			if ((i + 1) != tokens.end() && (*(i + 1))->getType() == R_PARENTHESIS) throw Ft_error("Empty parenthesis not allowed");
+		}
+
+		// if token ls R Parenthese and there no L parenthesis, throw err
+		if (curr_token->getType() == R_PARENTHESIS)
+		{
+			if (parenthesis_stk_cnt == 0) throw Ft_error("Bad parenthesis");
+			--parenthesis_stk_cnt;
+		}
 	}
 
 	// if parenthesis does not match, throw err

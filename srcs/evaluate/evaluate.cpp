@@ -14,8 +14,6 @@ std::string evalaute(std::vector<BaseAssignmentType *> &tokens, bool is_compute_
 	// preprocess tokens (populate and pair tokens)
 	token_preprocess(tokens, is_compute_action);
 
-	print_parsed_tokens_no_format(tokens);
-
 	// generate parse tree
 
 	// evaluate parse tree
