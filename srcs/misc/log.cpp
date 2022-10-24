@@ -59,6 +59,25 @@ void print_parsed_tokens(std::vector<BaseAssignmentType *> tokens)
 }
 
 /**
+ * @brief Prints parsed tokens w/o format
+ * 
+ * @param tokens 
+ */
+void print_parsed_tokens_no_format(std::vector<BaseAssignmentType *> tokens)
+{
+	for (std::vector<BaseAssignmentType *>::iterator i = tokens.begin(); i != tokens.end(); i++)
+	{
+		if ( !*i)
+		{
+			std::cout << " null ";
+			continue ;
+		}
+		std::cout << " " << (*i)->toString() << " ";
+	}
+	std::cout <<"\n";
+}
+
+/**
  * @brief Prints error message
  * 
  * @param e 
