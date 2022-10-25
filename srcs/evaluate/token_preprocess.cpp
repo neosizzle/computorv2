@@ -63,21 +63,23 @@ static std::vector<BaseAssignmentType *>::iterator	find_parenthesis_pair(std::ve
 	{
 		if (l2r_direction)
 		{
-			++res;
 			if ((*res)->getType() == L_PARENTHESIS) ++stack_cnt;
 			else if ((*res)->getType() == R_PARENTHESIS) --stack_cnt;
+			if (stack_cnt == 0) return res;
+			++res;
 		}
 		else
 		{
-			--res;
 			if ((*res)->getType() == L_PARENTHESIS) --stack_cnt;
 			else if ((*res)->getType() == R_PARENTHESIS) ++stack_cnt;
+			if (stack_cnt == 0) return res;
+			--res;
 		}
 	}
 	return res;
 }
 
-static int count_sigificant_terms(std::vector<BaseAssignmentType *>::iterator start, std::vector<BaseAssignmentType *>::iterator end)
+static int count_significant_terms(std::vector<BaseAssignmentType *>::iterator start, std::vector<BaseAssignmentType *>::iterator end)
 {
 	int	terms;
 	std::vector<BaseAssignmentType *>::iterator curr_iter;
@@ -213,6 +215,104 @@ static void token_populate(std::vector<BaseAssignmentType *>::iterator &start, s
 	
 }
 
+static void	token_pairing(std::vector<BaseAssignmentType *> &tokens, std::vector<BaseAssignmentType *>::iterator start, std::vector<BaseAssignmentType *>::iterator end)
+{
+	// base case, return if no bracket and sig term < 2
+	if (std::find_if(start, end, [](BaseAssignmentType* token){return token->getType() == L_PARENTHESIS || token->getType() == R_PARENTHESIS;}) == end
+	&& count_significant_terms(start, end) < 2
+	)
+	{
+		return ;
+	}
+
+	// recursive call on every sigterm
+	std::vector<BaseAssignmentType *>::iterator curr_start;
+	std::vector<BaseAssignmentType *>::iterator curr_end;
+	int start_offset;
+	int	end_offset;
+	int	curr_end_offset;
+	int	curr_start_offset;
+
+	curr_start = start;
+	curr_end = start;
+	start_offset = start - tokens.begin();
+	end_offset = tokens.end() - end;
+	while (curr_start != end)
+	{
+		// if curr start is parenthesis, find next pair for curr end
+		if ((*curr_start)->getType() == L_PARENTHESIS)
+		{
+			curr_end = find_parenthesis_pair(curr_start, end);
+
+			// save iterators
+			// curr_start_offset = curr_start - tokens.begin();
+			curr_end_offset = tokens.end() - curr_end;
+
+			// recursive call and trim parenthesis
+			token_pairing(tokens, curr_start + 1, curr_end);
+
+			// restore iterators
+			curr_end = tokens.end() - curr_end_offset;
+			curr_start = curr_end;
+			end = tokens.end() - end_offset;
+			start = tokens.begin() + start_offset;
+		}
+		// go to next sigterm
+		++curr_start;
+
+		// skip all operators
+		while (curr_start != end && is_operator(*curr_start))
+			++curr_start;
+	}
+
+	// group terms
+	// while sig terms in eq is more than 2
+	while (count_significant_terms(start, end) > 2)
+	{
+		// loop through tokens in eq
+		curr_start = start;
+		while (curr_start != end)
+		{
+			// get next sig term
+			curr_end = curr_start + 1;
+
+			// if curr token is parenthesis, curr_end will start travelling at end of parenthesis
+			if ((*curr_start)->getType() == L_PARENTHESIS) curr_end = find_parenthesis_pair(curr_start, end) + 1;
+			while (curr_end != end && is_operator(*curr_end))
+				++curr_end;
+
+			// if next sig term is a parenthesis, go to other end
+			if (curr_end != end && (*curr_end)->getType() == L_PARENTHESIS)
+				curr_end = find_parenthesis_pair(curr_end, end);
+
+			// if curr end did not move or curr end is at end of eq, return
+			if (curr_end == curr_start + 1 || curr_end == end)
+				break ;
+
+			// save iterator offset
+			curr_end_offset = tokens.end() - curr_end;
+
+			// add parenthesis before curr start
+			tokens.insert(curr_start, new Parenthesis("("));
+			print_parsed_tokens_no_format(tokens);
+
+			// add parenthesis after curr end and  move curr start to curr end
+			curr_end = tokens.end() - curr_end_offset;
+			curr_start = tokens.insert(curr_end + 1, new Parenthesis(")")) + 1;
+			print_parsed_tokens_no_format(tokens);
+
+			// restore start and end iterators
+			start = tokens.begin() + start_offset;
+			end = tokens.end() - end_offset;
+			curr_end = tokens.end() - curr_end_offset;
+
+			// skip all operators on curr_start
+			while (curr_start != end && is_operator(*curr_start)) curr_start++;
+
+		}
+	}
+}
+
 /**
  * @brief Processes tokens for parse tree generation
  * 
@@ -235,8 +335,7 @@ void	token_preprocess(std::vector<BaseAssignmentType *> &tokens, bool is_compute
 	start_iter = determine_start_iter(tokens, is_compute_action);
 	end_iter = determine_end_iter(tokens, is_compute_action);
 
-	// ft_pinfo("calling cntsigterm");
-	ft_pinfo("Sig terms : " + std::to_string(count_sigificant_terms(start_iter, end_iter)));
-
 	// pair tokens
+	token_pairing(tokens, start_iter, end_iter);
+	// print_parsed_tokens_no_format(tokens);
 }

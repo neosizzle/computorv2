@@ -7,4 +7,5 @@
 #include <csignal>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <unistd.h>
 #endif  //!__LIBRARIES__H__
