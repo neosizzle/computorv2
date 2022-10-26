@@ -18,7 +18,7 @@ public:
 
 	// operators
 	// RationalNumber + RationalNumber
-	RationalNumber operator+(RationalNumber rhs)
+	RationalNumber operator+(RationalNumber &rhs)
 	{
 		RationalNumber res;
 
@@ -126,6 +126,14 @@ public:
 		this->int_value = other.int_value;
 		this->float_value = other.float_value;
 		this->type = other.type;
+	}
+	
+	RationalNumber(RationalNumber *other)
+	{
+		this->is_float = other->is_float;
+		this->int_value = other->int_value;
+		this->float_value = other->float_value;
+		this->type = other->type;
 	}
 
 	// assignment operators

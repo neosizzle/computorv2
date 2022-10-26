@@ -1,5 +1,12 @@
 #include "main.hpp"
 
+/**
+ * @brief Generates a parse tree using the list of tokens provided
+ * 
+ * @param tokens 
+ * @param is_compute_action 
+ * @return ParseTreeNode* 
+ */
 ParseTreeNode *generate_parse_tree(std::vector<BaseAssignmentType *> tokens, bool is_compute_action)
 {
 	ParseTreeNode *head;
@@ -52,9 +59,30 @@ ParseTreeNode *generate_parse_tree(std::vector<BaseAssignmentType *> tokens, boo
 		start_iter++;
 	}
 	// print_parsed_tokens_no_format(tokens);
-	print_tree(head);
-	// std::cout << head->toString() << "\n";
-	// head->left = new ParseTreeNode(clone_token(*(start_iter + 1)));
-	// std::cout << head->left->toString() << "\n";
+	// print_tree(head);
 	return head;
+}
+
+void	evaluate_parse_tree_helper(ParseTreeNode *curr)
+{
+	// if curr node is null or curr node is leaf, return
+
+	// traverse left
+
+	// traverse right
+
+	// if both children are leaf, evaluate and subsitute curr node
+
+	// return 
+}
+
+BaseAssignmentType *evaluate_parse_tree(ParseTreeNode *head)
+{
+	RationalNumber one(1);
+	RationalNumber two(2);
+	RationalNumber x;
+
+	x = one + two;
+
+	return clone_token(&x);
 }

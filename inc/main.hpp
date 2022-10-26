@@ -22,6 +22,7 @@ void	validate_tokens(std::vector<BaseAssignmentType *> tokens, bool is_compute_a
 std::string evalaute(std::vector<BaseAssignmentType *> &tokens, bool is_compute_action);
 void	token_preprocess(std::vector<BaseAssignmentType *> &tokens, bool is_compute_action);
 ParseTreeNode *generate_parse_tree(std::vector<BaseAssignmentType *> tokens, bool is_compute_action);
+BaseAssignmentType *evaluate_parse_tree(ParseTreeNode *head);
 
 // utils
 float ft_pow(float a, int power);
