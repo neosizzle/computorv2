@@ -71,3 +71,25 @@ void	free_variables(std::map<std::string, BaseAssignmentType *> vars)
 	}
 	
 }
+
+/**
+ * @brief Frees a parse tree
+ * 
+ * @param curr 
+ */
+void	free_tree(ParseTreeNode * curr)
+{
+	// Base case, return if curr node is null
+	if (curr == nullptr) return;
+
+	// recurse left child
+	free_tree(curr->left);
+
+	// recurse right child
+	free_tree(curr->right);
+
+	// free content and free curr node
+	if (curr->value != nullptr)
+		free_token(curr->value);
+	delete curr ;	
+}

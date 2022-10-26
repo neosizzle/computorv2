@@ -96,3 +96,36 @@ void	ft_pinfo(std::string msg)
 {
 	std::cout << BOLDWHITE << "[ft_info] " << RESET << WHITE << msg << RESET << "\n";
 }
+
+/**
+ * @brief Helper function to print out a binary tree
+ * 
+ * @param curr 
+ * @param space 
+ */
+static void	print_tree_helper(ParseTreeNode *curr, int space)
+{
+	if (curr == nullptr) return;
+
+	space += 10;
+
+	print_tree_helper(curr->right, space);
+
+	// print
+	for (size_t i = 0; i < space; i++)
+		std::cout << " ";
+	
+	std::cout << curr->toString() << "\n";
+
+	print_tree_helper(curr->left, space);
+}
+
+/**
+ * @brief Prints out a binary tree horizontally
+ * 
+ * @param head 
+ */
+void	print_tree(ParseTreeNode *head)
+{
+	print_tree_helper(head, -10);
+}

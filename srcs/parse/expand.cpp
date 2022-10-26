@@ -97,7 +97,7 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 	// if its a function assignment, all leftoever variables must be he function variable 
 	else if (is_func_assign)
 	{
-		// all leftoever variables must be he function variable 
+		// all leftoever variables must be the function variable 
 	}
 	else if (leftover_vars.size() > 0)
 		throw Ft_error(std::string("Token not found: ") + leftover_vars.back()->toString());

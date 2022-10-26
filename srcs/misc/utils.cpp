@@ -98,3 +98,43 @@ bool is_eq(BaseAssignmentType* token)
 {
 	return token->getType() == OPERATOR_EQ;
 }
+
+
+/**
+ * @brief Determine start iter for assignment or compute equations 
+ * 
+ * @param tokens 
+ * @param is_compute_action 
+ * @return std::vector<BaseAssignmentType *>::iterator 
+ */
+std::vector<BaseAssignmentType *>::iterator determine_start_iter (std::vector<BaseAssignmentType *> &tokens, bool is_compute_action)
+{
+	std::vector<BaseAssignmentType *>::iterator res = tokens.begin();
+
+	if (is_compute_action) return res;
+	else
+	{
+		while (res != tokens.end() && (*(res++))->getType() != OPERATOR_EQ){}
+		return res;
+	}
+}
+
+/**
+ * @brief Determine end iter for assignment or compute equations 
+ * 
+ * @param tokens 
+ * @param is_compute_action 
+ * @return std::vector<BaseAssignmentType *>::iterator 
+ */
+std::vector<BaseAssignmentType *>::iterator determine_end_iter (std::vector<BaseAssignmentType *> &tokens, bool is_compute_action)
+{
+	std::vector<BaseAssignmentType *>::iterator res = tokens.end();
+
+	if (!is_compute_action) return res;
+	else
+	{
+		--res;
+		if (res != tokens.begin() && (*(res-1))->getType() == OPERATOR_EQ) --res;
+		return res;
+	}
+}

@@ -10,6 +10,14 @@ class ParseTreeNode {
 		ParseTreeNode *parent;
 		BaseAssignmentType *value;
 
+		std::string toString()
+		{
+			if (this->value != nullptr)
+				return this->value->toString();
+			else
+				return "null";
+		}
+
 		ParseTreeNode()
 		{
 			this->left = nullptr;

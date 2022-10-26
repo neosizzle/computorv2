@@ -24,6 +24,8 @@ void	validate_tokens(std::vector<BaseAssignmentType *> tokens, bool is_compute_a
 		if ((i != tokens.begin()) && i != tokens.end() - 1 && is_operator(curr_token) && (is_operator(*(i-1)) || is_operator(*(i+1))))
 			throw Ft_error("Operators cant be next to each other");
 
+		// operator cant be nxt to qmark TODO
+  
 		// left of operator cant be left parenthesis TODO
 
 		// right of operator cant be right parenthesis TODO

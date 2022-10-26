@@ -15,8 +15,10 @@ std::string evalaute(std::vector<BaseAssignmentType *> &tokens, bool is_compute_
 	token_preprocess(tokens, is_compute_action);
 
 	// generate parse tree
+	head = generate_parse_tree(tokens, is_compute_action);
 
 	// evaluate parse tree
 
+	free_tree(head);
 	// result to store or to string return
 }

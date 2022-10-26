@@ -1,45 +1,6 @@
 #include "main.hpp"
 
 /**
- * @brief Determine start iter for assignment or compute equations 
- * 
- * @param tokens 
- * @param is_compute_action 
- * @return std::vector<BaseAssignmentType *>::iterator 
- */
-static std::vector<BaseAssignmentType *>::iterator determine_start_iter (std::vector<BaseAssignmentType *> &tokens, bool is_compute_action)
-{
-	std::vector<BaseAssignmentType *>::iterator res = tokens.begin();
-
-	if (is_compute_action) return res;
-	else
-	{
-		while (res != tokens.end() && (*(res++))->getType() != OPERATOR_EQ){}
-		return res;
-	}
-}
-
-/**
- * @brief Determine end iter for assignment or compute equations 
- * 
- * @param tokens 
- * @param is_compute_action 
- * @return std::vector<BaseAssignmentType *>::iterator 
- */
-static std::vector<BaseAssignmentType *>::iterator determine_end_iter (std::vector<BaseAssignmentType *> &tokens, bool is_compute_action)
-{
-	std::vector<BaseAssignmentType *>::iterator res = tokens.end();
-
-	if (!is_compute_action) return res;
-	else
-	{
-		res -= 2;
-		if (res != tokens.begin() && (*res)->getType() == OPERATOR_EQ) --res;
-		return res;
-	}
-}
-
-/**
  * @brief Looks for other parenthesis pair
  * 
  * @param curr 
@@ -131,7 +92,7 @@ static void token_populate(std::vector<BaseAssignmentType *>::iterator &start, s
 	int		end_offset;
 	int		start_offset;
 
-	end_offset = end - tokens.begin();
+	end_offset = tokens.end() - end;
 	start_offset = start - tokens.begin();
 
 	// Order loop
@@ -154,7 +115,10 @@ static void token_populate(std::vector<BaseAssignmentType *>::iterator &start, s
 			curr = tokens.begin() + ++curr_offset;
 
 			// restore end
-			end = tokens.begin() + ++end_offset;
+			end = tokens.end() - end_offset;
+
+			// adjust offset
+			if (end_offset > 0) --end_offset;
 
 			// next token
 			next_token = curr + 1;
@@ -167,13 +131,14 @@ static void token_populate(std::vector<BaseAssignmentType *>::iterator &start, s
 			curr = tokens.begin() + curr_offset + 1;
 
 			// restore end
-			end = tokens.begin() + end_offset + 1;
+			end = tokens.end() - end_offset;
 		}
 		curr++;
 	}
 
 	// restore start
 	start = tokens.begin() + start_offset;
+	end = tokens.end() - end_offset;
 	
 	// DM loop
 	curr = start;
@@ -181,7 +146,7 @@ static void token_populate(std::vector<BaseAssignmentType *>::iterator &start, s
 	{
 		BaseAssignmentType *curr_token = *curr;
 
-		if (curr_token->getType() == OPERATOR_MULT || curr_token->getType() == OPERATOR_DIV || curr_token->getType() == OPERATOR_POW)
+		if (curr_token->getType() == OPERATOR_MULT || curr_token->getType() == OPERATOR_DIV)
 		{
 			curr_offset = curr - tokens.begin();
 
@@ -195,7 +160,10 @@ static void token_populate(std::vector<BaseAssignmentType *>::iterator &start, s
 			curr = tokens.begin() + ++curr_offset;
 
 			// restore end
-			end = tokens.begin() + ++end_offset;
+			end = tokens.end() - end_offset;
+
+			// adjust offset
+			if (end_offset > 0) --end_offset;
 
 			// next token
 			next_token = curr + 1;
@@ -208,11 +176,10 @@ static void token_populate(std::vector<BaseAssignmentType *>::iterator &start, s
 			curr = tokens.begin() + curr_offset + 1;
 
 			// restore end
-			end = tokens.begin() + end_offset + 1;
+			end = tokens.end() - end_offset;
 		}
 		curr++;
 	}
-	
 }
 
 static void	token_pairing(std::vector<BaseAssignmentType *> &tokens, std::vector<BaseAssignmentType *>::iterator start, std::vector<BaseAssignmentType *>::iterator end)
@@ -294,12 +261,12 @@ static void	token_pairing(std::vector<BaseAssignmentType *> &tokens, std::vector
 
 			// add parenthesis before curr start
 			tokens.insert(curr_start, new Parenthesis("("));
-			print_parsed_tokens_no_format(tokens);
+			// print_parsed_tokens_no_format(tokens);
 
 			// add parenthesis after curr end and  move curr start to curr end
 			curr_end = tokens.end() - curr_end_offset;
 			curr_start = tokens.insert(curr_end + 1, new Parenthesis(")")) + 1;
-			print_parsed_tokens_no_format(tokens);
+			// print_parsed_tokens_no_format(tokens);
 
 			// restore start and end iterators
 			start = tokens.begin() + start_offset;
@@ -337,5 +304,11 @@ void	token_preprocess(std::vector<BaseAssignmentType *> &tokens, bool is_compute
 
 	// pair tokens
 	token_pairing(tokens, start_iter, end_iter);
-	// print_parsed_tokens_no_format(tokens);
+
+	// add another pair of parenthesis on both sides
+	tokens.insert(determine_start_iter(tokens, is_compute_action), new Parenthesis("("));
+	end_iter = determine_end_iter(tokens, is_compute_action);
+	if (end_iter == tokens.end()) tokens.push_back(new Parenthesis(")"));
+	else
+		tokens.insert(end_iter, new Parenthesis(")"));
 }
