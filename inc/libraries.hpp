@@ -8,4 +8,5 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <unistd.h>
+#include <math.h>
 #endif  //!__LIBRARIES__H__

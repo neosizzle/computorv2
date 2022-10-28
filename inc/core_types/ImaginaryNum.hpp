@@ -3,6 +3,7 @@
 #include "Base.hpp"
 #include "RationalNum.hpp"
 
+// TODO: Add const to copy constructor parameters
 class ImaginaryNumber : public BaseAssignmentType
 {
 public:
@@ -22,61 +23,61 @@ public:
 
 	// operators
 	// ImaginaryNumber +ImaginaryNumber
-	ImaginaryNumber operator+(ImaginaryNumber rhs)
-	{
-		ImaginaryNumber res;
+	// ImaginaryNumber operator+(ImaginaryNumber rhs)
+	// {
+	// 	ImaginaryNumber res;
 
-		res.imaginary_part = rhs.imaginary_part + this->imaginary_part;
+	// 	res.imaginary_part = rhs.imaginary_part + this->imaginary_part;
 
-		return res;
-	}
+	// 	return res;
+	// }
 
-	// ImaginaryNumber -ImaginaryNumber
-	ImaginaryNumber operator-(ImaginaryNumber rhs)
-	{
-		ImaginaryNumber res;
+	// // ImaginaryNumber -ImaginaryNumber
+	// ImaginaryNumber operator-(ImaginaryNumber rhs)
+	// {
+	// 	ImaginaryNumber res;
 
-		res.imaginary_part = this->imaginary_part - rhs.imaginary_part;
-		return res;
-	}
+	// 	res.imaginary_part = this->imaginary_part - rhs.imaginary_part;
+	// 	return res;
+	// }
 
-	// ImaginaryNumber *ImaginaryNumber
-	ImaginaryNumber operator*(ImaginaryNumber rhs)
-	{
-		ImaginaryNumber res;
+	// // ImaginaryNumber *ImaginaryNumber
+	// ImaginaryNumber operator*(ImaginaryNumber rhs)
+	// {
+	// 	ImaginaryNumber res;
 
-		res.imaginary_part = rhs.imaginary_part * this->imaginary_part;
-		res.power = this->power + rhs.power;
-		return res;
-	}
+	// 	res.imaginary_part = rhs.imaginary_part * this->imaginary_part;
+	// 	res.power = this->power + rhs.power;
+	// 	return res;
+	// }
 
-	// ImaginaryNumber /ImaginaryNumber
-	ImaginaryNumber operator/(ImaginaryNumber rhs)
-	{
-		ImaginaryNumber res;
+	// // ImaginaryNumber /ImaginaryNumber
+	// ImaginaryNumber operator/(ImaginaryNumber rhs)
+	// {
+	// 	ImaginaryNumber res;
 
-		res.imaginary_part = this->imaginary_part / rhs.imaginary_part;
-		res.power = this->power - rhs.power;
+	// 	res.imaginary_part = this->imaginary_part / rhs.imaginary_part;
+	// 	res.power = this->power - rhs.power;
 
-		return res;
-	}
+	// 	return res;
+	// }
 
-	// ImaginaryNumber ^ImaginaryNumber
-	ImaginaryNumber operator^(ImaginaryNumber rhs)
-	{
-		ImaginaryNumber res;
+	// // ImaginaryNumber ^ImaginaryNumber
+	// ImaginaryNumber operator^(ImaginaryNumber rhs)
+	// {
+	// 	ImaginaryNumber res;
 
-		res.imaginary_part = this->imaginary_part ^ rhs.imaginary_part;
-		res.power = this->power + rhs.power;
-		return res;
-	}
+	// 	res.imaginary_part = this->imaginary_part ^ rhs.imaginary_part;
+	// 	res.power = this->power + rhs.power;
+	// 	return res;
+	// }
 
-	// comparison operators
-	bool operator>(ImaginaryNumber rhs) { return this->imaginary_part > rhs.imaginary_part; }
-	bool operator<(ImaginaryNumber rhs) { return this->imaginary_part < rhs.imaginary_part; }
-	bool operator>=(ImaginaryNumber rhs) { return this->imaginary_part >= rhs.imaginary_part; }
-	bool operator==(ImaginaryNumber rhs) { return this->imaginary_part == rhs.imaginary_part; }
-	bool operator!=(ImaginaryNumber rhs) { return this->imaginary_part != rhs.imaginary_part; }
+	// // comparison operators
+	// bool operator>(ImaginaryNumber rhs) { return this->imaginary_part > rhs.imaginary_part; }
+	// bool operator<(ImaginaryNumber rhs) { return this->imaginary_part < rhs.imaginary_part; }
+	// bool operator>=(ImaginaryNumber rhs) { return this->imaginary_part >= rhs.imaginary_part; }
+	// bool operator==(ImaginaryNumber rhs) { return this->imaginary_part == rhs.imaginary_part; }
+	// bool operator!=(ImaginaryNumber rhs) { return this->imaginary_part != rhs.imaginary_part; }
 
 	// constructors
 	ImaginaryNumber()

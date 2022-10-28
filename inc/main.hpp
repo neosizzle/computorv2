@@ -22,16 +22,15 @@ void	validate_tokens(std::vector<BaseAssignmentType *> tokens, bool is_compute_a
 std::string evalaute(std::vector<BaseAssignmentType *> &tokens, bool is_compute_action);
 void	token_preprocess(std::vector<BaseAssignmentType *> &tokens, bool is_compute_action);
 ParseTreeNode *generate_parse_tree(std::vector<BaseAssignmentType *> tokens, bool is_compute_action);
-BaseAssignmentType *evaluate_parse_tree(ParseTreeNode *head);
+BaseAssignmentType *evaluate_parse_tree(ParseTreeNode **head);
 
 // utils
-float ft_pow(float a, int power);
 BaseAssignmentType *clone_token(BaseAssignmentType * token);
 bool is_operator(BaseAssignmentType* token);
 bool is_eq(BaseAssignmentType* token);
 std::vector<BaseAssignmentType *>::iterator determine_start_iter (std::vector<BaseAssignmentType *> &tokens, bool is_compute_action);
 std::vector<BaseAssignmentType *>::iterator determine_end_iter (std::vector<BaseAssignmentType *> &tokens, bool is_compute_action);
-
+bool is_leaf_node(ParseTreeNode * node);
 
 // logging
 void	print_unparsed_tokens(std::vector<TokenBase> tokens);

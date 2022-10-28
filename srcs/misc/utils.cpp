@@ -1,24 +1,6 @@
 #include "main.hpp"
 
 /**
- * @brief Evaluates the of number a raised by the power of power
- * 
- * @param a 
- * @param power 
- * @return double 
- */
-float ft_pow(float a, int power)
-{
-	if (power == 0)
-		return 1;
-	if (power == 1)
-		return a;
-	if (power < 0)
-		return 0;
-	return (ft_pow((a * a), power - 1));
-}
-
-/**
  * @brief Allocates memory and clones token
  * 
  * @param token 
@@ -137,4 +119,17 @@ std::vector<BaseAssignmentType *>::iterator determine_end_iter (std::vector<Base
 		if (res != tokens.begin() && (*(res-1))->getType() == OPERATOR_EQ) --res;
 		return res;
 	}
+}
+
+/**
+ * @brief Determines if current node is a leaf node
+ * 
+ * @param node 
+ * @return true 
+ * @return false 
+ */
+bool is_leaf_node(ParseTreeNode * node)
+{
+
+	return node == nullptr || (node->left == nullptr && node->right == nullptr);
 }

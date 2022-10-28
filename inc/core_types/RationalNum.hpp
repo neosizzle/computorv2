@@ -16,7 +16,81 @@ public:
 		return is_float ? std::to_string(float_value) : std::to_string(int_value);
 	}
 
+	// operator shell functions
+	BaseAssignmentType * add (BaseAssignmentType *rhs)
+	{
+		// RationalNumber + Rational Bumber
+		if (rhs->getType() == N_RATIONAL)
+		{
+			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
+			RationalNumber res = *this + *(curr_token);
+			return new RationalNumber(res);
+		}
+		return nullptr;
+	}
+
+	BaseAssignmentType * sub (BaseAssignmentType *rhs)
+	{
+		// RationalNumber + Rational Bumber
+		if (rhs->getType() == N_RATIONAL)
+		{
+			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
+			RationalNumber res = *this - *(curr_token);
+			return new RationalNumber(res);
+		}
+		return nullptr;
+	}
+
+	BaseAssignmentType * mult (BaseAssignmentType *rhs)
+	{
+		// RationalNumber + Rational Bumber
+		if (rhs->getType() == N_RATIONAL)
+		{
+			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
+			RationalNumber res = *this * *(curr_token);
+			return new RationalNumber(res);
+		}
+		return nullptr;
+	}
+
+	BaseAssignmentType * div (BaseAssignmentType *rhs)
+	{
+		// RationalNumber + Rational Bumber
+		if (rhs->getType() == N_RATIONAL)
+		{
+			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
+			RationalNumber res = *this / *(curr_token);
+			return new RationalNumber(res);
+		}
+		return nullptr;
+	}
+
+	BaseAssignmentType * mod (BaseAssignmentType *rhs)
+	{
+		// RationalNumber + Rational Bumber
+		if (rhs->getType() == N_RATIONAL)
+		{
+			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
+			RationalNumber res = *this % *(curr_token);
+			return new RationalNumber(res);
+		}
+		return nullptr;
+	}
+
+	BaseAssignmentType * pow (BaseAssignmentType *rhs)
+	{
+		// RationalNumber + Rational Bumber
+		if (rhs->getType() == N_RATIONAL)
+		{
+			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
+			RationalNumber res = *this ^ *(curr_token);
+			return new RationalNumber(res);
+		}
+		return nullptr;
+	}
+
 	// operators
+	// RationalNumber + RationalNumber
 	// RationalNumber + RationalNumber
 	RationalNumber operator+(RationalNumber &rhs)
 	{
@@ -29,7 +103,7 @@ public:
 	}
 
 	// RationalNumber - RationalNumber
-	RationalNumber operator-(RationalNumber rhs)
+	RationalNumber operator-(RationalNumber &rhs)
 	{
 		RationalNumber res;
 
@@ -83,17 +157,17 @@ public:
 		RationalNumber res;
 
 		res.is_float = this->is_float || rhs.is_float;
-		res.int_value = this->int_value % rhs.int_value;
-		res.float_value = this->int_value;
+		res.int_value = std::pow(this->int_value, rhs.int_value);
+		res.float_value = powf(this->float_value, rhs.float_value);
 		return res;
 	}
 
-	// comparison operators
-	bool operator>(RationalNumber rhs) { return this->float_value > rhs.float_value; }
-	bool operator<(RationalNumber rhs) { return this->float_value < rhs.float_value; }
-	bool operator>=(RationalNumber rhs) { return this->float_value >= rhs.float_value; }
-	bool operator==(RationalNumber rhs) { return this->float_value == rhs.float_value; }
-	bool operator!=(RationalNumber rhs) { return this->float_value != rhs.float_value; }
+	// // comparison operators
+	// bool operator>(RationalNumber rhs) { return this->float_value > rhs.float_value; }
+	// bool operator<(RationalNumber rhs) { return this->float_value < rhs.float_value; }
+	// bool operator>=(RationalNumber rhs) { return this->float_value >= rhs.float_value; }
+	// bool operator==(RationalNumber rhs) { return this->float_value == rhs.float_value; }
+	// bool operator!=(RationalNumber rhs) { return this->float_value != rhs.float_value; }
 
 	// constructors
 	RationalNumber()
@@ -120,7 +194,7 @@ public:
 		this->type = N_RATIONAL;
 	}
 
-	RationalNumber(RationalNumber &other)
+	RationalNumber(const RationalNumber &other)
 	{
 		this->is_float = other.is_float;
 		this->int_value = other.int_value;
@@ -128,7 +202,7 @@ public:
 		this->type = other.type;
 	}
 	
-	RationalNumber(RationalNumber *other)
+	RationalNumber(const RationalNumber *other)
 	{
 		this->is_float = other->is_float;
 		this->int_value = other->int_value;

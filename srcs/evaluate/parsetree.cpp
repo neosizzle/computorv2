@@ -63,26 +63,117 @@ ParseTreeNode *generate_parse_tree(std::vector<BaseAssignmentType *> tokens, boo
 	return head;
 }
 
-void	evaluate_parse_tree_helper(ParseTreeNode *curr)
+// ADD TYPE
+/**
+ * @brief Commences the operation betweem two tokens and returns new result in allocated memory
+ * 
+ * @param lhs 
+ * @param rhs 
+ * @param operation 
+ * @return BaseAssignmentType* 
+ */
+BaseAssignmentType * do_op(BaseAssignmentType *lhs, BaseAssignmentType *rhs, int operation)
+{
+	BaseAssignmentType *res;
+
+	res = nullptr;
+	if (operation == OPERATOR_PLUS)
+		res = lhs->add(rhs);
+	else if (operation == OPERATOR_MINUS)
+		res = lhs->sub(rhs);
+	else if (operation == OPERATOR_MULT)
+		res = lhs->mult(rhs);
+	else if (operation == OPERATOR_DIV)
+		res = lhs->div(rhs);
+	else if (operation == OPERATOR_MOD)
+		res = lhs->mod(rhs);
+	else if (operation == OPERATOR_POW)
+		res = lhs->pow(rhs);
+
+	return res;
+}
+
+void	replace_node(ParseTreeNode **curr, BaseAssignmentType *token)
+{
+	// create new parse tree node 
+	ParseTreeNode *new_tree_node;
+	ParseTreeNode *temp;
+
+	// set new tree node links
+	new_tree_node = new ParseTreeNode(token);
+	new_tree_node->parent = (*curr)->parent;
+	if ((*curr)->parent != nullptr)
+	{
+		if ((*curr) == (*curr)->parent->left)
+		{
+			temp = ((*curr)->parent->left);
+			(*curr)->parent->left = new_tree_node;
+			free_tree(temp);
+		}
+		else if ((*curr) == (*curr)->parent->right)
+		{
+			temp = ((*curr)->parent->right);
+			(*curr)->parent->right = new_tree_node;
+			free_tree(temp);
+		}
+
+		// set curr to newly replaced node
+		*curr = new_tree_node;
+	}
+	else
+	{
+		// free original current subtree
+		temp = *curr;
+
+		// set head to new node
+		*curr = new_tree_node;
+		free_tree(temp);
+	}
+}
+
+void	evaluate_parse_tree_helper(ParseTreeNode **curr)
 {
 	// if curr node is null or curr node is leaf, return
+	if (*curr == nullptr || is_leaf_node(*curr))
+		return ;
 
 	// traverse left
+	evaluate_parse_tree_helper(&((*curr)->left));
 
 	// traverse right
+	evaluate_parse_tree_helper(&((*curr)->right));
+
+	// if curr node have only 1 children, replace curr node wiht only child (L_PARENTHESIS)
+	if ((*curr)->left != nullptr && (*curr)->right == nullptr)
+	{
+		replace_node(curr, clone_token((*curr)->left->value));
+	}
+	else if ((*curr)->left == nullptr && (*curr)->right != nullptr)
+		replace_node(curr, clone_token((*curr)->right->value));
 
 	// if both children are leaf, evaluate and subsitute curr node
+	else if ((*curr)->left != nullptr && (*curr)->right != nullptr && is_leaf_node((*curr)->left) && is_leaf_node((*curr)->right))
+	{
+		// obtain new result
+		BaseAssignmentType *res_token = do_op((*curr)->left->value, (*curr)->right->value, (*curr)->value->getType());
+
+		// throw error if operation is not valid
+		if (res_token == nullptr) throw Ft_error("Operation not valid");
+
+		//reaplce node
+		// ft_pinfo((*curr)->parent->left->toString());
+		replace_node(curr, res_token);
+		// ft_pinfo((*curr)->parent->left->toString());
+	}
 
 	// return 
 }
 
-BaseAssignmentType *evaluate_parse_tree(ParseTreeNode *head)
+BaseAssignmentType *evaluate_parse_tree(ParseTreeNode **head)
 {
-	RationalNumber one(1);
-	RationalNumber two(2);
-	RationalNumber x;
+	print_tree(*head);
+	evaluate_parse_tree_helper(head);
 
-	x = one + two;
-
-	return clone_token(&x);
+	// print_tree(*head);
+	ft_pinfo((*head)->toString());
 }

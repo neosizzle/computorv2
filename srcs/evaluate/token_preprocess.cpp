@@ -146,7 +146,7 @@ static void token_populate(std::vector<BaseAssignmentType *>::iterator &start, s
 	{
 		BaseAssignmentType *curr_token = *curr;
 
-		if (curr_token->getType() == OPERATOR_MULT || curr_token->getType() == OPERATOR_DIV)
+		if (curr_token->getType() == OPERATOR_MULT || curr_token->getType() == OPERATOR_DIV || curr_token->getType() == OPERATOR_MOD)
 		{
 			curr_offset = curr - tokens.begin();
 
