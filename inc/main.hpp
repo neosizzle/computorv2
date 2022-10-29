@@ -19,18 +19,23 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 void	validate_tokens(std::vector<BaseAssignmentType *> tokens, bool is_compute_action);
 
 // evaulation
-std::string evalaute(std::vector<BaseAssignmentType *> &tokens, bool is_compute_action);
+std::string evalaute(std::vector<BaseAssignmentType *> &tokens, bool is_compute_action, std::map<std::string, BaseAssignmentType *> &variables);
 void	token_preprocess(std::vector<BaseAssignmentType *> &tokens, bool is_compute_action);
 ParseTreeNode *generate_parse_tree(std::vector<BaseAssignmentType *> tokens, bool is_compute_action);
 BaseAssignmentType *evaluate_parse_tree(ParseTreeNode **head);
 
+// builtins
+void	handle_builtin(std::string line, std::map<std::string, std::string> history, std::map<std::string, BaseAssignmentType *> variables);
+
 // utils
+std::string ft_tolower(std::string str);
 BaseAssignmentType *clone_token(BaseAssignmentType * token);
 bool is_operator(BaseAssignmentType* token);
 bool is_eq(BaseAssignmentType* token);
 std::vector<BaseAssignmentType *>::iterator determine_start_iter (std::vector<BaseAssignmentType *> &tokens, bool is_compute_action);
 std::vector<BaseAssignmentType *>::iterator determine_end_iter (std::vector<BaseAssignmentType *> &tokens, bool is_compute_action);
 bool is_leaf_node(ParseTreeNode * node);
+std::string var_to_str(std::map<std::string, BaseAssignmentType *>::iterator iter);
 
 // logging
 void	print_unparsed_tokens(std::vector<TokenBase> tokens);

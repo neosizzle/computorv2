@@ -171,9 +171,7 @@ void	evaluate_parse_tree_helper(ParseTreeNode **curr)
 
 BaseAssignmentType *evaluate_parse_tree(ParseTreeNode **head)
 {
-	print_tree(*head);
 	evaluate_parse_tree_helper(head);
 
-	// print_tree(*head);
-	ft_pinfo((*head)->toString());
+	return (*head)->value;
 }

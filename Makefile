@@ -4,7 +4,7 @@ INCS_ROOT = inc
 INCS_CORE = inc/core_types
 INCS_MISC = inc/misc_types
 CPP_FLAGS = -I${INCS_ROOT} -I${INCS_CORE} -I${INCS_MISC} -lreadline
-SRCS = srcs/*.cpp srcs/parse/*.cpp srcs/os/*.cpp srcs/evaluate/*.cpp srcs/misc/*.cpp
+SRCS = srcs/*.cpp srcs/parse/*.cpp srcs/os/*.cpp srcs/evaluate/*.cpp srcs/misc/*.cpp srcs/builtins/*.cpp
 
 # Style constants
 RED=\033[0;31m

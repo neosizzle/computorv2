@@ -8,7 +8,8 @@ void computor()
 	// variables (variablename, variable type with values and stuff)
 	std::map<std::string, BaseAssignmentType *> variables;
 
-	variables.insert({"x", new RationalNumber(69)});
+	std::string res_str;
+
 	while (true)
 	{
 		char 		*rl_buff; // line buffer
@@ -33,7 +34,7 @@ void computor()
 
 		// manage commands
 		if (std::find(COMMANDS.begin(), COMMANDS.end(), line) != COMMANDS.end())
-			std::cout << line << " is a command \n";
+			handle_builtin(line, history, variables);
 		else
 		{
 			// tokenize string parse tokens
@@ -53,39 +54,35 @@ void computor()
 				// validate tokens
 				validate_tokens(tokens, is_compute_action);
 
-				// evaluate
-				evalaute(tokens, is_compute_action);
+				// evaluate and print result
+				res_str = evalaute(tokens, is_compute_action, variables);
+				std::cout << res_str << "\n";
+
+				// add history for computor
+				history.insert({line, res_str});
 			}
 			catch(const Ft_error &e)
 			{
-				// free tokens
 				free_tokens(tokens);
 				ft_perror(e);
-
-				// add history for rl
 				add_history(rl_buff);
-
-				// add history for computor
-
 				free(rl_buff);
 				continue ;
 			}
 			catch (const std::runtime_error& e)
 			{
-			// your error handling code here
+				free_tokens(tokens);
+				free(rl_buff);
+				std::cerr << "Runtime err: " << e.what();
+				continue;
 			}
 			
-			// assign or display result
-
 			// free tokens
 			free_tokens(tokens);
 		}
 		
-
 		// add history for rl
 		add_history(rl_buff);
-
-		// add history for computor
 
 		free(rl_buff);
 	}

@@ -1,6 +1,42 @@
 #include "main.hpp"
 
 /**
+ * @brief Convertes string to lwoercase 
+ * 
+ * @param str 
+ * @return std::string 
+ */
+std::string ft_tolower(std::string str)
+{
+	std::string res(str);
+
+	for (size_t i = 0; i < res.size(); i++)
+		res[i] = std::tolower(str[i]);
+	
+	return res;
+}
+
+/**
+ * @brief Converts var pair to string
+ * 
+ * @param iter 
+ * @return std::string 
+ */
+std::string var_to_str(std::map<std::string, BaseAssignmentType *>::iterator iter)
+{
+	std::string var_name;
+	BaseAssignmentType *var_val;
+	std::string			res;
+
+	var_name = (*iter).first;
+	var_val = (*iter).second;
+	res = std::string("");
+
+	res.append(var_name + "=" + var_val->toString());
+	return res;
+}
+
+/**
  * @brief Allocates memory and clones token
  * 
  * @param token 

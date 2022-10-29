@@ -41,7 +41,7 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 		if (found_iter != tokens.end())
 		{
 			Variable *qmark_var = dynamic_cast<Variable *>(*found_iter);
-			qmark_first_var = qmark_var->name;
+			qmark_first_var = ft_tolower(qmark_var->name);
 		}
 	}
 
@@ -65,10 +65,10 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 			std::map<std::string, BaseAssignmentType *>::iterator found_var_iter;
 
 			// find the actual token inside the variables
-			found_var_iter = variables.find(curr_token->toString());
+			found_var_iter = variables.find(ft_tolower(curr_token->toString()));
 
 			// if token is found and is NOT compute action and NOT polynimial var, expand
-			if ((is_compute_action && curr_token->toString() == std::string(1, POLYNOMIAL_VAR))) continue ;
+			if ((is_compute_action && ft_tolower(curr_token->toString()) == std::string(1, POLYNOMIAL_VAR))) continue ;
 			if (found_var_iter != variables.end()){
 				// Clone new token
 				BaseAssignmentType *new_token = clone_token(found_var_iter->second);
