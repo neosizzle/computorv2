@@ -53,7 +53,6 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 			tokens_iter_init++;
 	}
 	tokens_iter = tokens_iter_init;
-
 	// loop through all tokens
 	for (;tokens_iter != tokens.end();++tokens_iter)
 	{

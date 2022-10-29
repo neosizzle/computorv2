@@ -43,7 +43,7 @@ void computor()
 			tokens = parse_tokens(tokenize(line));
 
 			// determine if last token is qmark
-			if(tokens.size() > 2 && tokens.back()->getType() == Q_MARK )
+			if(tokens.size() > 1 && tokens.back()->getType() == Q_MARK )
 				is_compute_action = true;
 
 			try
