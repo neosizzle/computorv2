@@ -2,6 +2,7 @@
 #define __TOKENS__H__
 #include "libraries.hpp"
 #include "assignmentTypes.hpp"
+#include "rational_num_operators.hpp"
 
 class TokenBase {
 	public :

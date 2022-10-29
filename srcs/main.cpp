@@ -12,5 +12,8 @@ int main(int argc, char** argv)
 		std::cout << "Usage: ./computor\n";
 		return 1;
 	}
-	computor();
+	// computor();
+	RationalNumber test(12);
+	ImaginaryNumber test2(12);
+	std::cout << test + "wutt" << "\n";
 }
