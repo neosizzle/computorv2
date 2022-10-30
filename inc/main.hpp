@@ -4,6 +4,7 @@
 #include "constants.hpp"
 #include "tokens.hpp"
 #include "ft_error.hpp"
+#include "rational_num_operators.hpp"
 
 // Computor
 void	computor();

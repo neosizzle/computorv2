@@ -2,7 +2,6 @@
 #define __TOKENS__H__
 #include "libraries.hpp"
 #include "assignmentTypes.hpp"
-#include "rational_num_operators.hpp"
 
 class TokenBase {
 	public :
@@ -12,11 +11,6 @@ class TokenBase {
 
 template<class T>
 class TokenParsed {
-	
-	// typedefs
-	public :
-		// typedef	T value_type;
-		// typedef	T& value_ref;
 
 	// private attribs
 	private :

@@ -91,8 +91,7 @@ public:
 
 	// operators
 	// RationalNumber + RationalNumber
-	// RationalNumber + RationalNumber
-	RationalNumber operator+(RationalNumber &rhs)
+	RationalNumber operator+(const RationalNumber &rhs)
 	{
 		RationalNumber res;
 
@@ -103,7 +102,7 @@ public:
 	}
 
 	// RationalNumber - RationalNumber
-	RationalNumber operator-(RationalNumber &rhs)
+	RationalNumber operator-(const RationalNumber &rhs)
 	{
 		RationalNumber res;
 
@@ -114,7 +113,7 @@ public:
 	}
 
 	// RationalNumber * RationalNumber
-	RationalNumber operator*(RationalNumber rhs)
+	RationalNumber operator*(const RationalNumber &rhs)
 	{
 		RationalNumber res;
 
@@ -125,7 +124,7 @@ public:
 	}
 
 	// RationalNumber / RationalNumber
-	RationalNumber operator/(RationalNumber rhs)
+	RationalNumber operator/(const RationalNumber &rhs)
 	{
 		RationalNumber res;
 		float divResult;
@@ -141,7 +140,7 @@ public:
 	}
 
 	// RationalNumber % RationalNumber
-	RationalNumber operator%(RationalNumber rhs)
+	RationalNumber operator%(const RationalNumber &rhs)
 	{
 		RationalNumber res;
 
@@ -152,7 +151,7 @@ public:
 	}
 
 	// RationalNumber ^ RationalNumber
-	RationalNumber operator^(RationalNumber rhs)
+	RationalNumber operator^(const RationalNumber &rhs)
 	{
 		RationalNumber res;
 
@@ -162,12 +161,12 @@ public:
 		return res;
 	}
 
-	// // comparison operators
-	// bool operator>(RationalNumber rhs) { return this->float_value > rhs.float_value; }
-	// bool operator<(RationalNumber rhs) { return this->float_value < rhs.float_value; }
-	// bool operator>=(RationalNumber rhs) { return this->float_value >= rhs.float_value; }
-	// bool operator==(RationalNumber rhs) { return this->float_value == rhs.float_value; }
-	// bool operator!=(RationalNumber rhs) { return this->float_value != rhs.float_value; }
+	// comparison operators
+	bool operator>(RationalNumber rhs) { return this->float_value > rhs.float_value; }
+	bool operator<(RationalNumber rhs) { return this->float_value < rhs.float_value; }
+	bool operator>=(RationalNumber rhs) { return this->float_value >= rhs.float_value; }
+	bool operator==(RationalNumber rhs) { return this->float_value == rhs.float_value; }
+	bool operator!=(RationalNumber rhs) { return this->float_value != rhs.float_value; }
 
 	// constructors
 	RationalNumber()
