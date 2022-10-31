@@ -14,17 +14,17 @@ int main(int argc, char** argv)
 	}
 	// computor();
 	ImaginaryNumber test;
-	test.real_part = RationalNumber(0);
-	test.imaginary_part = RationalNumber(3);
-	test.power = 1;
+	test.real_part = RationalNumber(5);
+	test.imaginary_part = RationalNumber(4);
+	test.power = 5;
 
 	ImaginaryNumber test2;
 	test2.real_part = RationalNumber(3);
-	test2.imaginary_part = RationalNumber(2);
+	test2.imaginary_part = RationalNumber(4);
 	test2.power = 1;
 
 	ImaginaryNumber simplified;
-	simplified = test * test2;
+	simplified = test / test;
 	std::cout << "real part: " << simplified.real_part.toString() << "\n";
 	std::cout << "i part: " << simplified.imaginary_part.toString() << "\n";
 	std::cout << "pow: " << std::to_string(simplified.power) << "\n";

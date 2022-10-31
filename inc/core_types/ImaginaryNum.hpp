@@ -3,7 +3,6 @@
 #include "Base.hpp"
 #include "RationalNum.hpp"
 
-// TODO: Add const to copy constructor parameters
 class ImaginaryNumber : public BaseAssignmentType
 {
 public:
@@ -18,7 +17,12 @@ ImaginaryNumber simplify(ImaginaryNumber num)
 		ImaginaryNumber res;
 
 		cycle = num.power % 4;
-		if (cycle == 1) return num;
+		if (cycle == 1)
+		{
+			res.imaginary_part = num.imaginary_part;
+			res.real_part = num.real_part;
+			res.power = 1;
+		}
 		else if (cycle == 2)
 		{
 			res.imaginary_part = num.real_part - num.imaginary_part;
@@ -223,9 +227,59 @@ public:
 	ImaginaryNumber operator/(ImaginaryNumber rhs)
 	{
 		ImaginaryNumber res;
+		ImaginaryNumber lhs_simplified;
+		ImaginaryNumber rhs_simplified;
 
-		res.imaginary_part = this->imaginary_part / rhs.imaginary_part;
-		res.power = this->power - rhs.power;
+		lhs_simplified = this->simplify(*this);
+		rhs_simplified = this->simplify(rhs);
+
+		if (rhs == *this)
+		{
+			res.real_part = 1;
+			res.imaginary_part = 0;
+			res.power = 0;
+		}
+		else if (lhs_simplified.power == 0 && rhs_simplified.power == 0)
+		{
+			res.real_part = 0;
+			res.imaginary_part = lhs_simplified.imaginary_part / rhs_simplified.imaginary_part;
+			res.power = 0;
+		}
+		else if (lhs_simplified.power == 1 && rhs_simplified.power == 0)
+		{
+			if (rhs_simplified.imaginary_part != 0)
+			{
+				res.real_part = lhs_simplified.real_part / rhs_simplified.imaginary_part;
+				res.imaginary_part = lhs_simplified.imaginary_part / rhs_simplified.imaginary_part;
+			}
+			else if (rhs_simplified.real_part != 0)
+			{
+				res.real_part = lhs_simplified.real_part / rhs_simplified.real_part;
+				res.imaginary_part = lhs_simplified.imaginary_part / rhs_simplified.real_part;
+			}
+			res.power = 1;
+		}
+		else if (lhs_simplified.power == 0 && rhs_simplified.power == 1 || lhs_simplified.power == 1 && rhs_simplified.power == 1)
+		{
+			ImaginaryNumber inverse(rhs_simplified);
+			inverse.imaginary_part = inverse.imaginary_part * -1;
+
+			lhs_simplified = this->simplify(lhs_simplified * inverse);
+			rhs_simplified = this->simplify(rhs_simplified * inverse);
+
+			// by now, rhs power i should be 0
+			if (rhs_simplified.imaginary_part != 0)
+			{
+				res.real_part = lhs_simplified.real_part / rhs_simplified.imaginary_part;
+				res.imaginary_part = lhs_simplified.imaginary_part / rhs_simplified.imaginary_part;
+			}
+			else if (rhs_simplified.real_part != 0)
+			{
+				res.real_part = lhs_simplified.real_part / rhs_simplified.real_part;
+				res.imaginary_part = lhs_simplified.imaginary_part / rhs_simplified.real_part;
+			}
+			res.power = 1;
+		}
 
 		return res;
 	}

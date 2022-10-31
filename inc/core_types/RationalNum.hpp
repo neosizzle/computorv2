@@ -131,7 +131,8 @@ public:
 
 		res.int_value = this->int_value / rhs.int_value;
 		res.float_value = this->float_value / rhs.float_value;
-		if (rhs.int_value % this->int_value == 0 && !rhs.is_float && !this->is_float)
+		if (this->int_value != 0 && rhs.int_value % this->int_value == 0 &&
+		!rhs.is_float && !this->is_float)
 			res.is_float = this->is_float || rhs.is_float;
 		else
 			res.is_float = true;
