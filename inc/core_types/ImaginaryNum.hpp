@@ -94,6 +94,12 @@ public:
 			ImaginaryNumber res = *this + *(curr_token);
 			return new ImaginaryNumber(res);
 		}
+		else if (rhs->getType() == N_RATIONAL)
+		{
+			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
+			ImaginaryNumber res = *this + *(curr_token);
+			return new ImaginaryNumber(res);
+		}
 		return nullptr;
 	}
 
@@ -102,6 +108,12 @@ public:
 		if (rhs->getType() == N_IMAGINARY)
 		{
 			ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
+			ImaginaryNumber res = *this - *(curr_token);
+			return new ImaginaryNumber(res);
+		}
+		else if (rhs->getType() == N_RATIONAL)
+		{
+			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
 			ImaginaryNumber res = *this - *(curr_token);
 			return new ImaginaryNumber(res);
 		}
@@ -116,6 +128,12 @@ public:
 			ImaginaryNumber res = *this * *(curr_token);
 			return new ImaginaryNumber(res);
 		}
+		else if (rhs->getType() == N_RATIONAL)
+		{
+			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
+			ImaginaryNumber res = *this * *(curr_token);
+			return new ImaginaryNumber(res);
+		}
 		return nullptr;
 	}
 
@@ -124,6 +142,12 @@ public:
 	if (rhs->getType() == N_IMAGINARY)
 		{
 			ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
+			ImaginaryNumber res = *this / *(curr_token);
+			return new ImaginaryNumber(res);
+		}
+		else if (rhs->getType() == N_RATIONAL)
+		{
+			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
 			ImaginaryNumber res = *this / *(curr_token);
 			return new ImaginaryNumber(res);
 		}
@@ -146,6 +170,12 @@ public:
 		if (rhs->getType() == N_IMAGINARY)
 		{
 			ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
+			ImaginaryNumber res = *this ^ *(curr_token);
+			return new ImaginaryNumber(res);
+		}
+		else if (rhs->getType() == N_RATIONAL)
+		{
+			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
 			ImaginaryNumber res = *this ^ *(curr_token);
 			return new ImaginaryNumber(res);
 		}

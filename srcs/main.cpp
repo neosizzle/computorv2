@@ -18,13 +18,10 @@ int main(int argc, char** argv)
 	test.imaginary_part = RationalNumber(4);
 	test.power = 5;
 
-	ImaginaryNumber test2;
-	test2.real_part = RationalNumber(3);
-	test2.imaginary_part = RationalNumber(4);
-	test2.power = 1;
+	RationalNumber test2 = (69);
 
 	ImaginaryNumber simplified;
-	simplified = test / test;
+	simplified = test2 + test;
 	std::cout << "real part: " << simplified.real_part.toString() << "\n";
 	std::cout << "i part: " << simplified.imaginary_part.toString() << "\n";
 	std::cout << "pow: " << std::to_string(simplified.power) << "\n";
