@@ -1,7 +1,8 @@
 #ifndef __CONSTANTS__H__
 #define __CONSTANTS__H__
-#include "libraries.hpp"
-
+#include <iostream>
+#include <vector>
+#include <map>
 // colors
 #define RESET "\033[0m"
 #define BLACK "\033[30m"			  /* Black */

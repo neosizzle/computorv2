@@ -1,8 +1,7 @@
 #ifndef __PARSETREENODE__H__
 #define __PARSETREENODE__H__
 
-#include "Base.hpp"
-
+class BaseAssignmentType;
 class ParseTreeNode {
 	public :
 		ParseTreeNode *left;

@@ -1,4 +1,5 @@
-#include "main.hpp"
+// #include "main.hpp"
+#include "expand.hpp"
 
 /**
  * @brief Returns true if current token is a variable type token

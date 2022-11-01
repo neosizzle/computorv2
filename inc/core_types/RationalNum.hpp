@@ -1,8 +1,8 @@
 #ifndef __RATIONALNUM__H__
 #define __RATIONALNUM__H__
-
 #include "constants.hpp"
 #include "Base.hpp"
+#include <cmath>
 
 class RationalNumber : public BaseAssignmentType
 {
@@ -15,7 +15,8 @@ public:
 	{
 		return is_float ? std::to_string(float_value) : std::to_string(int_value);
 	}
-
+	
+	// ADD TYPE
 	// operator shell functions
 	BaseAssignmentType * add (BaseAssignmentType *rhs)
 	{
@@ -26,6 +27,12 @@ public:
 			RationalNumber res = *this + *(curr_token);
 			return new RationalNumber(res);
 		}
+		// else if (rhs->getType() == N_IMAGINARY)
+		// {
+		// 	ImaginaryNumber *curr_token = reinterpret_cast<ImaginaryNumber *>(rhs);
+		// 	// ImaginaryNumber res = *this + *(curr_token);
+		// 	return new ImaginaryNumber(*this + *(curr_token));
+		// }
 		return nullptr;
 	}
 
@@ -38,6 +45,12 @@ public:
 			RationalNumber res = *this - *(curr_token);
 			return new RationalNumber(res);
 		}
+		// else if (rhs->getType() == N_IMAGINARY)
+		// {
+		// 	ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
+		// 	ImaginaryNumber res = *this - *(curr_token);
+		// 	return new RationalNumber(res);
+		// }
 		return nullptr;
 	}
 
@@ -50,6 +63,12 @@ public:
 			RationalNumber res = *this * *(curr_token);
 			return new RationalNumber(res);
 		}
+		// else if (rhs->getType() == N_IMAGINARY)
+		// {
+		// 	ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
+		// 	ImaginaryNumber res = *this * *(curr_token);
+		// 	return new RationalNumber(res);
+		// }
 		return nullptr;
 	}
 

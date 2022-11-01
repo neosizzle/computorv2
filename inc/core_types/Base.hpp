@@ -1,6 +1,6 @@
 #ifndef __BASE__H__
 #define __BASE__H__
-#include "libraries.hpp"
+#include <iostream>
 
 class BaseAssignmentType
 {

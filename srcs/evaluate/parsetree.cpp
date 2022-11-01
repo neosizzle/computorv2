@@ -1,4 +1,5 @@
-#include "main.hpp"
+// #include "main.hpp"
+#include "parsetree.hpp"
 
 /**
  * @brief Generates a parse tree using the list of tokens provided
@@ -89,7 +90,8 @@ BaseAssignmentType * do_op(BaseAssignmentType *lhs, BaseAssignmentType *rhs, int
 		res = lhs->mod(rhs);
 	else if (operation == OPERATOR_POW)
 		res = lhs->pow(rhs);
-
+	if (res == nullptr)
+		throw Ft_error("Invalid operation");
 	return res;
 }
 

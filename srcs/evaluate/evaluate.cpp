@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "evaluate.hpp"
 
 /**
  * @brief Evaluates current token list and returns result to be printed

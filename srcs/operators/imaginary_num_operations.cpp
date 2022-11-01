@@ -1,4 +1,5 @@
-#include "main.hpp"
+#include "RationalNum.hpp"
+#include "ImaginaryNum.hpp"
 
 /**
  * @brief Additional operators for rational numbers

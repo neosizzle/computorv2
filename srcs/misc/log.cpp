@@ -1,4 +1,10 @@
-#include "main.hpp"
+#include "constants.hpp"
+#include <map>
+#include <iostream>
+#include "tokens.hpp"
+#include "Base.hpp"
+#include "ft_error.hpp"
+#include "ParseTreeNode.hpp"
 
 const std::map<int, std::string> TYPE_MAP = {
 		{L_PARENTHESIS, "L_PARENTHESIS"},

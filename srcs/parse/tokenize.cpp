@@ -1,4 +1,18 @@
-#include "main.hpp"
+#include <vector>
+#include <iostream>
+#include <cmath>
+#include <algorithm>
+
+#include "tokens.hpp"
+#include "Base.hpp"
+#include "constants.hpp"
+#include "ft_error.hpp"
+#include "RationalNum.hpp"
+#include "ImaginaryNum.hpp"
+#include "QMark.hpp"
+#include "Parenthesis.hpp"
+#include "Operator.hpp"
+#include "Variable.hpp"
 
 /**
  * @brief Creates a list of typed value tokens

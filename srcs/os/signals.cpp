@@ -1,4 +1,6 @@
-#include "libraries.hpp"
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <iostream>
 
 /**
  * @brief Handles sigint

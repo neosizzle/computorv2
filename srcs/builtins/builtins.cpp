@@ -1,4 +1,6 @@
-#include "main.hpp"
+#include <iostream>
+#include <map>
+#include "Base.hpp"
 
 void	handle_builtin(std::string line, std::map<std::string, std::string> history, std::map<std::string, BaseAssignmentType *> variables)
 {

@@ -1,4 +1,10 @@
-#include "main.hpp"
+#include "Variable.hpp"
+#include "Operator.hpp"
+#include "QMark.hpp"
+#include "Parenthesis.hpp"
+#include "RationalNum.hpp"
+#include "ImaginaryNum.hpp"
+#include "ParseTreeNode.hpp"
 
 /**
  * @brief Convertes string to lwoercase 

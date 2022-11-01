@@ -1,4 +1,14 @@
-#include "main.hpp"
+#include "tokens.hpp"
+#include "Base.hpp"
+#include "constants.hpp"
+#include "ft_error.hpp"
+#include "Variable.hpp"
+#include "Parenthesis.hpp"
+#include "RationalNum.hpp"
+#include "ImaginaryNum.hpp"
+#include "Operator.hpp"
+#include "QMark.hpp"
+#include "ParseTreeNode.hpp"
 
 /**
  * @brief Free individual token

@@ -1,7 +1,8 @@
 #ifndef __TOKENS__H__
 #define __TOKENS__H__
-#include "libraries.hpp"
-#include "assignmentTypes.hpp"
+// #include "libraries.hpp"
+// #include "assignmentTypes.hpp"
+#include <iostream>
 
 class TokenBase {
 	public :
