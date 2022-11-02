@@ -11,175 +11,35 @@ public:
 	int int_value;
 	float float_value;
 
-	std::string toString()
-	{
-		return is_float ? std::to_string(float_value) : std::to_string(int_value);
-	}
-	
+	std::string toString();
+
 	// ADD TYPE
 	// operator shell functions
-	BaseAssignmentType * add (BaseAssignmentType *rhs)
-	{
-		// RationalNumber + Rational Bumber
-		if (rhs->getType() == N_RATIONAL)
-		{
-			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
-			RationalNumber res = *this + *(curr_token);
-			return new RationalNumber(res);
-		}
-		// else if (rhs->getType() == N_IMAGINARY)
-		// {
-		// 	ImaginaryNumber *curr_token = reinterpret_cast<ImaginaryNumber *>(rhs);
-		// 	// ImaginaryNumber res = *this + *(curr_token);
-		// 	return new ImaginaryNumber(*this + *(curr_token));
-		// }
-		return nullptr;
-	}
-
-	BaseAssignmentType * sub (BaseAssignmentType *rhs)
-	{
-		// RationalNumber + Rational Bumber
-		if (rhs->getType() == N_RATIONAL)
-		{
-			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
-			RationalNumber res = *this - *(curr_token);
-			return new RationalNumber(res);
-		}
-		// else if (rhs->getType() == N_IMAGINARY)
-		// {
-		// 	ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
-		// 	ImaginaryNumber res = *this - *(curr_token);
-		// 	return new RationalNumber(res);
-		// }
-		return nullptr;
-	}
-
-	BaseAssignmentType * mult (BaseAssignmentType *rhs)
-	{
-		// RationalNumber + Rational Bumber
-		if (rhs->getType() == N_RATIONAL)
-		{
-			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
-			RationalNumber res = *this * *(curr_token);
-			return new RationalNumber(res);
-		}
-		// else if (rhs->getType() == N_IMAGINARY)
-		// {
-		// 	ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
-		// 	ImaginaryNumber res = *this * *(curr_token);
-		// 	return new RationalNumber(res);
-		// }
-		return nullptr;
-	}
-
-	BaseAssignmentType * div (BaseAssignmentType *rhs)
-	{
-		// RationalNumber + Rational Bumber
-		if (rhs->getType() == N_RATIONAL)
-		{
-			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
-			RationalNumber res = *this / *(curr_token);
-			return new RationalNumber(res);
-		}
-		return nullptr;
-	}
-
-	BaseAssignmentType * mod (BaseAssignmentType *rhs)
-	{
-		// RationalNumber + Rational Bumber
-		if (rhs->getType() == N_RATIONAL)
-		{
-			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
-			RationalNumber res = *this % *(curr_token);
-			return new RationalNumber(res);
-		}
-		return nullptr;
-	}
-
-	BaseAssignmentType * pow (BaseAssignmentType *rhs)
-	{
-		// RationalNumber + Rational Bumber
-		if (rhs->getType() == N_RATIONAL)
-		{
-			RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
-			RationalNumber res = *this ^ *(curr_token);
-			return new RationalNumber(res);
-		}
-		return nullptr;
-	}
+	BaseAssignmentType * add (BaseAssignmentType *rhs);
+	BaseAssignmentType * sub (BaseAssignmentType *rhs);
+	BaseAssignmentType * mult (BaseAssignmentType *rhs);
+	BaseAssignmentType * div (BaseAssignmentType *rhs);
+	BaseAssignmentType * mod (BaseAssignmentType *rhs);
+	BaseAssignmentType * pow (BaseAssignmentType *rhs);
 
 	// operators
 	// RationalNumber + RationalNumber
-	RationalNumber operator+(const RationalNumber &rhs)
-	{
-		RationalNumber res;
-
-		res.is_float = this->is_float || rhs.is_float;
-		res.int_value = this->int_value + rhs.int_value;
-		res.float_value = this->float_value + rhs.float_value;
-		return res;
-	}
+	RationalNumber operator+(const RationalNumber &rhs);
 
 	// RationalNumber - RationalNumber
-	RationalNumber operator-(const RationalNumber &rhs)
-	{
-		RationalNumber res;
-
-		res.is_float = this->is_float || rhs.is_float;
-		res.int_value = this->int_value - rhs.int_value;
-		res.float_value = this->float_value - rhs.float_value;
-		return res;
-	}
+	RationalNumber operator-(const RationalNumber &rhs);
 
 	// RationalNumber * RationalNumber
-	RationalNumber operator*(const RationalNumber &rhs)
-	{
-		RationalNumber res;
-
-		res.is_float = this->is_float || rhs.is_float;
-		res.int_value = this->int_value * rhs.int_value;
-		res.float_value = this->float_value * rhs.float_value;
-		return res;
-	}
+	RationalNumber operator*(const RationalNumber &rhs);
 
 	// RationalNumber / RationalNumber
-	RationalNumber operator/(const RationalNumber &rhs)
-	{
-		RationalNumber res;
-		float divResult;
-
-		res.int_value = this->int_value / rhs.int_value;
-		res.float_value = this->float_value / rhs.float_value;
-		if (this->int_value != 0 && rhs.int_value % this->int_value == 0 &&
-		!rhs.is_float && !this->is_float)
-			res.is_float = this->is_float || rhs.is_float;
-		else
-			res.is_float = true;
-
-		return res;
-	}
+	RationalNumber operator/(const RationalNumber &rhs);
 
 	// RationalNumber % RationalNumber
-	RationalNumber operator%(const RationalNumber &rhs)
-	{
-		RationalNumber res;
-
-		res.is_float = this->is_float || rhs.is_float;
-		res.int_value = this->int_value % rhs.int_value;
-		res.float_value = this->int_value;
-		return res;
-	}
+	RationalNumber operator%(const RationalNumber &rhs);
 
 	// RationalNumber ^ RationalNumber
-	RationalNumber operator^(const RationalNumber &rhs)
-	{
-		RationalNumber res;
-
-		res.is_float = this->is_float || rhs.is_float;
-		res.int_value = std::pow(this->int_value, rhs.int_value);
-		res.float_value = powf(this->float_value, rhs.float_value);
-		return res;
-	}
+	RationalNumber operator^(const RationalNumber &rhs);
 
 	// comparison operators
 	bool operator>(RationalNumber rhs) { return this->float_value > rhs.float_value; }
