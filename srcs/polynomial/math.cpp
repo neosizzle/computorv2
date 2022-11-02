@@ -52,14 +52,14 @@ float ft_sqrt(float x, float guess)
 
 	// std::cout << "guess " << guess << "\n";
 	// std::cout << "inverse " << inverse << "\n";
-	// std::cout << "guess - inverse " << ((guess - inverse)*1000000) << "\n";
+	// std::cout << "guess - inverse " << ((guess - inverse)*100000) << "\n";
 	// sleep(2);
 
 	// return 0 if x == 0
 	if (x == 0) return x;
 
 	// return guess if guess and x / guess are equal
-	if (int((guess - inverse)*1000000) == 0)
+	if (int((guess - inverse)*100000) == 0)
 		return guess;
 
 	// take the avg of two and make it the new guess
