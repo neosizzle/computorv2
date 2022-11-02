@@ -1,5 +1,6 @@
 #include "RationalNum.hpp"
 #include "ImaginaryNum.hpp"
+#include "mixed_operators.hpp"
 
 ImaginaryNumber ImaginaryNumber::simplify(ImaginaryNumber num)
 {
@@ -74,6 +75,7 @@ std::string ImaginaryNumber::toString()
 	return res;
 }
 
+// ADD TYPE 
 BaseAssignmentType *ImaginaryNumber::add(BaseAssignmentType *rhs)
 {
 	if (rhs->getType() == N_IMAGINARY)

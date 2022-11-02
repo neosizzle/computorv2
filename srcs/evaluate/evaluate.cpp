@@ -1,5 +1,7 @@
 #include "evaluate.hpp"
-
+void ft_pinfo(std::string res);
+std::string compute_polynomial(std::string arg);
+std::string tokens_to_str(std::vector<BaseAssignmentType *>::iterator begin, std::vector<BaseAssignmentType *>::iterator end);
 /**
  * @brief Evaluates current token list and returns result to be printed
  * 
@@ -11,6 +13,14 @@ std::string evalaute(std::vector<BaseAssignmentType *> &tokens, bool is_compute_
 {
 	ParseTreeNode *head;
 	BaseAssignmentType *result;
+	BaseAssignmentType *result_stack;
+
+	// if variable is within tokens, call to process polynomial
+	if (std::find_if(determine_start_iter(tokens, is_compute_action), tokens.end(), is_var) != tokens.end())
+	{
+		return compute_polynomial(tokens_to_str(determine_start_iter(tokens, is_compute_action), determine_end_iter(tokens, is_compute_action)));
+		// return "shees";
+	}
 
 	// preprocess tokens (populate and pair tokens)
 	token_preprocess(tokens, is_compute_action);
@@ -19,7 +29,17 @@ std::string evalaute(std::vector<BaseAssignmentType *> &tokens, bool is_compute_
 	head = generate_parse_tree(tokens, is_compute_action);
 
 	// evaluate parse tree
-	result = clone_token(evaluate_parse_tree(&head));
+	try
+	{
+		result_stack = evaluate_parse_tree(&head);
+	}
+	catch(Ft_error &e)
+	{
+		free_tree(head);
+		throw Ft_error(e);
+	}
+	result = clone_token(result_stack);
+	
 
 	// result to store or to string return
 	if (!is_compute_action)

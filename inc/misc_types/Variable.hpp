@@ -25,12 +25,14 @@ public:
 	Variable(Variable &other)
 	{
 		this->name = other.name;
+		this->type = VAR;
 	}
 
 	// operator overloads
 	Variable &operator=(const Variable &other)
 	{
 		this->name = other.name;
+		this->type = VAR;
 		return *this;
 	}
 };

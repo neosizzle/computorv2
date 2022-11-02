@@ -19,6 +19,7 @@ bool is_leaf_node(ParseTreeNode * node);
 
 // logging
 void	print_parsed_tokens_no_format(std::vector<BaseAssignmentType *> tokens);
+void	print_parsed_tokens(std::vector<BaseAssignmentType *> tokens);
 
 // free
 void	free_tree(ParseTreeNode * curr);

@@ -1,5 +1,6 @@
 // #include "main.hpp"
 #include "expand.hpp"
+std::string tokens_to_str(std::vector<BaseAssignmentType *>::iterator begin, std::vector<BaseAssignmentType *>::iterator end);
 
 /**
  * @brief Returns true if current token is a variable type token
@@ -85,13 +86,22 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 	}
 	
 	// find any leftover variables
-	std::vector<BaseAssignmentType *> leftover_vars(std::count_if(tokens_iter_init, tokens.end(), is_var));
-	std::copy_if(tokens_iter_init, tokens.end(), leftover_vars.begin() ,is_var);
+	std::vector<std::string> leftover_vars;
+	for (; tokens_iter_init != tokens.end(); ++tokens_iter_init)
+	{
+		if (is_var(*tokens_iter_init))
+			leftover_vars.push_back((*tokens_iter_init)->toString());
+	}
+	
+	// std::copy_if(tokens_iter_init, tokens.end(), leftover_vars.begin() ,is_var);
+
+	// erase dupes
+	leftover_vars.erase(std::unique(leftover_vars.begin(), leftover_vars.end()), leftover_vars.end());
 
 	// if its a compute action, only one leftoever varaible is allowed
 	if (is_compute_action)
 	{
-		if (leftover_vars.size() > 1) throw Ft_error(std::string("Token not found: ") + leftover_vars.back()->toString());
+		if (leftover_vars.size() > 1) throw Ft_error(std::string("Token not found (compute): ") + leftover_vars.back());
 	}
 
 	// if its a function assignment, all leftoever variables must be he function variable 
@@ -100,5 +110,5 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 		// all leftoever variables must be the function variable 
 	}
 	else if (leftover_vars.size() > 0)
-		throw Ft_error(std::string("Token not found: ") + leftover_vars.back()->toString());
+		throw Ft_error(std::string("Token not found (assign): ") + leftover_vars.back());
 }

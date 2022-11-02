@@ -27,6 +27,11 @@ class Ft_error {
 			this->code = FT_ERR_MISC;
 		}
 
+		Ft_error(const Ft_error &e)
+		{
+			this->code = e.code;
+			this->message = e.message;
+		}
 
 		// operator overloads
 		friend std::ostream &operator<<(std::ostream &output, const Ft_error &err)

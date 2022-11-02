@@ -13,7 +13,6 @@ public:
 
 	std::string toString();
 
-	// ADD TYPE
 	// operator shell functions
 	BaseAssignmentType * add (BaseAssignmentType *rhs);
 	BaseAssignmentType * sub (BaseAssignmentType *rhs);

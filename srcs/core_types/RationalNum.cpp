@@ -7,10 +7,9 @@ std::string RationalNumber::toString()
 	return this->is_float ? std::to_string(float_value) : std::to_string(int_value);
 }
 
+// ADD TYPE
 BaseAssignmentType *RationalNumber::add(BaseAssignmentType *rhs)
 {
-	std::cout << "add hit\n";
-	std::cout << "rhs->getType() " << std::to_string(rhs->getType()) << "\n";
 	// RationalNumber + Rational Bumber
 	if (rhs->getType() == N_RATIONAL)
 	{
@@ -20,7 +19,6 @@ BaseAssignmentType *RationalNumber::add(BaseAssignmentType *rhs)
 	}
 	else if (rhs->getType() == N_IMAGINARY)
 	{
-		std::cout << "aasadasd\n";
 		ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
 		ImaginaryNumber res = (*this) + *(curr_token);
 		return new ImaginaryNumber(res);
@@ -37,12 +35,12 @@ BaseAssignmentType * RationalNumber::sub (BaseAssignmentType *rhs)
 		RationalNumber res = *this - *(curr_token);
 		return new RationalNumber(res);
 	}
-	// else if (rhs->getType() == N_IMAGINARY)
-	// {
-	// 	ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
-	// 	ImaginaryNumber res = *this - *(curr_token);
-	// 	return new RationalNumber(res);
-	// }
+	else if (rhs->getType() == N_IMAGINARY)
+	{
+		ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
+		ImaginaryNumber res = *this - *(curr_token);
+		return new ImaginaryNumber(res);
+	}
 	return nullptr;
 }
 
@@ -55,12 +53,12 @@ BaseAssignmentType * RationalNumber::mult (BaseAssignmentType *rhs)
 		RationalNumber res = *this * *(curr_token);
 		return new RationalNumber(res);
 	}
-	// else if (rhs->getType() == N_IMAGINARY)
-	// {
-	// 	ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
-	// 	ImaginaryNumber res = *this * *(curr_token);
-	// 	return new RationalNumber(res);
-	// }
+	else if (rhs->getType() == N_IMAGINARY)
+	{
+		ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
+		ImaginaryNumber res = *this * *(curr_token);
+		return new ImaginaryNumber(res);
+	}
 	return nullptr;
 }
 
@@ -73,7 +71,13 @@ BaseAssignmentType * RationalNumber::div (BaseAssignmentType *rhs)
 		RationalNumber res = *this / *(curr_token);
 		return new RationalNumber(res);
 	}
-	return nullptr;
+	else if (rhs->getType() == N_IMAGINARY)
+	{
+		ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
+		ImaginaryNumber res = *this / *(curr_token);
+		return new ImaginaryNumber(res);
+	}return nullptr;
+
 }
 
 BaseAssignmentType * RationalNumber::mod (BaseAssignmentType *rhs)

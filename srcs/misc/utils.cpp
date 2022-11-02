@@ -43,6 +43,24 @@ std::string var_to_str(std::map<std::string, BaseAssignmentType *>::iterator ite
 }
 
 /**
+ * @brief calls tostring on all tokens and returns result
+ * 
+ */
+std::string tokens_to_str(std::vector<BaseAssignmentType *>::iterator begin, std::vector<BaseAssignmentType *>::iterator end)
+{
+	std::string res;
+	
+	while (begin != end)
+	{
+		// std::cout << (*begin)->toString();
+		res.append((*begin)->toString());
+		++begin;
+	}
+	
+	return res;
+}
+
+/**
  * @brief Allocates memory and clones token
  * 
  * @param token 
@@ -172,6 +190,17 @@ std::vector<BaseAssignmentType *>::iterator determine_end_iter (std::vector<Base
  */
 bool is_leaf_node(ParseTreeNode * node)
 {
-
 	return node == nullptr || (node->left == nullptr && node->right == nullptr);
+}
+
+/**
+ * @brief Determines if current token is type var
+ * 
+ * @param node 
+ * @return true 
+ * @return false 
+ */
+bool is_var(BaseAssignmentType * node)
+{
+	return node != nullptr && node->getType() == VAR;
 }
