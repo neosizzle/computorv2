@@ -84,8 +84,8 @@ std::vector<TokenBase> tokenize(std::string line)
 		if (CURR_CHAR == '*' && *(line_iter + 1) == '*')
 		{
 			tokens.push_back({
-				type : OPERATOR_MAT_MULT,
-				string : "**"
+				.type = OPERATOR_MAT_MULT,
+				.string = "**"
 			});
 			line_iter += 2;
 			continue;
@@ -109,8 +109,8 @@ std::vector<TokenBase> tokenize(std::string line)
 			}
 			const std::string mat_str = std::string(line_iter, mat_iter);
 			tokens.push_back({
-				type : N_MATRIX,
-				string : mat_str
+				.type = N_MATRIX,
+				.string = mat_str
 			});
 			line_iter += mat_str.size();
 			continue;
@@ -125,8 +125,8 @@ std::vector<TokenBase> tokenize(std::string line)
 		if (found_key_iter != LEX_TOKENS_MAP.end())
 		{
 			tokens.push_back({
-				type : found_key_iter->second,
-				string : std::string(1, CURR_CHAR)
+				.type = found_key_iter->second,
+				.string = std::string(1, CURR_CHAR)
 			});
 			++line_iter;
 			continue;
@@ -159,8 +159,8 @@ std::vector<TokenBase> tokenize(std::string line)
 
 			const std::string num_str = std::string(line_iter, num_iter);
 			tokens.push_back({
-				type : is_imaginery ? N_IMAGINARY : N_RATIONAL,
-				string : num_str
+				.type = is_imaginery ? N_IMAGINARY : N_RATIONAL,
+				.string = num_str
 			});
 			line_iter += num_str.size();
 			continue;
@@ -196,8 +196,8 @@ std::vector<TokenBase> tokenize(std::string line)
 			std::for_each(var_str.begin(), var_str.end(), [](char &c)
 						  { c = ::tolower(c); });
 			tokens.push_back({
-				type : is_func ? FUNC : VAR,
-				string : var_str
+				.type = is_func ? FUNC : VAR,
+				.string = var_str
 			});
 			line_iter += var_str.size();
 			continue;
@@ -215,17 +215,17 @@ std::vector<TokenBase> tokenize(std::string line)
 		{
 			// variable add *
 			if (i != tokens.begin() && token.type == VAR && std::find(operator_types.begin(), operator_types.end(), (*(i - 1)).type) == operator_types.end())
-				i = tokens.insert(i, {type : OPERATOR_MULT, string : "*"});
+				i = tokens.insert(i, {.type = OPERATOR_MULT, .string = "*"});
 			else if (i + 1 != tokens.end() && token.type == VAR && std::find(operator_types.begin(), operator_types.end(), (*(i + 1)).type) == operator_types.end())
-				i = tokens.insert(i + 1, {type : OPERATOR_MULT, string : "*"});
+				i = tokens.insert(i + 1, {.type = OPERATOR_MULT, .string = "*"});
 
 			// left parenthesis add *
 			if (i != tokens.begin() && token.type == L_PARENTHESIS && std::find(operator_types.begin(), operator_types.end(), (*(i - 1)).type) == operator_types.end())
-				i = tokens.insert(i, {type : OPERATOR_MULT, string : "*"});
+				i = tokens.insert(i, {.type = OPERATOR_MULT, .string = "*"});
 
 			// right parenthesis add *
 			if (i + 1 != tokens.end() && token.type == R_PARENTHESIS && std::find(operator_types.begin(), operator_types.end(), (*(i + 1)).type) == operator_types.end())
-				i = tokens.insert(i + 1, {type : OPERATOR_MULT, string : "*"});
+				i = tokens.insert(i + 1, {.type = OPERATOR_MULT, .string = "*"});
 		}
 	}
 

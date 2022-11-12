@@ -1,10 +1,11 @@
 NAME = computor
-CPP = c++ -fsanitize=address -g3
+CPP = c++ -std=c++11 -fsanitize=address -g3
 INCS_ROOT = inc
 INCS_CORE = inc/core_types
 INCS_MISC = inc/misc_types
 INCS_OPS = inc/mixed_operators
-CPP_FLAGS = -I${INCS_ROOT} -I${INCS_CORE} -I${INCS_MISC} -I${INCS_OPS} -lreadline
+INCS_READLINE = /usr/local/opt/readline/include
+CPP_FLAGS = -I${INCS_ROOT} -I${INCS_CORE} -I${INCS_MISC} -I${INCS_OPS} -I${INCS_READLINE} -lreadline -L/usr/local/opt/readline/lib 
 SRCS = srcs/*.cpp srcs/parse/*.cpp srcs/os/*.cpp srcs/evaluate/*.cpp srcs/misc/*.cpp srcs/builtins/*.cpp srcs/mixed_operators/*.cpp srcs/core_types/*.cpp srcs/polynomial/*.cpp
 
 # Style constants
@@ -24,7 +25,7 @@ bonus : ${NAME}
 
 ${NAME}:
 	@echo "${GREEN}📇  Compiling All sources..${NC}"
-	@${CPP} ${SRCS} ${CPP_FLAGS} -o ${NAME}
+	${CPP} ${SRCS} ${CPP_FLAGS} -o ${NAME}
 
 clean : 
 	@echo "${YELLOW}🗑️  Removing Objects..${NC}"

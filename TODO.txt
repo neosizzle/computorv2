@@ -1,1 +1,3 @@
-refactor .h files into seprate .cpp files to sovle circular dependency
+Make functs work
+
+Complete validation

@@ -112,6 +112,20 @@ BaseAssignmentType *clone_token(BaseAssignmentType * token)
 	return nullptr;
 }
 
+std::vector<BaseAssignmentType *> clone_tokens(std::vector<BaseAssignmentType *> tokens)
+{
+	std::vector<BaseAssignmentType *> res;
+	BaseAssignmentType *temp;
+	int	i;
+
+	i = -1;
+	while(++i < tokens.size()){
+		temp = clone_token(tokens[i]);
+		res.push_back(temp);
+	}
+	return res;
+}
+
 /**
  * @brief Returns true if token is an operator
  * 
