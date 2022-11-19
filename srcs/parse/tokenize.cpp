@@ -13,7 +13,10 @@
 #include "Parenthesis.hpp"
 #include "Operator.hpp"
 #include "Variable.hpp"
+#include "ft_error.hpp"
+#include "Function.hpp"
 
+// ADD TYPE
 /**
  * @brief Creates a list of typed value tokens
  * 
@@ -26,32 +29,35 @@ std::vector<BaseAssignmentType *> parse_tokens(std::vector<TokenBase> tokens)
 
 	for (std::vector<TokenBase>::iterator iter = tokens.begin(); iter != tokens.end(); ++iter)
 	{
-		const TokenBase currr_token_base = *iter;
+		const TokenBase curr_token_base = *iter;
 
 		// create new rational number type
-		if (currr_token_base.type == N_RATIONAL)
+		if (curr_token_base.type == N_RATIONAL)
 		{
-		parsed_tokens.push_back(currr_token_base.string.find('.') != std::string::npos ? new RationalNumber((float)atof(currr_token_base.string.c_str()))
-			: new RationalNumber(atoi(currr_token_base.string.c_str())));
+		parsed_tokens.push_back(curr_token_base.string.find('.') != std::string::npos ? new RationalNumber((float)atof(curr_token_base.string.c_str()))
+			: new RationalNumber(atoi(curr_token_base.string.c_str())));
 		}
 		// craete new imaginery number type
-		else if (currr_token_base.type == N_IMAGINARY)
+		else if (curr_token_base.type == N_IMAGINARY)
 		{
-		parsed_tokens.push_back(currr_token_base.string.find('.') != std::string::npos ? new ImaginaryNumber((float)atof(currr_token_base.string.c_str()))
-			: new ImaginaryNumber(atoi(currr_token_base.string.c_str())));
+		parsed_tokens.push_back(curr_token_base.string.find('.') != std::string::npos ? new ImaginaryNumber((float)atof(curr_token_base.string.c_str()))
+			: new ImaginaryNumber(atoi(curr_token_base.string.c_str())));
 		}
 		// create new operator type
-		else if (OPERATORS_MAP.find(currr_token_base.string) != OPERATORS_MAP.end())
-			parsed_tokens.push_back(new Operator(currr_token_base.string));
+		else if (OPERATORS_MAP.find(curr_token_base.string) != OPERATORS_MAP.end())
+			parsed_tokens.push_back(new Operator(curr_token_base.string));
 		// create new variable type
-		else if (currr_token_base.type == VAR)
-			parsed_tokens.push_back(new Variable(currr_token_base.string));
+		else if (curr_token_base.type == VAR)
+			parsed_tokens.push_back(new Variable(curr_token_base.string));
 		// create parentheses type
-		else if (currr_token_base.type == L_PARENTHESIS || currr_token_base.type == R_PARENTHESIS)
-			parsed_tokens.push_back(new Parenthesis(currr_token_base.string));
+		else if (curr_token_base.type == L_PARENTHESIS || curr_token_base.type == R_PARENTHESIS)
+			parsed_tokens.push_back(new Parenthesis(curr_token_base.string));
 		// create qmark type
-		else if (currr_token_base.type == Q_MARK)
+		else if (curr_token_base.type == Q_MARK)
 			parsed_tokens.push_back(new QMark());
+		// create function type
+		else if (curr_token_base.type == FUNC)
+			parsed_tokens.push_back(new Function(curr_token_base.string));
 		// others
 		else
 		{
@@ -115,8 +121,6 @@ std::vector<TokenBase> tokenize(std::string line)
 			line_iter += mat_str.size();
 			continue;
 		}
-
-		// check for imaginary symbol
 
 		// check for lex tokens
 		std::map<std::string, int>::const_iterator found_key_iter =
@@ -202,7 +206,7 @@ std::vector<TokenBase> tokenize(std::string line)
 			line_iter += var_str.size();
 			continue;
 		}
-		std::cout << "it didnt hit anything\n";
+		throw Ft_error("tokenize: Invalid token");
 		line_iter++;
 	}
 

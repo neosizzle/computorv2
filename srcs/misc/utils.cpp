@@ -5,6 +5,66 @@
 #include "RationalNum.hpp"
 #include "ImaginaryNum.hpp"
 #include "ParseTreeNode.hpp"
+#include "constants.hpp"
+
+/**
+ * @brief Given a string and a list of strings to search for, find the
+ * long string for each strings provided
+ * 
+ * @param string 
+ * @param delims 
+ * @return std::size_t position of found string if any
+ */
+std::size_t find_delims_in_str(std::string string, std::vector<std::string> delims, int &found_delim_pos)
+{
+	int	i;
+	std::size_t res;
+
+	i = -1;
+	res = std::string::npos;
+	while (++i < delims.size())
+	{
+		res = string.find(delims[i]);
+		if (res != std::string::npos)
+		{
+			found_delim_pos = i;
+			return res;
+		}
+	}
+	return res;
+}
+
+/**
+ * @brief splits a long str into an array of smaller strings with deli mas the 
+ * deliminitor
+ * 
+ * @param str 
+ * @param delim 
+ * @return std::vector<std::string> 
+ */
+std::vector<std::string> ft_split(std::string str, std::vector<std::string> delims)
+{
+	std::size_t currpos;
+	std::string token;
+	std::vector<std::string> res;
+	int	found_delim_pos;
+
+	currpos = 0;
+	found_delim_pos = -1;
+	// run as long as we have delims in our string
+	while ((currpos = find_delims_in_str(str, delims, found_delim_pos)) != std::string::npos)
+	{
+		// extract token
+		token = str.substr(0, currpos);	
+
+		// add to arr
+		res.push_back(token);
+
+		// trim out the added token along with its delim
+		str.erase(0, currpos + delims[found_delim_pos].length());
+	}
+	return res;
+}
 
 /**
  * @brief Convertes string to lwoercase 
@@ -217,4 +277,30 @@ bool is_leaf_node(ParseTreeNode * node)
 bool is_var(BaseAssignmentType * node)
 {
 	return node != nullptr && node->getType() == VAR;
+}
+
+/**
+ * @brief Derive token type from string
+ * 
+ * @param str 
+ * @return int 
+ */
+int derive_token_type(std::string str)
+{
+	// check imaginary numbers
+	if (str.find('i') != std::string::npos)
+		return N_IMAGINARY;
+
+	// check matrix
+	if (str.find('[') != std::string::npos)
+		return N_MATRIX;
+	
+	// check qmark
+	if (str == "?")
+		return Q_MARK;
+	
+	// check operators TODO
+
+	// return rational number
+	return N_RATIONAL;
 }

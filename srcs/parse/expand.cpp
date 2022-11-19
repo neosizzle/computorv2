@@ -93,8 +93,6 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 			leftover_vars.push_back((*tokens_iter_init)->toString());
 	}
 	
-	// std::copy_if(tokens_iter_init, tokens.end(), leftover_vars.begin() ,is_var);
-
 	// erase dupes
 	leftover_vars.erase(std::unique(leftover_vars.begin(), leftover_vars.end()), leftover_vars.end());
 

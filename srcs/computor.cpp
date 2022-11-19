@@ -1,5 +1,7 @@
 #include "computor.hpp"
 
+void print_parsed_tokens_no_format(std::vector<BaseAssignmentType *> tokens);
+
 void computor()
 {
 	// history (command, result)
@@ -40,7 +42,17 @@ void computor()
 			// tokenize string parse tokens
 			std::vector<BaseAssignmentType *> tokens;
 
-			tokens = parse_tokens(tokenize(line));
+			try
+			{tokens = parse_tokens(tokenize(line));}
+			catch(const Ft_error &e)
+			{
+				free_tokens(tokens);
+				ft_perror(e);
+				add_history(rl_buff);
+				free(rl_buff);
+				continue ;
+			}
+			
 
 			// determine if last token is qmark
 			if(tokens.size() > 1 && tokens.back()->getType() == Q_MARK )
@@ -54,6 +66,8 @@ void computor()
 				// validate tokens
 				validate_tokens(tokens, is_compute_action);
 
+				std::cout << "before eval: ";
+				print_parsed_tokens_no_format(tokens);
 				// evaluate and print result
 				res_str = evalaute(tokens, is_compute_action, variables);
 				std::cout << res_str << "\n";

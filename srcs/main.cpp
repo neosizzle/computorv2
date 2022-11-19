@@ -41,7 +41,7 @@ int main(int argc, char** argv)
 	tokens.push_back(plus);
 	tokens.push_back(x);
 	
-	Function func(tokens, x);
+	Function func(tokens, x, "func");
 	func.set_object(two);
 	test_func(func);
 	free_token(two);

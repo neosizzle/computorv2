@@ -8,6 +8,13 @@ class Function : public BaseAssignmentType
     private:
         std::vector<BaseAssignmentType *> tokens;
         BaseAssignmentType *object;
+        std::string name;
+
+        // extract func name from string
+        std::string _extract_name(std::string str);
+
+        // extract Object BaseAss type from string
+        BaseAssignmentType *_extract_object(std::string str);
 
     public:
         std::string toString();
@@ -26,11 +33,15 @@ class Function : public BaseAssignmentType
         BaseAssignmentType *get_object();
         void set_object(BaseAssignmentType *new_object);
 
+        std::string get_name();
+        void set_name(std::string new_name);
+
         BaseAssignmentType *evaluate_image();
 
         ~Function();
-        Function(std::vector<BaseAssignmentType *> tokens);
-        Function(std::vector<BaseAssignmentType *> tokens, BaseAssignmentType *object);
+        Function(std::vector<BaseAssignmentType *> tokens, std::string name);
+        Function(std::vector<BaseAssignmentType *> tokens, BaseAssignmentType *object, std::string name);
+        Function(std::string str);
         Function(const Function &other);
 
         Function &operator=(const Function &other);
