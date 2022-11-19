@@ -1,7 +1,5 @@
 #include "evaluate.hpp"
-void ft_pinfo(std::string res);
-std::string compute_polynomial(std::string arg);
-std::string tokens_to_str(std::vector<BaseAssignmentType *>::iterator begin, std::vector<BaseAssignmentType *>::iterator end);
+
 /**
  * @brief Evaluates current token list and returns result to be printed
  * 

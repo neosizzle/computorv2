@@ -22,7 +22,6 @@ ParseTreeNode *generate_parse_tree(std::vector<BaseAssignmentType *> tokens, boo
 	head = new ParseTreeNode();
 	curr = head;
 
-	print_parsed_tokens_no_format(tokens);
 	// loop through all tokens
 	while (start_iter < end_iter)
 	{
@@ -162,9 +161,7 @@ void	evaluate_parse_tree_helper(ParseTreeNode **curr)
 		if (res_token == nullptr) throw Ft_error("Operation not valid");
 
 		//reaplce node
-		// ft_pinfo((*curr)->parent->left->toString());
 		replace_node(curr, res_token);
-		// ft_pinfo((*curr)->parent->left->toString());
 	}
 
 	// return 

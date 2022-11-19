@@ -2,17 +2,24 @@
 #include "constants.hpp"
 #include "ParseTreeNode.hpp"
 #include "QMark.hpp"
+#include "Parenthesis.hpp"
+#include "ft_error.hpp"
+#include <algorithm>
 
 std::string tokens_to_str(std::vector<BaseAssignmentType *>::iterator begin, std::vector<BaseAssignmentType *>::iterator end);
 std::vector<BaseAssignmentType *> clone_tokens(std::vector<BaseAssignmentType *> tokens);
 void	free_tokens(std::vector<BaseAssignmentType *> tokens);
 void free_token(BaseAssignmentType * token);
+void	free_tree(ParseTreeNode * curr);
 BaseAssignmentType *clone_token(BaseAssignmentType * token);
 void	token_preprocess(std::vector<BaseAssignmentType *> &tokens, bool is_compute_action);
 ParseTreeNode *generate_parse_tree(std::vector<BaseAssignmentType *> tokens, bool is_compute_action);
 BaseAssignmentType *evaluate_parse_tree(ParseTreeNode **head);
 ParseTreeNode *generate_parse_tree(std::vector<BaseAssignmentType *> tokens, bool is_compute_action);
 BaseAssignmentType *evaluate_parse_tree(ParseTreeNode **head);
+void	ft_perror(Ft_error e);
+
+void print_parsed_tokens_no_format(std::vector<BaseAssignmentType *> tokens);
 
 std::string Function::toString()
 {
@@ -44,13 +51,15 @@ BaseAssignmentType * Function::get_object()
 
 void    Function::set_object(BaseAssignmentType *object)
 {
-    free_token(this->object);
+    if (this->object != nullptr)
+        free_token(this->object);
     this->object = clone_token(object);
 }
 
 BaseAssignmentType * Function::evaluate_image()
 {
     std::vector<BaseAssignmentType *> tokens_cloned;
+    std::vector<BaseAssignmentType *>::iterator tokens_iter;
     BaseAssignmentType *res;
     ParseTreeNode *root;
 
@@ -64,21 +73,52 @@ BaseAssignmentType * Function::evaluate_image()
     // add qmark to cloned tokens to simulate compute action
     tokens_cloned.push_back(new QMark());
 
-    // preprocess tokens 
-    token_preprocess(tokens_cloned, 1);
+    // replace all variables with object
+    tokens_iter = tokens_cloned.begin();
+    for (;tokens_iter != tokens_cloned.end();++tokens_iter)
+    {
+        BaseAssignmentType * curr_token = *tokens_iter;
 
-    // generate parse tree
-    root = generate_parse_tree(tokens_cloned, 1);
+        // if curr token is a variable
+        if (curr_token->getType() == VAR)
+        {
+            // clone new token
+            BaseAssignmentType *new_token = clone_token(this->object);
 
-    // evaulate parse tree
-    res = evaluate_parse_tree(&root);
+            // replace var with cloned token
+            std::replace(tokens_cloned.begin(), tokens_cloned.end(), curr_token, new_token);
 
-    // free
-    free_tokens(tokens_cloned);
+            // free old token and break loop
+            free_token(curr_token);
 
-    // return result
-    return root->value;
-    
+            break ;
+        }   
+    }
+
+
+    try
+    {
+        // preprocess tokens 
+        token_preprocess(tokens_cloned, 1);
+
+        // generate parse tree
+        root = generate_parse_tree(tokens_cloned, 1);
+
+        // evaulate parse tree
+        res = clone_token(evaluate_parse_tree(&root));
+
+        // free
+        free_tree(root);
+        free_tokens(tokens_cloned);
+
+        // return result
+        return res;
+    }
+    catch(Ft_error &e)
+    {
+        ft_perror(e.getMessage());
+        return nullptr;
+    }
 }
 
 
@@ -90,19 +130,19 @@ Function::~Function() {
 Function::Function(std::vector<BaseAssignmentType *> tokens)
 {
     this->set_tokens(tokens);
-    this->set_object(nullptr);
+    this->object = nullptr;
 }
 
 Function::Function(std::vector<BaseAssignmentType *> tokens, BaseAssignmentType *object)
 {
     this->set_tokens(tokens);
-    this->set_object(object);
+    this->object = clone_token(object);
 }
 
 Function::Function(const Function &other)
 {
     this->set_tokens(other.tokens);
-    this->set_object(other.object);
+    this->object = clone_token(other.object);
 }
 
 Function &Function::operator=(const Function &other)
