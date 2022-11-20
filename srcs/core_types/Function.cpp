@@ -6,6 +6,7 @@
 #include "ft_error.hpp"
 #include "RationalNum.hpp"
 #include "ImaginaryNum.hpp"
+#include "Variable.hpp"
 #include <algorithm>
 
 std::string tokens_to_str(std::vector<BaseAssignmentType *>::iterator begin, std::vector<BaseAssignmentType *>::iterator end);
@@ -72,7 +73,7 @@ BaseAssignmentType * Function::_extract_object(std::string str)
     // find the position of '(' and ')'
     pos_lb = str.find("(");
     pos_rb = str.find(")");
-    token_str = str.substr(pos_lb + 1, pos_rb - 2);
+    token_str = str.substr(pos_lb + 1, pos_rb - pos_lb - 1);
 
     // derive the type of token
     type = derive_token_type(token_str);
@@ -102,13 +103,27 @@ BaseAssignmentType * Function::_extract_object(std::string str)
         }
         return res_im;
     }
+    if (type == VAR)
+        return new Variable(token_str);
     return nullptr;
 }
     
 
 std::vector<BaseAssignmentType *> Function::get_tokens()
 {
-    return this->tokens;
+    std::vector<BaseAssignmentType *> res;
+
+    // clone tokens and replace var with object token if needed
+    for (size_t i = 0; i < this->tokens.size(); i++)
+    {
+        if (this->object->getType() == VAR && this->tokens[i]->getType() == VAR)
+            res.push_back(clone_token(this->object));
+        else
+            res.push_back(clone_token(this->tokens[i]));
+        
+    }
+    
+    return res;
 }
 
 void Function::set_tokens(std::vector<BaseAssignmentType *>tokens)
@@ -234,9 +249,11 @@ Function::Function(std::string str)
 
     // extract name
     name = this->_extract_name(str);
+    this->name = name;
 
     // extract object
     object = this->_extract_object(str);
+    this->object = object;
 
     this->type = FUNC;
 }

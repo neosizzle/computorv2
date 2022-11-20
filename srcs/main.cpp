@@ -9,15 +9,18 @@
 #include "Base.hpp"
 
 void	free_token(BaseAssignmentType * tokens);
+void	free_tokens(std::vector<BaseAssignmentType *> tokens);
+void print_parsed_tokens_no_format(std::vector<BaseAssignmentType *> tokens);
 
 void	test_func(Function func)
 {
-	// std::cout << func.toString() << "\n";
-	BaseAssignmentType *ans;
+	std::vector<BaseAssignmentType *> tokens;
 
-	ans = func.evaluate_image();
-	std::cout << ans->toString() << "\n";
-	free_token(ans);
+	tokens = func.get_tokens();
+
+	std::cout << "get_tokens - ";
+	print_parsed_tokens_no_format(tokens);
+	free_tokens(tokens);
 }
 
 int main(int argc, char** argv)
@@ -41,8 +44,9 @@ int main(int argc, char** argv)
 	tokens.push_back(plus);
 	tokens.push_back(x);
 	
-	Function func(tokens, x, "func");
-	func.set_object(two);
+	Function func("func(ggwp)");
+	func.set_tokens(tokens);
+	// func.set_object(two);
 	test_func(func);
 	free_token(two);
 	free_token(plus);

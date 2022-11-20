@@ -298,9 +298,22 @@ int derive_token_type(std::string str)
 	// check qmark
 	if (str == "?")
 		return Q_MARK;
+
+	// check if string has num only
+	int num_only = 0;
+	for (size_t i = 0; i < str.size(); i++)
+	{
+		if (str[i] > '9' && str[i] < '0')
+		{
+			++num_only;
+			break;
+		}
+	}
+	if (num_only) return N_RATIONAL;
+
 	
 	// check operators TODO
 
-	// return rational number
-	return N_RATIONAL;
+	// return var
+	return VAR;
 }

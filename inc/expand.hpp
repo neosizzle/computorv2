@@ -8,6 +8,7 @@
 #include "constants.hpp"
 #include "ft_error.hpp"
 #include "Variable.hpp"
+#include "Function.hpp"
 
 // utils
 std::string ft_tolower(std::string str);

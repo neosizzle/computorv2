@@ -9,6 +9,7 @@
 #include "Operator.hpp"
 #include "QMark.hpp"
 #include "ParseTreeNode.hpp"
+#include "Function.hpp"
 
 /**
  * @brief Free individual token
@@ -49,6 +50,11 @@ void free_token(BaseAssignmentType * token)
 	else if (type == N_IMAGINARY)
 	{
 		ImaginaryNumber *var = dynamic_cast<ImaginaryNumber *>(token);
+		delete var;
+	}
+	else if (type == FUNC)
+	{
+		Function * = dynamic_cast<Function *>(token);
 		delete var;
 	}
 }

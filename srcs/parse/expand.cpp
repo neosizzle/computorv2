@@ -82,10 +82,35 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 			}
 		}
 
-		// if curr token is a function type ?
+		// if curr token is a function type 
+		if (curr_token->getType() == FUNC)
+		{
+			// record offset
+
+			Function * func_token = dynamic_cast<Function *>(curr_token);
+			// search for function token in variables
+
+			// if function cant be found, continue 
+
+			// clone and replace function object
+
+			// if function object is var
+			if (func_token->get_object()->getType() == VAR)
+			{
+				// reaplce token with function tokens
+			}
+			// function object is not var
+			else
+			{
+				// reaplce token with calculated image
+			}
+			
+			// restore offset
+		}
+
 	}
 	
-	// find any leftover variables
+	// find any leftover variables and functions
 	std::vector<std::string> leftover_vars;
 	for (; tokens_iter_init != tokens.end(); ++tokens_iter_init)
 	{
