@@ -6,6 +6,7 @@
 #include "ImaginaryNum.hpp"
 #include "ParseTreeNode.hpp"
 #include "constants.hpp"
+#include "Function.hpp"
 
 /**
  * @brief Given a string and a list of strings to search for, find the
@@ -169,6 +170,12 @@ BaseAssignmentType *clone_token(BaseAssignmentType * token)
 		res = new ImaginaryNumber(*var);
 		return res;
 	}
+	else if (type == FUNC)
+	{
+		Function *var = dynamic_cast<Function *>(token);
+		res = new Function(*var);
+		return res;
+	}
 	return nullptr;
 }
 
@@ -300,12 +307,12 @@ int derive_token_type(std::string str)
 		return Q_MARK;
 
 	// check if string has num only
-	int num_only = 0;
+	int num_only = 1;
 	for (size_t i = 0; i < str.size(); i++)
 	{
-		if (str[i] > '9' && str[i] < '0')
+		if (str[i] > '9' || str[i] < '0')
 		{
-			++num_only;
+			--num_only;
 			break;
 		}
 	}

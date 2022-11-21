@@ -10,6 +10,7 @@
 #include "tokens.hpp"
 #include "ParseTreeNode.hpp"
 #include "ft_error.hpp"
+#include "Function.hpp"
 
 // eval
 void	token_preprocess(std::vector<BaseAssignmentType *> &tokens, bool is_compute_action);

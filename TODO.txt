@@ -1,2 +1,9 @@
 figure out how to parse functions
 Complete validation
+fix crash when entering single var to prompt
+fix crash when entering no input
+fix crash when invalid function syntax
+
+
+HIGH
+fix leaks function

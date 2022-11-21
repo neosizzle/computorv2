@@ -54,7 +54,7 @@ void free_token(BaseAssignmentType * token)
 	}
 	else if (type == FUNC)
 	{
-		Function * = dynamic_cast<Function *>(token);
+		Function * var = dynamic_cast<Function *>(token);
 		delete var;
 	}
 }

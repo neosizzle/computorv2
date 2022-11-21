@@ -5,7 +5,6 @@ std::string compute_polynomial(std::string arg)
 {
 	std::vector<Term> terms;
 
-	std::cout << "arg "<< arg << "\n";
 	// trim all whitespaces from input
 	arg.erase(std::remove_if(arg.begin(), arg.end(), isspace), arg.end());
 

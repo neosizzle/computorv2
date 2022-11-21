@@ -1,6 +1,7 @@
 #include "main.hpp"
 #include <csignal>
 #include <iostream>
+
 #include "Function.hpp"
 #include "RationalNum.hpp"
 #include "constants.hpp"
@@ -14,13 +15,7 @@ void print_parsed_tokens_no_format(std::vector<BaseAssignmentType *> tokens);
 
 void	test_func(Function func)
 {
-	std::vector<BaseAssignmentType *> tokens;
-
-	tokens = func.get_tokens();
-
-	std::cout << "get_tokens - ";
-	print_parsed_tokens_no_format(tokens);
-	free_tokens(tokens);
+	std::cout << func.toString() << "\n";
 }
 
 int main(int argc, char** argv)
@@ -36,20 +31,20 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	
-	RationalNumber * two = new RationalNumber(2);
-	Variable * x = new Variable("x");
-	Operator *plus = new Operator("+");
-	std::vector<BaseAssignmentType *> tokens;
-	tokens.push_back(two);
-	tokens.push_back(plus);
-	tokens.push_back(x);
+	// RationalNumber * two = new RationalNumber(2);
+	// Variable * x = new Variable("x");
+	// Operator *plus = new Operator("+");
+	// std::vector<BaseAssignmentType *> tokens;
+	// tokens.push_back(two);
+	// tokens.push_back(plus);
+	// tokens.push_back(x);
 	
-	Function func("func(ggwp)");
-	func.set_tokens(tokens);
-	// func.set_object(two);
-	test_func(func);
-	free_token(two);
-	free_token(plus);
-	free_token(x);
-	// computor();
+	// Function func("func(ggwp)");
+	// // func.set_tokens(tokens);
+	// // func.set_object(two);
+	// test_func(func);
+	// free_token(two);
+	// free_token(plus);
+	// free_token(x);
+	computor();
 }

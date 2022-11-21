@@ -27,6 +27,8 @@ void print_parsed_tokens_no_format(std::vector<BaseAssignmentType *> tokens);
 
 std::string Function::toString()
 {
+    if (tokens.size() < 1)
+        return this->name + "(" + this->object->toString() + ")";
     return tokens_to_str(this->tokens.begin(), this->tokens.end());
 }
 
@@ -53,7 +55,7 @@ std::string Function::_extract_name(std::string str)
 
     // extract string from 0 to position '('
     res = str.substr(0, pos);
-    return str;
+    return res;
 }
 
 /**
@@ -134,7 +136,7 @@ void Function::set_tokens(std::vector<BaseAssignmentType *>tokens)
 
 BaseAssignmentType * Function::get_object()
 {
-    return this->object;
+    return clone_token(this->object);
 }
 
 void    Function::set_object(BaseAssignmentType *object)
@@ -211,6 +213,7 @@ BaseAssignmentType * Function::evaluate_image()
         free_tokens(tokens_cloned);
 
         // return result
+        std::cout << "evaluated image good ret \n";
         return res;
     }
     catch(Ft_error &e)
@@ -263,6 +266,7 @@ Function::Function(const Function &other)
 {
     this->set_tokens(other.tokens);
     this->object = clone_token(other.object);
+    this->name = other.name;
     this->type = FUNC;
 }
 
@@ -270,6 +274,7 @@ Function &Function::operator=(const Function &other)
 {
     this->tokens = other.tokens;
     this->object = other.object;
+    this->name = other.name;
     this->type = FUNC;
     return *this;
 }
