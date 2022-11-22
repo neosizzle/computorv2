@@ -189,6 +189,11 @@ std::vector<TokenBase> tokenize(std::string line)
 			{
 				while (var_iter != line.end() && *var_iter != ')')
 					++var_iter;
+				if (var_iter == line.end())
+				{
+					throw Ft_error("Invalid function syntax");
+				}
+				
 				if (var_iter != line.end())
 					++var_iter;
 				is_func = 1;

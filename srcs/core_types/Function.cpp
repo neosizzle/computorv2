@@ -90,10 +90,17 @@ BaseAssignmentType * Function::_extract_object(std::string str)
 
         res_im = new ImaginaryNumber();
         // split the big string into 2 small strngs
-        std::vector<std::string> tokens = ft_split(str, {"+", "-"});
+        std::vector<std::string> tokens = ft_split(token_str, {"+", "-"});
 
+
+        // only i
+        if (tokens.size() == 1 && tokens[0] == "i")
+        {
+            res_im->imaginary_part = RationalNumber(1);
+            res_im->real_part = RationalNumber(0);
+        }        
         // determine which is the imaginary part [0] or [1]
-        if (tokens[0].find("i") != std::string::npos)
+        else if (tokens[0].find("i") != std::string::npos)
         {
             res_im->imaginary_part = RationalNumber(atoi(tokens[0].c_str()));
             res_im->real_part = RationalNumber(atoi(tokens[1].c_str()));
@@ -136,7 +143,7 @@ void Function::set_tokens(std::vector<BaseAssignmentType *>tokens)
 
 BaseAssignmentType * Function::get_object()
 {
-    return clone_token(this->object);
+    return this->object;
 }
 
 void    Function::set_object(BaseAssignmentType *object)
@@ -213,7 +220,6 @@ BaseAssignmentType * Function::evaluate_image()
         free_tokens(tokens_cloned);
 
         // return result
-        std::cout << "evaluated image good ret \n";
         return res;
     }
     catch(Ft_error &e)

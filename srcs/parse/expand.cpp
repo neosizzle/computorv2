@@ -121,7 +121,7 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 
 			// search for function token in variables
 			func_token = dynamic_cast<Function *>(curr_token);
-			func_obj = func_token->get_object();
+			func_obj = clone_token(func_token->get_object());
 			found_var_iter = variables.find(ft_tolower(func_token->get_name()));
 
 			// if function cant be found throw error
@@ -130,7 +130,7 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 
 			// clone and replace function object
 			free_token(tokens[iter_offset]);
-			tokens[iter_offset] = clone_token(found_var_iter->second);
+			tokens[iter_offset] = found_var_iter->second;
 			func_token = dynamic_cast<Function *>(found_var_iter->second);
 			func_token->set_object(func_obj);
 			free_token(func_obj);

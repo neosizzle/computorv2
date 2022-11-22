@@ -32,6 +32,7 @@ std::size_t find_delims_in_str(std::string string, std::vector<std::string> deli
 			return res;
 		}
 	}
+	found_delim_pos = -1;
 	return res;
 }
 
@@ -64,6 +65,7 @@ std::vector<std::string> ft_split(std::string str, std::vector<std::string> deli
 		// trim out the added token along with its delim
 		str.erase(0, currpos + delims[found_delim_pos].length());
 	}
+	res.push_back(str);
 	return res;
 }
 

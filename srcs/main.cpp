@@ -46,5 +46,7 @@ int main(int argc, char** argv)
 	// free_token(two);
 	// free_token(plus);
 	// free_token(x);
+	
+
 	computor();
 }

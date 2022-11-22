@@ -59,6 +59,11 @@ std::string evalaute(std::vector<BaseAssignmentType *> &tokens, bool is_compute_
 	try
 	{
 		result_stack = evaluate_parse_tree(&head);
+		if (result_stack == nullptr)
+		{
+			free_tree (head);
+			return "";
+		}
 	}
 	catch(Ft_error &e)
 	{
