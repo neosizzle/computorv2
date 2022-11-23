@@ -2,3 +2,4 @@ Complete validation
 
 HIGH
 test function gao gao
+function tostring takes prev object when list (reset object after func use??)

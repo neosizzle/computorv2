@@ -92,10 +92,11 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 			found_var_iter = variables.find(ft_tolower(curr_token->toString()));
 
 			// if token is found and is NOT compute action and NOT polynimial var and NOT func, expand
-			if ((is_compute_action && ft_tolower(curr_token->toString()) == std::string(1, POLYNOMIAL_VAR))) continue ;
+			// if ((is_compute_action && ft_tolower(curr_token->toString()) == std::string(1, POLYNOMIAL_VAR))) continue;
 			if (found_var_iter != variables.end()){
 				// ignore functions in var list
-				if (found_var_iter->second->getType() != VAR) continue;
+				if (found_var_iter->second->getType() == FUNC)
+					continue;
 
 				// Clone new token
 				BaseAssignmentType *new_token = clone_token(found_var_iter->second);
@@ -109,7 +110,7 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 		}
 
 		// if curr token is a function type 
-		if (curr_token->getType() == FUNC)
+		else if (curr_token->getType() == FUNC)
 		{
 			std::map<std::string, BaseAssignmentType *>::iterator found_var_iter;
 			int iter_offset;
@@ -121,7 +122,6 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 
 			// search for function token in variables
 			func_token = dynamic_cast<Function *>(curr_token);
-			func_obj = clone_token(func_token->get_object());
 			found_var_iter = variables.find(ft_tolower(func_token->get_name()));
 
 			// if function cant be found throw error
@@ -129,9 +129,10 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 			if (found_var_iter->second->getType() != FUNC) throw Ft_error(std::string("Not a function (expand): ") + func_token->toString());
 
 			// clone and replace function object
+			func_obj = clone_token(func_token->get_object());
 			free_token(tokens[iter_offset]);
 			tokens[iter_offset] = found_var_iter->second;
-			func_token = dynamic_cast<Function *>(found_var_iter->second);
+			func_token = dynamic_cast<Function *>(found_var_iter->second); // i need to clone here?
 			func_token->set_object(func_obj);
 			free_token(func_obj);
 

@@ -1,3 +1,6 @@
+#ifndef __POLYNOMIAL__H__
+#define __POLYNOMIAL__H__
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -47,11 +50,13 @@ public:
 };
 
 /** global consts **/
-const char VAR_SYMBOL = 'x';
 const char EQ_SYMBOL = '=';
 const char KARET_SYMBOL = '^';
-const std::vector<char> TERM_SYMBOLS = {'^', '*', VAR_SYMBOL};
 const std::vector<char> POLY_LINK_SYMBOLS = {'+', '-'};
+
+/**global vars**/
+extern char VAR_SYMBOL;
+extern std::vector<char> TERM_SYMBOLS;
 
 /**
  * @brief Math utils
@@ -89,3 +94,4 @@ std::string solution_to_str(Solution sol);
 // void print(std::string message);
 
 std::string compute_polynomial(std::string input);
+#endif  //!__POLYNOMIAL__H__

@@ -1,12 +1,28 @@
 #include "polynomial.hpp"
 #include "ft_error.hpp"
 
+char VAR_SYMBOL;
+std::vector<char> TERM_SYMBOLS;
 std::string compute_polynomial(std::string arg)
 {
 	std::vector<Term> terms;
 
 	// trim all whitespaces from input
 	arg.erase(std::remove_if(arg.begin(), arg.end(), isspace), arg.end());
+
+	// extract var symbol
+	VAR_SYMBOL = 'x';
+	TERM_SYMBOLS = {'^', '*'};
+	for (size_t i = 0; i < arg.size(); ++i)
+	{
+		if (isalpha(arg[i]))
+		{
+			VAR_SYMBOL = arg[i];
+			break;
+		} 
+	}
+	TERM_SYMBOLS.push_back(VAR_SYMBOL);
+	
 
 	// validate symbols
 	const char invalid_symbol = validate_symbols(arg);
