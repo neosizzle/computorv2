@@ -25,6 +25,9 @@ int derive_token_type(std::string str);
 
 void print_parsed_tokens_no_format(std::vector<BaseAssignmentType *> tokens);
 
+/**
+ * Converts function class to string
+*/
 std::string Function::toString()
 {
     if (tokens.size() < 1)

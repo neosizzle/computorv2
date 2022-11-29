@@ -27,6 +27,7 @@ class Function : public BaseAssignmentType
         BaseAssignmentType * mod (BaseAssignmentType *rhs);
         BaseAssignmentType * pow (BaseAssignmentType *rhs);
 
+		// getter and setter
         std::vector<BaseAssignmentType *> get_tokens();
         void set_tokens(std::vector<BaseAssignmentType *> new_tokens);
 
@@ -38,6 +39,7 @@ class Function : public BaseAssignmentType
 
         BaseAssignmentType *evaluate_image();
 
+        // constructos
         ~Function();
         Function(std::vector<BaseAssignmentType *> tokens, std::string name);
         Function(std::vector<BaseAssignmentType *> tokens, BaseAssignmentType *object, std::string name);
