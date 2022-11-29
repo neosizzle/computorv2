@@ -103,6 +103,7 @@ BaseAssignmentType * Function::_extract_object(std::string str)
         else if (tokens[0].find("i") != std::string::npos)
         {
             res_im->imaginary_part = RationalNumber(atoi(tokens[0].c_str()));
+            // TODO : segfaults when f(io)
             res_im->real_part = RationalNumber(atoi(tokens[1].c_str()));
         }
         else

@@ -145,7 +145,8 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 				func_tokens = func_token->get_tokens();
 				tokens.insert(++tokens_iter, func_tokens.begin(), func_tokens.end());
 				tokens.erase(tokens.begin() + iter_offset);
-				tokens_iter = tokens.begin() + iter_offset;				
+				tokens_iter_init = tokens.begin() + tokens_iter_init_offset;
+				tokens_iter = tokens_iter_init; // reset position to initial
 			}
 			// function object is not var
 			else
@@ -157,6 +158,7 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 				iter_to_del_func_assign = tokens.insert(tokens_iter, evaluated_image);
 				tokens.erase(++iter_to_del_func_assign);
 				tokens_iter = tokens.begin() + iter_offset;
+				tokens_iter_init = tokens.begin() + tokens_iter_init_offset;	
 			}
 		}
 
