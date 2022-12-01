@@ -178,6 +178,12 @@ BaseAssignmentType *clone_token(BaseAssignmentType * token)
 		res = new Function(*var);
 		return res;
 	}
+	else if (type == N_MATRIX)
+	{
+		Matrix *var = dynamic_cast<Matrix *>(token);
+		res = new Matrix(*var);
+		return res;
+	}
 	return nullptr;
 }
 
