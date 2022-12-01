@@ -1,5 +1,6 @@
 #include "Matrix.hpp"
 #include "ft_error.hpp"
+#include "constants.hpp"
 
 int derive_token_type(std::string str);
 std::vector<std::string> ft_split(std::string str, std::vector<std::string> delims);
@@ -115,7 +116,10 @@ Matrix::Matrix(std::string str)
 			const int type = derive_token_type(col_strs[col_idx]);
 
 			// for now, only accept rational number
-			// if (type == )
+			if (type != N_RATIONAL) throw Ft_error("Matrix only accepts rational numbers");
+
+			BaseAssignmentType *token = new RationalNumber(atoi(col_strs[col_idx]));			
+			row.push_back(token);
 		}
 		
 
