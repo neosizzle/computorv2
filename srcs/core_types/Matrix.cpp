@@ -7,15 +7,66 @@
 int derive_token_type(std::string str);
 std::vector<std::string> ft_split(std::string str, std::vector<std::string> delims);
 BaseAssignmentType *clone_token(BaseAssignmentType * token);
-
 void	free_tokens(std::vector<BaseAssignmentType *> tokens);
+void free_token(BaseAssignmentType * token);
+
 
 /**
  * Adds row to curr matrix
 */
-void	Matrix::add_row(std::vector<BaseAssignmentType *> row)
+void	Matrix::_add_row(std::vector<BaseAssignmentType *> row)
 {
 	this->matrix.push_back(row);
+}
+
+/**
+ * clones matrix object
+*/
+std::vector<std::vector<BaseAssignmentType *>> Matrix::_clone_matrix(std::vector<std::vector<BaseAssignmentType *>> mat)
+{
+	std::vector<std::vector<BaseAssignmentType *>> res;
+
+	for (size_t i = 0; i < mat.size(); i++)
+	{
+		std::vector<BaseAssignmentType *> row;
+
+		for (size_t j = 0; j < mat[i].size(); j++)
+		{
+			row.push_back(clone_token(mat[i][j]));
+		}
+		res.push_back(row);
+	}
+	return res;
+}
+
+/**
+ * Gets dot product of matrix at current row and curr col
+*/
+BaseAssignmentType * Matrix::_get_dot_product(Matrix lhs, Matrix rhs, int res_row, int res_col)
+{
+	BaseAssignmentType *res;
+	BaseAssignmentType *temp;
+	
+	// if lhs column num != rhs row num, throw err
+	if (lhs.get_num_cols() != rhs.get_num_rows()) throw Ft_error("Invalid matrix for dot product");
+
+	// initiaize res
+	res = new RationalNumber(0);
+
+	// loop through each column of lhs at res_row
+	for (size_t i = 0; i < lhs.get_num_cols(); i++)
+	{
+		BaseAssignmentType *curr_num_lhs = lhs.matrix[res_row][i];
+		BaseAssignmentType *curr_num_rhs = rhs.matrix[i][res_col];
+		BaseAssignmentType *curr_num_res = curr_num_lhs->mult(curr_num_rhs);
+
+		temp = clone_token(res);
+		free_token(res);
+		res = temp->add(curr_num_res);
+		free_token(temp);
+		free_token(curr_num_res);
+	}
+	return res;
 }
 
 /**
@@ -45,18 +96,36 @@ std::string Matrix::toString()
 BaseAssignmentType * Matrix::add(BaseAssignmentType *rhs){
 	if (rhs->getType() == N_MATRIX)
 	{
-		std::cout << "hi1\n";
 		Matrix *curr_token = dynamic_cast<Matrix *>(rhs);
-		std::cout << "hi2\n";
 		Matrix res = *this + *(curr_token);
-		std::cout << "hi3\n";
 		return new Matrix(res);
 	}
 	return nullptr;
 }
 
-BaseAssignmentType * Matrix::sub(BaseAssignmentType *rhs){return nullptr;}
-BaseAssignmentType * Matrix::mult(BaseAssignmentType *rhs){return nullptr;}
+BaseAssignmentType * Matrix::sub(BaseAssignmentType *rhs){
+	if (rhs->getType() == N_MATRIX)
+	{
+		Matrix *curr_token = dynamic_cast<Matrix *>(rhs);
+		Matrix res = *this - *(curr_token);
+		return new Matrix(res);
+	}
+	return nullptr;
+}
+BaseAssignmentType * Matrix::mult(BaseAssignmentType *rhs){
+	if (rhs->getType() == N_MATRIX)
+	{
+		Matrix *curr_token = dynamic_cast<Matrix *>(rhs);
+		Matrix res = *this * *(curr_token);
+		return new Matrix(res);
+	}
+	else if (rhs->getType() == N_RATIONAL)
+	{
+		// create operation for this
+		return nullptr;
+	}
+	return nullptr;
+}
 BaseAssignmentType * Matrix::div(BaseAssignmentType *rhs){return nullptr;}
 BaseAssignmentType * Matrix::mod(BaseAssignmentType *rhs){return nullptr;}
 BaseAssignmentType * Matrix::pow(BaseAssignmentType *rhs){return nullptr;}
@@ -67,6 +136,7 @@ BaseAssignmentType * Matrix::pow(BaseAssignmentType *rhs){return nullptr;}
 Matrix Matrix::operator+(const Matrix &rhs)
 {
 	Matrix	res;
+	BaseAssignmentType *curr_res;
 
 	if ((this->num_rows != rhs.num_rows) || (this->num_cols != rhs.num_cols)) 
 		throw Ft_error("Cannot perform operation on bad size");
@@ -75,28 +145,84 @@ Matrix Matrix::operator+(const Matrix &rhs)
 		std::vector<BaseAssignmentType *> row;
 		for (size_t j = 0; j < this->num_cols; j++)
 		{
-			// TODO add err check here
-			row.push_back(this->matrix[i][j]->add(rhs.matrix[i][j]));
+			try
+			{
+				curr_res = this->matrix[i][j]->add(rhs.matrix[i][j]);
+				row.push_back(curr_res);
+			}
+			catch(const std::exception& e)
+			{
+				throw Ft_error(std::string(e.what()));
+			}
+			
 		}
-		res.add_row(row);
+		res._add_row(row);
 	}
 	return res;
 }
 
 Matrix Matrix::operator-(const Matrix &rhs)
 {
-	return this->matrix;
+	Matrix	res;
+	BaseAssignmentType *curr_res;
+
+	if ((this->num_rows != rhs.num_rows) || (this->num_cols != rhs.num_cols)) 
+		throw Ft_error("Cannot perform operation on bad size");
+	for (size_t i = 0; i < this->num_rows; i++)
+	{
+		std::vector<BaseAssignmentType *> row;
+		for (size_t j = 0; j < this->num_cols; j++)
+		{
+			try
+			{
+				curr_res = this->matrix[i][j]->sub(rhs.matrix[i][j]);
+				row.push_back(curr_res);
+			}
+			catch(const std::exception& e)
+			{
+				throw Ft_error(std::string(e.what()));
+			}
+			
+		}
+		res._add_row(row);
+	}
+	return res;
+}
+
+Matrix Matrix::operator*(const Matrix &rhs)
+{
+	Matrix	res;
+	int		total_rows;
+	int		total_cols;
+
+	// check if matrix is multipliable
+	if (this->get_num_cols() != rhs.get_num_rows()) throw Ft_error("Invalid matrix for mult");
+
+	total_rows = this->get_num_rows();
+	total_cols = rhs.get_num_cols();
+
+	for (size_t curr_row_num = 0; curr_row_num < total_rows; curr_row_num++)
+	{
+		std::vector<BaseAssignmentType *> row;
+		for (size_t curr_col_num = 0; curr_col_num < total_cols; curr_col_num++)
+		{
+			row.push_back(this->_get_dot_product(*this, rhs, curr_row_num, curr_col_num));
+		}
+		res._add_row(row);
+	}
+	
+	return res;
 }
 
 /**
  * Getter and setter
 */
-int	Matrix::get_num_cols()
+int	Matrix::get_num_cols() const
 {
 	return this->num_cols;
 }
 
-int Matrix::get_num_rows()
+int Matrix::get_num_rows() const
 {
 	return this->num_rows;
 }
@@ -106,6 +232,9 @@ std::vector<std::vector<BaseAssignmentType *>>	Matrix::get_matrix()
 	return this->matrix;
 }
 
+/**
+ * validates and set matrix w/o cloning
+*/
 void	Matrix::set_matrix(std::vector<std::vector<BaseAssignmentType *>> matrix)
 {
 	// check if matrix is rectangular / square
@@ -195,17 +324,12 @@ Matrix::Matrix(std::string str)
 
 Matrix::Matrix(const Matrix &other)
 {
-	Matrix res;
-
 	// free curr matrix
-	// for (size_t i = 0; i < this->matrix.size(); i++)
-	// 	free_tokens(this->matrix[i]);
+	for (size_t i = 0; i < this->matrix.size(); i++)
+		free_tokens(this->matrix[i]);
 
-	// // reallocate new matric
-	// for (size_t i = 0; i < other.matrix.size(); i++)
-	// 	free_tokens(this->matrix[i]);
-
-	this->set_matrix(other.matrix);
+	// reallocate new matric
+	this->set_matrix(this->_clone_matrix(other.matrix));
 	this->type = N_MATRIX;
 }
 

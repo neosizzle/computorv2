@@ -9,6 +9,7 @@
 #include "Variable.hpp"
 #include "Base.hpp"
 #include "Matrix.hpp"
+#include "ft_error.hpp"
 
 void	free_token(BaseAssignmentType * tokens);
 void	free_tokens(std::vector<BaseAssignmentType *> tokens);
@@ -32,12 +33,21 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	Matrix mat("[[1,2,3];[3,2,1]]");
-	Matrix mat2("[[1,2,3];[3,2,1]]");
-	BaseAssignmentType *matres = mat.add(&mat2);
+	try
+	{
+		Matrix mat("[[1,2,3];[4,5,6]]");
+		Matrix mat2("[[7,8];[9,10];[11,12]]");
+		BaseAssignmentType *matres = mat.mult(&mat2);
 
-	if (matres == nullptr) std::cout << "null\n";
-	else std::cout << matres->toString() << "\n";
+		if (matres == nullptr) std::cout << "null\n";
+		else std::cout << matres->toString() << "\n";
+		free_token(matres);
+		}
+		catch(Ft_error e)
+		{
+			std::cerr << e << '\n';
+	}
+	
 
 	// computor();
 }

@@ -6,6 +6,7 @@
 #include "Parenthesis.hpp"
 #include "RationalNum.hpp"
 #include "ImaginaryNum.hpp"
+#include "Matrix.hpp"
 #include "Operator.hpp"
 #include "QMark.hpp"
 #include "ParseTreeNode.hpp"
@@ -50,6 +51,11 @@ void free_token(BaseAssignmentType * token)
 	else if (type == N_IMAGINARY)
 	{
 		ImaginaryNumber *var = dynamic_cast<ImaginaryNumber *>(token);
+		delete var;
+	}
+	else if (type == N_MATRIX)
+	{
+		Matrix *var = dynamic_cast<Matrix *>(token);
 		delete var;
 	}
 	else if (type == FUNC)
