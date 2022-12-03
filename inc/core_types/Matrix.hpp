@@ -10,6 +10,8 @@ private:
 	int												num_rows;
 	int												num_cols;
 
+	void	add_row(std::vector<BaseAssignmentType *> row);
+
 public:
 	std::string toString();
 
@@ -26,11 +28,20 @@ public:
 	void	set_matrix(std::vector<std::vector<BaseAssignmentType *>> matrix);
 
 	int get_num_rows();
-	
+
 	int	get_num_cols();
+
+	// math operators
+	Matrix operator+(const Matrix &rhs);
+	Matrix operator-(const Matrix &rhs);
+
+	// calculate determinant
+
+	// evaluate adjoint
 
 	// constructors
 	~Matrix();
+	Matrix();
 	Matrix(std::vector<std::vector<BaseAssignmentType *>>	matrix);
 	Matrix(std::string str);
 	Matrix(const Matrix &other);

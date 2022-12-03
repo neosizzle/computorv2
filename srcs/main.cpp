@@ -8,6 +8,7 @@
 #include "Operator.hpp"
 #include "Variable.hpp"
 #include "Base.hpp"
+#include "Matrix.hpp"
 
 void	free_token(BaseAssignmentType * tokens);
 void	free_tokens(std::vector<BaseAssignmentType *> tokens);
@@ -30,23 +31,13 @@ int main(int argc, char** argv)
 		std::cout << "Usage: ./computor\n";
 		return 1;
 	}
-	
-	// RationalNumber * two = new RationalNumber(2);
-	// Variable * x = new Variable("x");
-	// Operator *plus = new Operator("+");
-	// std::vector<BaseAssignmentType *> tokens;
-	// tokens.push_back(two);
-	// tokens.push_back(plus);
-	// tokens.push_back(x);
-	
-	// Function func("func(ggwp)");
-	// // func.set_tokens(tokens);
-	// // func.set_object(two);
-	// test_func(func);
-	// free_token(two);
-	// free_token(plus);
-	// free_token(x);
-	
 
-	computor();
+	Matrix mat("[[1,2,3];[3,2,1]]");
+	Matrix mat2("[[1,2,3];[3,2,1]]");
+	BaseAssignmentType *matres = mat.add(&mat2);
+
+	if (matres == nullptr) std::cout << "null\n";
+	else std::cout << matres->toString() << "\n";
+
+	// computor();
 }

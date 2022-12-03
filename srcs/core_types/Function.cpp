@@ -84,6 +84,7 @@ BaseAssignmentType * Function::_extract_object(std::string str)
     type = derive_token_type(token_str);
 
     // create objects accordingly to type
+    // for now, only accept rational and im numbers as objects
     if (type == N_RATIONAL)
         return new RationalNumber(atoi(token_str.c_str()));
     if (type == N_IMAGINARY)

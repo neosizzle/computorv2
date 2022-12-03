@@ -2,3 +2,4 @@ Complete validation
 
 HIGH
 implement matrix
+matrix assign and operator= should clone, not refer

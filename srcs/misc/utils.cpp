@@ -4,6 +4,7 @@
 #include "Parenthesis.hpp"
 #include "RationalNum.hpp"
 #include "ImaginaryNum.hpp"
+#include "Matrix.hpp"
 #include "ParseTreeNode.hpp"
 #include "constants.hpp"
 #include "Function.hpp"
