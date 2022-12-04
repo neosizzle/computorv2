@@ -113,6 +113,7 @@ std::vector<TokenBase> tokenize(std::string line)
 					--bracket_stack;
 				++mat_iter;
 			}
+			if (mat_iter == line.end()) throw Ft_error("Invalid matrix brackets");
 			const std::string mat_str = std::string(line_iter, mat_iter);
 			tokens.push_back({
 				.type = N_MATRIX,

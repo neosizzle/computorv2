@@ -43,6 +43,7 @@ public:
 	BaseAssignmentType *get_determinant(Matrix mat);
 
 	// evaluate adjoint
+	Matrix transpose_matrix(Matrix mt);
 
 	// constructors
 	~Matrix();

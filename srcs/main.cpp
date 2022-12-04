@@ -35,13 +35,14 @@ int main(int argc, char** argv)
 
 	try
 	{
-		Matrix mat("[[1,1,1,-1];[1,1,-1,1];[1,-1,1,1];[-1,1,1,1]]");
+		Matrix mat("[[2,-2,2];[2,3,-3];[0,10,0]]");
 		Matrix mat2("[[7,8];[9,10];[11,12]]");
-		BaseAssignmentType *matres = mat.get_determinant(mat);
+		Matrix matres = mat.transpose_matrix(mat);
 
-		if (matres == nullptr) std::cout << "null\n";
-		else std::cout << matres->toString() << "\n";
-		free_token(matres);
+		// if (matres == nullptr) std::cout << "null\n";
+		// else std::cout << matres->toString() << "\n";
+		// free_token(matres);
+		std::cout << matres.toString() << "\n";
 	}
 	catch(Ft_error e)
 	{

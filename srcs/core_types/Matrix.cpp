@@ -45,7 +45,7 @@ std::vector<std::vector<BaseAssignmentType *>> Matrix::_clone_matrix(std::vector
 }
 
 /**
- * Gets dot product of matrix at current row and curr col
+ * Gets dot product of matrix at current row and curr col (Mallocs)
 */
 BaseAssignmentType * Matrix::_get_dot_product(Matrix lhs, Matrix rhs, int res_row, int res_col)
 {
@@ -75,7 +75,7 @@ BaseAssignmentType * Matrix::_get_dot_product(Matrix lhs, Matrix rhs, int res_ro
 }
 
 /**
- * Calculate determinant of a matrix
+ * Calculate determinant of a matrix (Mallocs)
 */
 BaseAssignmentType * Matrix::get_determinant(Matrix mat)
 {
@@ -139,6 +139,68 @@ BaseAssignmentType * Matrix::get_determinant(Matrix mat)
 		free_token(temp);
 	}
 	return res;
+}
+
+/**
+ * Calculate Adjoint matrix
+*/
+Matrix Matrix::transpose_matrix(Matrix mat)
+{
+
+	// throw error if not a square matrix
+	if (mat.get_num_cols() != mat.get_num_rows()) throw Ft_error("Square matrix expected");
+
+	// base case - mat has 1 row and 1 col
+	if (mat.get_num_cols() == 1 && mat.get_num_rows() == 1)
+		return mat;
+	
+	// create new matrix without 1st row and col of curr matrix
+	Matrix child_matrix;
+
+	//iterate from first row
+	for (size_t child_mat_row = 1; child_mat_row < mat.get_num_rows(); child_mat_row++)
+	{
+		std::vector<BaseAssignmentType *> row;
+
+		// iterator from first column
+		for (size_t child_mat_col = 1; child_mat_col < mat.get_num_cols(); child_mat_col++)
+			row.push_back(clone_token(mat.matrix[child_mat_row][child_mat_col]));
+		child_matrix.add_row(row);
+	}
+
+	// call transpose matrix on new matrix
+	Matrix child_transposed = this->transpose_matrix(child_matrix);
+
+	// once return, apply new elements to input matrix's submatrix
+	for (size_t child_mat_row = 0; child_mat_row < child_transposed.get_num_rows(); child_mat_row++)
+	{
+		// free here?
+		for (size_t child_mat_col = 0; child_mat_col < child_transposed.get_num_cols(); child_mat_col++)
+		{
+			free_token(mat.matrix[child_mat_row + 1][child_mat_col + 1]);
+			mat.matrix[child_mat_row + 1][child_mat_col + 1] = clone_token(child_transposed.matrix[child_mat_row][child_mat_col]); 
+		}
+	}
+		
+
+	// loop through first row and switch values with column
+	for (size_t mat_row = 0; mat_row < mat.get_num_rows(); mat_row++)
+	{
+		BaseAssignmentType *temp;
+		BaseAssignmentType *aux;
+
+		temp = clone_token(mat.matrix[mat_row][0]);
+		aux = mat.matrix[mat_row][0];
+		mat.matrix[mat_row][0] = clone_token(mat.matrix[0][mat_row]);
+		free_token(aux);
+		aux = mat.matrix[0][mat_row];
+		mat.matrix[0][mat_row] = temp;
+		free_token(aux);
+	}
+	
+
+	// return modified input matrix
+	return mat;
 }
 
 /**
