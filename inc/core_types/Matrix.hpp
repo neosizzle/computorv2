@@ -10,7 +10,6 @@ private:
 	int												num_rows;
 	int												num_cols;
 
-	void	_add_row(std::vector<BaseAssignmentType *> row);
 	std::vector<std::vector<BaseAssignmentType *>> _clone_matrix(std::vector<std::vector<BaseAssignmentType *>> mat);
 	BaseAssignmentType *_get_dot_product(Matrix lhs, Matrix rhs, int res_row, int res_col);
 
@@ -30,6 +29,8 @@ public:
 	void	set_matrix(std::vector<std::vector<BaseAssignmentType *>> matrix);
 
 	int get_num_rows() const;
+	void	add_row(std::vector<BaseAssignmentType *> row);
+
 
 	int	get_num_cols() const;
 
@@ -39,6 +40,7 @@ public:
 	Matrix operator*(const Matrix &rhs);
 
 	// calculate determinant
+	BaseAssignmentType *get_determinant(Matrix mat);
 
 	// evaluate adjoint
 

@@ -35,17 +35,17 @@ int main(int argc, char** argv)
 
 	try
 	{
-		Matrix mat("[[1,2,3];[4,5,6]]");
+		Matrix mat("[[1,1,1,-1];[1,1,-1,1];[1,-1,1,1];[-1,1,1,1]]");
 		Matrix mat2("[[7,8];[9,10];[11,12]]");
-		BaseAssignmentType *matres = mat.mult(&mat2);
+		BaseAssignmentType *matres = mat.get_determinant(mat);
 
 		if (matres == nullptr) std::cout << "null\n";
 		else std::cout << matres->toString() << "\n";
 		free_token(matres);
-		}
-		catch(Ft_error e)
-		{
-			std::cerr << e << '\n';
+	}
+	catch(Ft_error e)
+	{
+		std::cerr << e << '\n';
 	}
 	
 

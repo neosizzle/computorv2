@@ -317,7 +317,10 @@ int derive_token_type(std::string str)
 
 	// check if string has num only
 	int num_only = 1;
-	for (size_t i = 0; i < str.size(); i++)
+	int	init_idx = 0;
+
+	if (str[init_idx] == '-') ++init_idx;
+	for (size_t i = init_idx; i < str.size(); i++)
 	{
 		if (str[i] > '9' || str[i] < '0')
 		{

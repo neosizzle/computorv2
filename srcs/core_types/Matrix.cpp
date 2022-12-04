@@ -3,6 +3,7 @@
 #include "constants.hpp"
 #include "RationalNum.hpp"
 #include "ImaginaryNum.hpp"
+#include <algorithm>
 
 int derive_token_type(std::string str);
 std::vector<std::string> ft_split(std::string str, std::vector<std::string> delims);
@@ -14,9 +15,13 @@ void free_token(BaseAssignmentType * token);
 /**
  * Adds row to curr matrix
 */
-void	Matrix::_add_row(std::vector<BaseAssignmentType *> row)
+void	Matrix::add_row(std::vector<BaseAssignmentType *> row)
 {
+	if (this->num_cols != 0 && row.size() != this->num_cols)
+		throw Ft_error("Invalid row to add");
 	this->matrix.push_back(row);
+	++this->num_rows;
+	this->num_cols = row.size();
 }
 
 /**
@@ -65,6 +70,73 @@ BaseAssignmentType * Matrix::_get_dot_product(Matrix lhs, Matrix rhs, int res_ro
 		res = temp->add(curr_num_res);
 		free_token(temp);
 		free_token(curr_num_res);
+	}
+	return res;
+}
+
+/**
+ * Calculate determinant of a matrix
+*/
+BaseAssignmentType * Matrix::get_determinant(Matrix mat)
+{
+	BaseAssignmentType *res;
+	BaseAssignmentType *curr_determ_res;
+	BaseAssignmentType *aux;
+	BaseAssignmentType *temp;
+
+	// if matrix is nore square, throw error
+	if (mat.get_num_cols() != mat.get_num_rows()) throw Ft_error("Expected square matrix");
+
+	res = new RationalNumber(0);
+	// base case, matrix is 2x2	
+	if (mat.get_num_cols() == 2 && mat.get_num_rows() == 2)
+	{
+		aux = res;
+		res = (mat.matrix[0][0]->mult(mat.matrix[1][1]));
+		free_token(aux);
+		aux = res;
+		temp = (mat.matrix[0][1]->mult(mat.matrix[1][0]));
+		res = res->sub(temp);
+		free_token(temp);
+		free_token(aux);
+		return res;
+	}
+
+	// for every col in first list
+	for (size_t first_row_col = 0; first_row_col < mat.get_num_cols(); first_row_col++)
+	{
+		// form another matrix w/o row and col
+		Matrix child;
+		for (size_t child_row_num = 1; child_row_num < mat.get_num_rows(); child_row_num++)
+		{
+			std::vector<BaseAssignmentType *> child_row;
+
+			for (size_t child_col = 0; child_col < mat.get_num_cols(); child_col++)
+			{
+				// if current child col is equal to first row col, continue
+				if (child_col == first_row_col) continue ;
+
+				// push the current element to row
+				child_row.push_back(clone_token(mat.matrix[child_row_num][child_col]));
+			}
+			
+			// push row to child matrix
+			child.add_row(child_row);
+		}
+		
+		// assign current determinant result into curr_num * get_determ(new_mat)
+		temp = this->get_determinant(child);
+		curr_determ_res = mat.matrix[0][first_row_col]->mult(temp);
+
+		// plus or minus result based on curr idx orr or even
+		aux = res;
+		if (first_row_col % 2 == 0)
+			res = res->add(curr_determ_res);
+		else
+			res = res->sub(curr_determ_res);
+		free_token(curr_determ_res);
+		free_token(aux);
+		free_token(temp);
 	}
 	return res;
 }
@@ -156,7 +228,7 @@ Matrix Matrix::operator+(const Matrix &rhs)
 			}
 			
 		}
-		res._add_row(row);
+		res.add_row(row);
 	}
 	return res;
 }
@@ -184,7 +256,7 @@ Matrix Matrix::operator-(const Matrix &rhs)
 			}
 			
 		}
-		res._add_row(row);
+		res.add_row(row);
 	}
 	return res;
 }
@@ -208,7 +280,7 @@ Matrix Matrix::operator*(const Matrix &rhs)
 		{
 			row.push_back(this->_get_dot_product(*this, rhs, curr_row_num, curr_col_num));
 		}
-		res._add_row(row);
+		res.add_row(row);
 	}
 	
 	return res;
@@ -267,7 +339,7 @@ Matrix::Matrix(std::vector<std::vector<BaseAssignmentType *>>	matrix)
 	this->type = N_MATRIX;
 }
 
-// TODO implement matrix parse
+// TODO matrix parse trim whitespaces
 Matrix::Matrix(std::string str)
 {
 	std::vector<std::vector<BaseAssignmentType*>> res;
@@ -278,6 +350,7 @@ Matrix::Matrix(std::string str)
 	row_idx = -1;
 
 	//trim first and last brackets
+	std::remove_if(str.begin(), str.end(), isspace);
 	str.erase(0, 1);
 	str.erase(str.size() - 1);
 
@@ -295,6 +368,7 @@ Matrix::Matrix(std::string str)
 		row_str = row_strs[row_idx];
 
 		// trim first and last brackets
+		std::remove_if(row_str.begin(), row_str.end(), isspace);
 		row_str.erase(0, 1);
 		row_str.erase(row_str.size() - 1);
 
@@ -329,7 +403,8 @@ Matrix::Matrix(const Matrix &other)
 		free_tokens(this->matrix[i]);
 
 	// reallocate new matric
-	this->set_matrix(this->_clone_matrix(other.matrix));
+	std::vector<std::vector<BaseAssignmentType *>> clone_mat = this->_clone_matrix(other.matrix);
+	this->set_matrix(clone_mat);
 	this->type = N_MATRIX;
 }
 
