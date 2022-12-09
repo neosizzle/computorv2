@@ -39,6 +39,7 @@ public:
 	Matrix operator+(const Matrix &rhs);
 	Matrix operator-(const Matrix &rhs);
 	Matrix operator*(const Matrix &rhs);
+	Matrix operator/( Matrix &rhs);
 
 	// calculate determinant
 	BaseAssignmentType *get_determinant(Matrix mat);

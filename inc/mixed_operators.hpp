@@ -29,7 +29,7 @@ ImaginaryNumber operator / (ImaginaryNumber lhs, RationalNumber rhs);
 Matrix operator * (ImaginaryNumber lhs, Matrix rhs);
 
 // imaginary / matrix
-// Matrix operator / (ImaginaryNumber lhs, Matrix rhs);
+Matrix operator / (ImaginaryNumber lhs, Matrix rhs);
 
 
 /**
@@ -56,7 +56,7 @@ ImaginaryNumber operator  / (RationalNumber lhs, ImaginaryNumber rhs);
 Matrix operator * (RationalNumber lhs, Matrix rhs);
 
 // rational / matrix
-// Matrix operator / (RationalNumber lhs, Matrix rhs);
+Matrix operator / (RationalNumber lhs, Matrix rhs);
 
 
 /**

@@ -86,12 +86,12 @@ BaseAssignmentType * RationalNumber::div (BaseAssignmentType *rhs)
 		ImaginaryNumber res = *this / *(curr_token);
 		return new ImaginaryNumber(res);
 	}
-	// else if (rhs->getType() == N_MATRIX)
-	// {
-	// 	Matrix *curr_token = dynamic_cast<Matrix *>(rhs);
-	// 	Matrix res = *this / *(curr_token);
-	// 	return new Matrix(res);
-	// }
+	else if (rhs->getType() == N_MATRIX)
+	{
+		Matrix *curr_token = dynamic_cast<Matrix *>(rhs);
+		Matrix res = *this / *(curr_token);
+		return new Matrix(res);
+	}
 	return nullptr;
 
 }

@@ -85,10 +85,11 @@ BaseAssignmentType * Matrix::get_determinant(Matrix mat)
 	BaseAssignmentType *aux;
 	BaseAssignmentType *temp;
 
-	// if matrix is nore square, throw error
+	// if matrix is not square, throw error
 	if (mat.get_num_cols() != mat.get_num_rows()) throw Ft_error("Expected square matrix");
 
 	res = new RationalNumber(0);
+
 	// base case, matrix is 2x2	
 	if (mat.get_num_cols() == 2 && mat.get_num_rows() == 2)
 	{
@@ -100,6 +101,14 @@ BaseAssignmentType * Matrix::get_determinant(Matrix mat)
 		res = res->sub(temp);
 		free_token(temp);
 		free_token(aux);
+		return res;
+	}
+
+	// another base case, matrix is 1x1
+	if (mat.get_num_cols() == 1 && mat.get_num_rows() == 1)
+	{
+		free_token(res);
+		res = clone_token(mat.matrix[0][0]);
 		return res;
 	}
 
@@ -393,7 +402,9 @@ BaseAssignmentType * Matrix::mult(BaseAssignmentType *rhs){
 BaseAssignmentType * Matrix::div(BaseAssignmentType *rhs){
 	if (rhs->getType() == N_MATRIX)
 	{
-		return nullptr;
+		Matrix *curr_token = dynamic_cast<Matrix *>(rhs);
+		Matrix res = *this / *(curr_token);
+		return new Matrix(res);
 	}
 	else if (rhs->getType() == N_RATIONAL)
 	{
@@ -493,6 +504,20 @@ Matrix Matrix::operator*(const Matrix &rhs)
 		res.add_row(row);
 	}
 	
+	return res;
+}
+
+Matrix Matrix::operator/(Matrix &rhs)
+{
+	Matrix *inverse;
+	Matrix *res_ptr;
+
+
+	inverse = this->get_inverse_matrix(rhs);
+	res_ptr = dynamic_cast<Matrix *> (this->mult(inverse));
+	Matrix res((*res_ptr));
+	delete inverse;
+	delete res_ptr;
 	return res;
 }
 

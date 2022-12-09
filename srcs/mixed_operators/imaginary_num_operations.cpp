@@ -97,8 +97,13 @@ Matrix operator * (ImaginaryNumber lhs, Matrix rhs)
 // imaginary / matrix
 Matrix operator / (ImaginaryNumber lhs, Matrix rhs)
 {
-	Matrix res;
+	Matrix *inverse;
+	Matrix *res_ptr;
 
+	inverse = rhs.get_inverse_matrix(rhs);
+	res_ptr = dynamic_cast<Matrix *>(lhs.mult(inverse));
+	Matrix res((*res_ptr));
+	delete inverse;
+	delete res_ptr;
 	return res;
-	// need to get inverse of matrix
 }

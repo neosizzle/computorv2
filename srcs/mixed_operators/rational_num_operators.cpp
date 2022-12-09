@@ -96,7 +96,13 @@ Matrix operator * (RationalNumber lhs, Matrix rhs)
 // rational / matrix
 Matrix operator / (RationalNumber lhs, Matrix rhs)
 {
-	Matrix res;
-	// need to get inverse of matrix
+	Matrix *inverse;
+	Matrix *res_ptr;
+
+	inverse = rhs.get_inverse_matrix(rhs);
+	res_ptr = dynamic_cast<Matrix *>(lhs.mult(inverse));
+	Matrix res((*res_ptr));
+	delete inverse;
+	delete res_ptr;
 	return res;
 }

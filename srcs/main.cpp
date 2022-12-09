@@ -36,10 +36,10 @@ int main(int argc, char** argv)
 
 	try
 	{
-		Matrix mat("[[3,0,2];[2,0,-2];[0,1,1]]");
-		Matrix mat2("[[7,8];[9,10];[11,12]]");
+		Matrix mat("[[13,26];[39,13]]");
+		Matrix mat2("[[7,4];[2,3]]");
 		RationalNumber two(2);
-		Matrix *matres = mat.get_inverse_matrix(mat);
+		BaseAssignmentType *matres = two.div(&mat2);
 
 		// std::cout << matres.toString() << "\n";
 		if (matres != nullptr)
