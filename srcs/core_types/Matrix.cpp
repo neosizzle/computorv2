@@ -4,6 +4,7 @@
 #include "RationalNum.hpp"
 #include "ImaginaryNum.hpp"
 #include <algorithm>
+#include "mixed_operators.hpp"
 
 int derive_token_type(std::string str);
 std::vector<std::string> ft_split(std::string str, std::vector<std::string> delims);
@@ -142,6 +143,72 @@ BaseAssignmentType * Matrix::get_determinant(Matrix mat)
 }
 
 /**
+ * Form matrix w/o row and col
+*/
+Matrix	Matrix::_get_matrix_exc_row_col(Matrix mtx, int row, int col)
+{
+	Matrix res;
+	int		curr_row;
+	int		curr_col;
+
+	curr_row = -1;
+	while (++curr_row < mtx.get_num_rows())
+	{
+		// continue if current row matches row to exclude
+		if (curr_row == row) continue;
+
+		std::vector<BaseAssignmentType *> row;
+		curr_col = -1;
+		while (++curr_col < mtx.get_num_cols())
+		{
+			// continue if current col matchs col to exclude
+			if (curr_col == col) continue;
+			row.push_back(clone_token(mtx.get_matrix()[curr_row][curr_col]));
+		}
+		res.add_row(row);
+	}
+
+	return res;
+}
+
+/**
+ * Get minor matrix
+*/
+Matrix Matrix::_get_minors(Matrix mtx)
+{
+	Matrix res;
+	int curr_mtx_row;
+	int	curr_mtx_col;
+
+	curr_mtx_row = -1;
+
+	// for every element
+	while (++curr_mtx_row < mtx.get_num_rows())
+	{
+		std::vector<BaseAssignmentType *> row;
+
+		curr_mtx_col = -1;
+		while (++curr_mtx_col < mtx.get_num_cols())
+		{
+			// Matrix test = this->_get_matrix_exc_row_col(mtx, curr_mtx_row, curr_mtx_col);
+			// std::cout << test.toString() << "\n";
+
+			// form matrix without curr row and col
+			Matrix sub(this->_get_matrix_exc_row_col(mtx, curr_mtx_row, curr_mtx_col));
+			
+			// calculate determinant for new matrix
+			BaseAssignmentType * determ = this->get_determinant(sub);
+
+			// add res to matrix
+			row.push_back(determ);
+		}
+		res.add_row(row);
+	}
+
+	return res;
+}
+
+/**
  * Calculate Adjoint matrix
 */
 Matrix Matrix::transpose_matrix(Matrix mat)
@@ -204,6 +271,62 @@ Matrix Matrix::transpose_matrix(Matrix mat)
 }
 
 /**
+ * Calculate matrix inverse
+*/
+Matrix *Matrix::get_inverse_matrix(Matrix mt)
+{
+	Matrix res;
+	Matrix curr_state;
+
+	// get matrix of minors
+	Matrix minors(this->_get_minors(mt));
+
+	// get matrix of cofactors
+	for (size_t row = 0; row < minors.get_num_rows(); row++)
+	{
+		for (size_t col = 0; col < minors.get_num_cols(); col++)
+		{
+			// (if row is even and col is odd) or (row is odd and col is even)
+			if ((row % 2 == 0 && col % 2 != 0) || (row % 2 != 0 && col % 2 == 0))
+			{
+				BaseAssignmentType *temp;
+
+				temp = minors.get_matrix()[row][col];
+
+				// create new token
+				RationalNumber neg_one(-1);
+				BaseAssignmentType *new_val = temp->mult(&neg_one);
+
+
+				// free old token
+				free_token(temp);
+				minors.get_matrix_ref()[row][col] = new_val;
+			}
+		}
+		
+	}
+	
+
+	// transpose matrix
+	Matrix transposed(transpose_matrix(minors));
+
+	// get determinant
+	BaseAssignmentType *determinant = this->get_determinant(mt);
+
+	// multiple 1/determinant with adjuvant
+	RationalNumber one(1);
+	BaseAssignmentType *determ_inverse = one.div(determinant);
+	Matrix *result = dynamic_cast<Matrix *>(determ_inverse->mult(&transposed));
+
+	// free intermidiary tokens
+	free_token(determinant);
+	free_token(determ_inverse);
+
+	// return res
+	return result;
+}
+
+/**
  * Converts matrix class to string
 */
 std::string Matrix::toString()
@@ -255,12 +378,37 @@ BaseAssignmentType * Matrix::mult(BaseAssignmentType *rhs){
 	}
 	else if (rhs->getType() == N_RATIONAL)
 	{
-		// create operation for this
-		return nullptr;
+		RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
+		Matrix res = *this * *(curr_token);
+		return new Matrix(res);
+	}
+	else if (rhs->getType() == N_IMAGINARY)
+	{
+		ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
+		Matrix res = *this * *(curr_token);
+		return new Matrix(res);
 	}
 	return nullptr;
 }
-BaseAssignmentType * Matrix::div(BaseAssignmentType *rhs){return nullptr;}
+BaseAssignmentType * Matrix::div(BaseAssignmentType *rhs){
+	if (rhs->getType() == N_MATRIX)
+	{
+		return nullptr;
+	}
+	else if (rhs->getType() == N_RATIONAL)
+	{
+		RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
+		Matrix res = *this / *(curr_token);
+		return new Matrix(res);
+	}
+	else if (rhs->getType() == N_IMAGINARY)
+	{
+		ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
+		Matrix res = *this / *(curr_token);
+		return new Matrix(res);
+	}
+	return nullptr;
+}
 BaseAssignmentType * Matrix::mod(BaseAssignmentType *rhs){return nullptr;}
 BaseAssignmentType * Matrix::pow(BaseAssignmentType *rhs){return nullptr;}
 
@@ -366,6 +514,11 @@ std::vector<std::vector<BaseAssignmentType *>>	Matrix::get_matrix()
 	return this->matrix;
 }
 
+std::vector<std::vector<BaseAssignmentType *>>	&Matrix::get_matrix_ref()
+{
+	return this->matrix;
+}
+
 /**
  * validates and set matrix w/o cloning
 */
@@ -391,7 +544,7 @@ void	Matrix::set_matrix(std::vector<std::vector<BaseAssignmentType *>> matrix)
 Matrix::Matrix()
 {
 	this->num_cols = 0;
-	this->num_cols = 0;
+	this->num_rows = 0;
 	this->type = N_MATRIX;
 }
 
@@ -411,8 +564,10 @@ Matrix::Matrix(std::string str)
 
 	row_idx = -1;
 
-	//trim first and last brackets
-	std::remove_if(str.begin(), str.end(), isspace);
+	// trim first and last brackets
+	std::string::iterator new_end =  std::remove_if(str.begin(), str.end(), isspace);
+	// remove_if changes end() pointer
+	str.erase(new_end, str.end());
 	str.erase(0, 1);
 	str.erase(str.size() - 1);
 
@@ -430,7 +585,8 @@ Matrix::Matrix(std::string str)
 		row_str = row_strs[row_idx];
 
 		// trim first and last brackets
-		std::remove_if(row_str.begin(), row_str.end(), isspace);
+		new_end = std::remove_if(row_str.begin(), row_str.end(), isspace);
+		row_str.erase(new_end, row_str.end());
 		row_str.erase(0, 1);
 		row_str.erase(row_str.size() - 1);
 
@@ -467,12 +623,16 @@ Matrix::Matrix(const Matrix &other)
 	// reallocate new matric
 	std::vector<std::vector<BaseAssignmentType *>> clone_mat = this->_clone_matrix(other.matrix);
 	this->set_matrix(clone_mat);
+	this->num_cols = other.num_cols;
+	this->num_rows = other.num_rows;
 	this->type = N_MATRIX;
 }
 
 Matrix & Matrix::operator=(const Matrix &other)
 {
 	this->set_matrix(other.matrix);
+	this->num_cols = other.num_cols;
+	this->num_rows = other.num_rows;
 	this->type = N_MATRIX;
 	return *this;
 }

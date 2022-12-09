@@ -1,10 +1,13 @@
 #include "RationalNum.hpp"
 #include "ImaginaryNum.hpp"
+#include "Matrix.hpp"
 #include "mixed_operators.hpp"
 
 std::string RationalNumber::toString()
 {
-	return this->is_float ? std::to_string(float_value) : std::to_string(int_value);
+	if (!this->is_float) return std::to_string(this->int_value);
+	if (this->float_value - static_cast<int>(this->float_value) == 0) return std::to_string(static_cast<int>(this->float_value));
+	return std::to_string(float_value);
 }
 
 // ADD TYPE
@@ -59,6 +62,12 @@ BaseAssignmentType * RationalNumber::mult (BaseAssignmentType *rhs)
 		ImaginaryNumber res = *this * *(curr_token);
 		return new ImaginaryNumber(res);
 	}
+	else if (rhs->getType() == N_MATRIX)
+	{
+		Matrix *curr_token = dynamic_cast<Matrix *>(rhs);
+		Matrix res = *this * *(curr_token);
+		return new Matrix(res);
+	}
 	return nullptr;
 }
 
@@ -76,7 +85,14 @@ BaseAssignmentType * RationalNumber::div (BaseAssignmentType *rhs)
 		ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
 		ImaginaryNumber res = *this / *(curr_token);
 		return new ImaginaryNumber(res);
-	}return nullptr;
+	}
+	// else if (rhs->getType() == N_MATRIX)
+	// {
+	// 	Matrix *curr_token = dynamic_cast<Matrix *>(rhs);
+	// 	Matrix res = *this / *(curr_token);
+	// 	return new Matrix(res);
+	// }
+	return nullptr;
 
 }
 
@@ -141,11 +157,11 @@ RationalNumber RationalNumber::operator/(const RationalNumber &rhs)
 
 	res.int_value = this->int_value / rhs.int_value;
 	res.float_value = this->float_value / rhs.float_value;
-	if (this->int_value != 0 && rhs.int_value % this->int_value == 0 &&
+	if (this->float_value != 0 && this->int_value % rhs.int_value == 0 &&
 	!rhs.is_float && !this->is_float)
 		res.is_float = this->is_float || rhs.is_float;
 	else
-		res.is_float = true;
+		res.is_float = (res.float_value != 0);
 
 	return res;
 }

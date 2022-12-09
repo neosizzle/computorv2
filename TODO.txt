@@ -2,4 +2,4 @@ Complete validation
 
 HIGH
 implement matrix
-matrix string parse checks
+matrix mixed operators

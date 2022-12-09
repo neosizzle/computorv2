@@ -1,8 +1,10 @@
 #include "RationalNum.hpp"
 #include "ImaginaryNum.hpp"
+#include "Matrix.hpp"
+#include "ft_error.hpp"
 
 /**
- * @brief Additional operators for rational numbers
+ * @brief Additional operators for Imaginary numbers
  * 
  */
 
@@ -68,4 +70,35 @@ ImaginaryNumber operator ^ (ImaginaryNumber lhs, RationalNumber rhs)
 	else
 		res.real_part = lhs.real_part ^ RationalNumber(rhs.int_value);
 	return res;
+}
+
+// imaginary * matrix
+Matrix operator * (ImaginaryNumber lhs, Matrix rhs)
+{
+	const std::vector<std::vector<BaseAssignmentType *>> matrix = rhs.get_matrix();
+
+	std::vector<std::vector<BaseAssignmentType *>> matrix_res;
+	for (size_t i = 0; i < rhs.get_num_rows(); ++i)
+	{
+		std::vector<BaseAssignmentType *> row;
+
+		for (size_t j = 0; j < rhs.get_num_cols(); j++)
+		{
+			BaseAssignmentType *res_term = lhs.mult(matrix[i][j]);
+			if (res_term == nullptr) throw Ft_error("Invalid operation");
+		
+			row.push_back(res_term);
+		}
+		matrix_res.push_back(row);
+	}
+	return Matrix(matrix_res);
+}
+
+// imaginary / matrix
+Matrix operator / (ImaginaryNumber lhs, Matrix rhs)
+{
+	Matrix res;
+
+	return res;
+	// need to get inverse of matrix
 }

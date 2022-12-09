@@ -1,5 +1,6 @@
 #include "RationalNum.hpp"
 #include "ImaginaryNum.hpp"
+#include "Matrix.hpp"
 #include "mixed_operators.hpp"
 
 ImaginaryNumber ImaginaryNumber::simplify(ImaginaryNumber num)
@@ -123,6 +124,12 @@ BaseAssignmentType *ImaginaryNumber::mult(BaseAssignmentType *rhs)
 		RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
 		ImaginaryNumber res = *this * *(curr_token);
 		return new ImaginaryNumber(res);
+	}
+	else if (rhs->getType() == N_MATRIX)
+	{
+		Matrix *curr_token = dynamic_cast<Matrix *>(rhs);
+		Matrix res = *this * *(curr_token);
+		return new Matrix(res);
 	}
 	return nullptr;
 }

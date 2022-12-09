@@ -26,6 +26,7 @@ public:
 
 	// getter and setter
 	std::vector<std::vector<BaseAssignmentType *>>	get_matrix();
+	std::vector<std::vector<BaseAssignmentType *>> &get_matrix_ref();
 	void	set_matrix(std::vector<std::vector<BaseAssignmentType *>> matrix);
 
 	int get_num_rows() const;
@@ -44,6 +45,12 @@ public:
 
 	// evaluate adjoint
 	Matrix transpose_matrix(Matrix mt);
+
+	// get inverse matrix (mallocs)
+	Matrix *get_inverse_matrix(Matrix mt);
+
+	Matrix				_get_minors(Matrix mt);
+	Matrix				_get_matrix_exc_row_col(Matrix mt, int row, int col);
 
 	// constructors
 	~Matrix();

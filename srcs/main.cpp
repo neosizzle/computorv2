@@ -9,6 +9,7 @@
 #include "Variable.hpp"
 #include "Base.hpp"
 #include "Matrix.hpp"
+#include "ImaginaryNum.hpp"
 #include "ft_error.hpp"
 
 void	free_token(BaseAssignmentType * tokens);
@@ -35,14 +36,19 @@ int main(int argc, char** argv)
 
 	try
 	{
-		Matrix mat("[[2,-2,2];[2,3,-3];[0,10,0]]");
+		Matrix mat("[[3,0,2];[2,0,-2];[0,1,1]]");
 		Matrix mat2("[[7,8];[9,10];[11,12]]");
-		Matrix matres = mat.transpose_matrix(mat);
+		RationalNumber two(2);
+		Matrix *matres = mat.get_inverse_matrix(mat);
 
-		// if (matres == nullptr) std::cout << "null\n";
-		// else std::cout << matres->toString() << "\n";
-		// free_token(matres);
-		std::cout << matres.toString() << "\n";
+		// std::cout << matres.toString() << "\n";
+		if (matres != nullptr)
+		{
+			std::cout << matres->toString() << "\n";
+			free_token(matres);
+		}
+		else
+			std::cout << "null\n";
 	}
 	catch(Ft_error e)
 	{
