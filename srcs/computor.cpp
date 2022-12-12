@@ -66,8 +66,8 @@ void computor()
 				// validate tokens
 				validate_tokens(tokens, is_compute_action);
 
-				std::cout << "before eval: ";
-				print_parsed_tokens_no_format(tokens);
+				// std::cout << "before eval: ";
+				// print_parsed_tokens_no_format(tokens);
 				// evaluate and print result
 				res_str = evalaute(tokens, is_compute_action, variables);
 				std::cout << res_str << "\n";

@@ -88,6 +88,8 @@ BaseAssignmentType * do_op(BaseAssignmentType *lhs, BaseAssignmentType *rhs, int
 		res = lhs->mod(rhs);
 	else if (operation == OPERATOR_POW)
 		res = lhs->pow(rhs);
+	else if (operation == OPERATOR_MAT_MULT)
+		res = lhs->matmult(rhs);
 	if (res == nullptr)
 		throw Ft_error("Invalid operation");
 	return res;

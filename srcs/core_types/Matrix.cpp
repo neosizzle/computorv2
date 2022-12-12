@@ -11,7 +11,7 @@ std::vector<std::string> ft_split(std::string str, std::vector<std::string> deli
 BaseAssignmentType *clone_token(BaseAssignmentType * token);
 void	free_tokens(std::vector<BaseAssignmentType *> tokens);
 void free_token(BaseAssignmentType * token);
-
+void	ft_perror(Ft_error err);
 
 /**
  * Adds row to curr matrix
@@ -41,6 +41,33 @@ std::vector<std::vector<BaseAssignmentType *>> Matrix::_clone_matrix(std::vector
 			row.push_back(clone_token(mat[i][j]));
 		}
 		res.push_back(row);
+	}
+	return res;
+}
+
+/**
+ * Gets term to term product of matrix with curr matrix
+*/
+Matrix Matrix::_term_to_term_mult(Matrix m)
+{
+	Matrix res;
+
+	// throw err if dimensions different
+	if ((m.get_num_cols() != this->num_cols) || (m.get_num_rows() != this->num_rows))
+		throw Ft_error("Expecting equal dimension matrix");
+
+	for (size_t row_num = 0; row_num < m.get_num_rows(); row_num++)
+	{
+		std::vector<BaseAssignmentType *> row;
+		for (size_t col_num = 0; col_num < m.get_num_cols(); col_num++)
+		{
+			BaseAssignmentType *curr_term;
+
+			curr_term = this->matrix[row_num][col_num]->mult(m.get_matrix()[row_num][col_num]);
+			row.push_back(curr_term);
+		}
+		
+		res.add_row(row);
 	}
 	return res;
 }
@@ -356,9 +383,6 @@ std::string Matrix::toString()
 	return res;
 }
 
-/**
- * TODO implement math
-*/
 BaseAssignmentType * Matrix::add(BaseAssignmentType *rhs){
 	if (rhs->getType() == N_MATRIX)
 	{
@@ -379,13 +403,7 @@ BaseAssignmentType * Matrix::sub(BaseAssignmentType *rhs){
 	return nullptr;
 }
 BaseAssignmentType * Matrix::mult(BaseAssignmentType *rhs){
-	if (rhs->getType() == N_MATRIX)
-	{
-		Matrix *curr_token = dynamic_cast<Matrix *>(rhs);
-		Matrix res = *this * *(curr_token);
-		return new Matrix(res);
-	}
-	else if (rhs->getType() == N_RATIONAL)
+	if (rhs->getType() == N_RATIONAL)
 	{
 		RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
 		Matrix res = *this * *(curr_token);
@@ -396,6 +414,20 @@ BaseAssignmentType * Matrix::mult(BaseAssignmentType *rhs){
 		ImaginaryNumber *curr_token = dynamic_cast<ImaginaryNumber *>(rhs);
 		Matrix res = *this * *(curr_token);
 		return new Matrix(res);
+	}
+	else if (rhs->getType() == N_MATRIX)
+	{
+		try
+		{
+			Matrix *curr_token = dynamic_cast<Matrix *>(rhs);
+			Matrix res = this->_term_to_term_mult(*curr_token);
+			return new Matrix(res);
+		}
+		catch(Ft_error e)
+		{
+			ft_perror(e);
+			return nullptr;
+		}
 	}
 	return nullptr;
 }
@@ -422,6 +454,16 @@ BaseAssignmentType * Matrix::div(BaseAssignmentType *rhs){
 }
 BaseAssignmentType * Matrix::mod(BaseAssignmentType *rhs){return nullptr;}
 BaseAssignmentType * Matrix::pow(BaseAssignmentType *rhs){return nullptr;}
+
+BaseAssignmentType * Matrix::matmult(BaseAssignmentType *rhs){
+	if (rhs->getType() == N_MATRIX)
+	{
+		Matrix *curr_token = dynamic_cast<Matrix *>(rhs);
+		Matrix res = *this * *(curr_token);
+		return new Matrix(res);
+	}
+	return nullptr;
+}
 
 /**
  * MAth operators
@@ -579,7 +621,6 @@ Matrix::Matrix(std::vector<std::vector<BaseAssignmentType *>>	matrix)
 	this->type = N_MATRIX;
 }
 
-// TODO matrix parse trim whitespaces
 Matrix::Matrix(std::string str)
 {
 	std::vector<std::vector<BaseAssignmentType*>> res;

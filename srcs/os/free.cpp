@@ -20,6 +20,7 @@
 // ADD TYPE
 void free_token(BaseAssignmentType * token)
 {
+	if (token == nullptr) return;
 	const int type = token->getType();
 
 	if (type == VAR)

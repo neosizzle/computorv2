@@ -9,6 +9,7 @@
 #include "ft_error.hpp"
 #include "RationalNum.hpp"
 #include "ImaginaryNum.hpp"
+#include "Matrix.hpp"
 #include "QMark.hpp"
 #include "Parenthesis.hpp"
 #include "Operator.hpp"
@@ -42,6 +43,12 @@ std::vector<BaseAssignmentType *> parse_tokens(std::vector<TokenBase> tokens)
 		{
 		parsed_tokens.push_back(curr_token_base.string.find('.') != std::string::npos ? new ImaginaryNumber((float)atof(curr_token_base.string.c_str()))
 			: new ImaginaryNumber(atoi(curr_token_base.string.c_str())));
+		}
+		// create new matrix type
+		else if (curr_token_base.type == N_MATRIX)
+		{
+		parsed_tokens.push_back(curr_token_base.string.find('.') != std::string::npos ? new Matrix(curr_token_base.string)
+			: new Matrix(curr_token_base.string));
 		}
 		// create new operator type
 		else if (OPERATORS_MAP.find(curr_token_base.string) != OPERATORS_MAP.end())
@@ -113,7 +120,7 @@ std::vector<TokenBase> tokenize(std::string line)
 					--bracket_stack;
 				++mat_iter;
 			}
-			if (mat_iter == line.end()) throw Ft_error("Invalid matrix brackets");
+			if (bracket_stack != 0) throw Ft_error("Invalid matrix brackets");
 			const std::string mat_str = std::string(line_iter, mat_iter);
 			tokens.push_back({
 				.type = N_MATRIX,

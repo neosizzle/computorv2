@@ -84,6 +84,8 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 		// sleep(1);
 		
 		// if curr token is a variable type
+		// std::cout << "curr_token: " << std::to_string(curr_token->getType()) << "\n";
+		// sleep(1);
 		if (curr_token->getType() == VAR)
 		{
 			std::map<std::string, BaseAssignmentType *>::iterator found_var_iter;
@@ -154,11 +156,26 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 				BaseAssignmentType * evaluated_image;
 
 				// reaplce token with calculated image
-				evaluated_image = func_token->evaluate_image();
-				iter_to_del_func_assign = tokens.insert(tokens_iter, evaluated_image);
-				tokens.erase(++iter_to_del_func_assign);
-				tokens_iter = tokens.begin() + iter_offset;
-				tokens_iter_init = tokens.begin() + tokens_iter_init_offset;	
+				try
+				{
+					evaluated_image = func_token->evaluate_image();
+					if (evaluated_image == nullptr)
+					{
+						iter_to_del_func_assign = tokens.insert(tokens_iter, nullptr);
+						tokens.erase(++iter_to_del_func_assign);
+						tokens_iter = tokens.begin() + iter_offset;
+						tokens_iter_init = tokens.begin() + tokens_iter_init_offset;	
+						throw Ft_error("Image evaluation failed");
+					}
+					iter_to_del_func_assign = tokens.insert(tokens_iter, evaluated_image);
+					tokens.erase(++iter_to_del_func_assign);
+					tokens_iter = tokens.begin() + iter_offset;
+					tokens_iter_init = tokens.begin() + tokens_iter_init_offset;	
+				}
+				catch(Ft_error e)
+				{
+					throw Ft_error(e);
+				}
 			}
 		}
 

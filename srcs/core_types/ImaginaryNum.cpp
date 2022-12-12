@@ -184,6 +184,11 @@ BaseAssignmentType *ImaginaryNumber::pow(BaseAssignmentType *rhs)
 	return nullptr;
 }
 
+BaseAssignmentType *ImaginaryNumber::matmult(BaseAssignmentType *rhs)
+{
+	return nullptr;
+}
+
 ImaginaryNumber ImaginaryNumber::operator+(ImaginaryNumber rhs)
 {
 	ImaginaryNumber res;

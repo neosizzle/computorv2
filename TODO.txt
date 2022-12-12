@@ -1,5 +1,6 @@
 Complete validation
 
 HIGH
-implement matrix
-matrix mixed operators
+documentation 
+more verbose error message
+cleanup

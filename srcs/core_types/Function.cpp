@@ -6,6 +6,7 @@
 #include "ft_error.hpp"
 #include "RationalNum.hpp"
 #include "ImaginaryNum.hpp"
+#include "Matrix.hpp"
 #include "Variable.hpp"
 #include <algorithm>
 
@@ -107,8 +108,8 @@ BaseAssignmentType * Function::_extract_object(std::string str)
         else if (tokens[0].find("i") != std::string::npos)
         {
             res_im->imaginary_part = RationalNumber(atoi(tokens[0].c_str()));
-            // TODO : segfaults when f(io)
-            res_im->real_part = RationalNumber(atoi(tokens[1].c_str()));
+            if (tokens.size() != 1)
+                res_im->real_part = RationalNumber(atoi(tokens[1].c_str()));
         }
         else
         {
@@ -117,6 +118,8 @@ BaseAssignmentType * Function::_extract_object(std::string str)
         }
         return res_im;
     }
+    if (type == N_MATRIX)
+        return new Matrix(token_str);
     if (type == VAR)
         return new Variable(token_str);
     return nullptr;
@@ -201,13 +204,11 @@ BaseAssignmentType * Function::evaluate_image()
             // replace var with cloned token
             std::replace(tokens_cloned.begin(), tokens_cloned.end(), curr_token, new_token);
 
-            // free old token and break loop
+            // free old token
             free_token(curr_token);
 
-            break ;
         }   
     }
-
 
     try
     {
@@ -229,7 +230,11 @@ BaseAssignmentType * Function::evaluate_image()
     }
     catch(Ft_error &e)
     {
-        ft_perror(e.getMessage());
+        ft_perror(e);
+
+        // free
+        free_tree(root);
+        free_tokens(tokens_cloned);
         return nullptr;
     }
 }

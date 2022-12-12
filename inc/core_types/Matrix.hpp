@@ -12,6 +12,9 @@ private:
 
 	std::vector<std::vector<BaseAssignmentType *>> _clone_matrix(std::vector<std::vector<BaseAssignmentType *>> mat);
 	BaseAssignmentType *_get_dot_product(Matrix lhs, Matrix rhs, int res_row, int res_col);
+	Matrix				_get_minors(Matrix mt);
+	Matrix				_get_matrix_exc_row_col(Matrix mt, int row, int col);
+	Matrix				_term_to_term_mult(Matrix m);
 
 public:
 	std::string toString();
@@ -23,6 +26,7 @@ public:
 	BaseAssignmentType * div (BaseAssignmentType *rhs);
 	BaseAssignmentType * mod (BaseAssignmentType *rhs);
 	BaseAssignmentType * pow (BaseAssignmentType *rhs);
+	BaseAssignmentType * matmult (BaseAssignmentType *rhs);
 
 	// getter and setter
 	std::vector<std::vector<BaseAssignmentType *>>	get_matrix();
@@ -49,9 +53,6 @@ public:
 
 	// get inverse matrix (mallocs)
 	Matrix *get_inverse_matrix(Matrix mt);
-
-	Matrix				_get_minors(Matrix mt);
-	Matrix				_get_matrix_exc_row_col(Matrix mt, int row, int col);
 
 	// constructors
 	~Matrix();

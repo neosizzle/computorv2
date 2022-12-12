@@ -2,6 +2,7 @@
 #include "ImaginaryNum.hpp"
 #include "Matrix.hpp"
 #include "mixed_operators.hpp"
+#include "ft_error.hpp"
 
 std::string RationalNumber::toString()
 {
@@ -120,6 +121,11 @@ BaseAssignmentType * RationalNumber::pow (BaseAssignmentType *rhs)
 	return nullptr;
 }
 
+BaseAssignmentType * RationalNumber::matmult (BaseAssignmentType *rhs)
+{
+	return nullptr;
+}
+
 RationalNumber RationalNumber::operator+(const RationalNumber &rhs)
 {
 	RationalNumber res;
@@ -155,6 +161,8 @@ RationalNumber RationalNumber::operator/(const RationalNumber &rhs)
 	RationalNumber res;
 	float divResult;
 
+	if (rhs.float_value == 0 && rhs.int_value == 0)
+		throw Ft_error("Division by 0"); 
 	res.int_value = this->int_value / rhs.int_value;
 	res.float_value = this->float_value / rhs.float_value;
 	if (this->float_value != 0 && this->int_value % rhs.int_value == 0 &&

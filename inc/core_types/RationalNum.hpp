@@ -20,6 +20,7 @@ public:
 	BaseAssignmentType * div (BaseAssignmentType *rhs);
 	BaseAssignmentType * mod (BaseAssignmentType *rhs);
 	BaseAssignmentType * pow (BaseAssignmentType *rhs);
+	BaseAssignmentType * matmult(BaseAssignmentType *rhs);
 
 	// operators
 	// RationalNumber + RationalNumber
