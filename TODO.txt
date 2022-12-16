@@ -4,3 +4,4 @@ HIGH
 documentation 
 more verbose error message
 cleanup
+power 0
