@@ -71,3 +71,8 @@ out --> in
 2. Pair the tokens for the binary parse tree
 3. After the tokens are done populated, generate the token evaluation tree using these [rules](https://www.shmoop.com/computer-science/cs-trees/math-expressions.html)
 4. After the parse tree is formed, evaluate the parse tree
+
+### Evaluation resolution
+1. After result is obtained (usually will just be one token)
+2. If its a computation action, print result to console
+3. If its a assignment action, store result in variable
