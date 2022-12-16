@@ -28,64 +28,46 @@ Uninstall
 - Matrix Inversion
 - BODMAS equation resolution
 
-## This is the part where I explain
+## This is the part where I explain (Documentation)
 
-You code
-
-
-# Markdown extensions
-
-StackEdit extends the standard Markdown syntax by adding extra **Markdown extensions**, providing you with some nice features.
-
-> **ProTip:** You can disable any **Markdown extension** in the **File properties** dialog.
-
-
-## SmartyPants
-
-SmartyPants converts ASCII punctuation characters into "smart" typographic punctuation HTML entities. For example:
-
-|                |ASCII                          |HTML                         |
-|----------------|-------------------------------|-----------------------------|
-|Single backticks|`'Isn't this fun?'`            |'Isn't this fun?'            |
-|Quotes          |`"Isn't this fun?"`            |"Isn't this fun?"            |
-|Dashes          |`-- is en-dash, --- is em-dash`|-- is en-dash, --- is em-dash|
-
-
-## KaTeX
-
-You can render LaTeX mathematical expressions using [KaTeX](https://khan.github.io/KaTeX/):
-
-The *Gamma function* satisfying $\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$ is via the Euler integral
-
-$$
-\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
-$$
-
-> You can find more information about **LaTeX** mathematical expressions [here](http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference).
-
-
-## UML diagrams
-
-You can render UML diagrams using [Mermaid](https://mermaidjs.github.io/). For example, this will produce a sequence diagram:
-
+### Flow chart (Bird eye view)
 ```mermaid
-sequenceDiagram
-Alice ->> Bob: Hello Bob, how are you?
-Bob-->>John: How about you John?
-Bob--x Alice: I am good thanks!
-Bob-x John: I am good thanks!
-Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
+graph 
+in[User Line input]
+in --> tokenize(Tokenize line)
+tokenize --> deter_builtin{Determine builtin command}
+deter_builtin -- yes --> process_builtin(Process command and produce output)
+process_builtin --> store_history
+deter_builtin -- no --> parse
+parse --> expand(Expand variables & functions)
+expand --> validate(Validate Tokens)
+validate --> deter_assign_op{Determine Assign operation}
+deter_assign_op -- yes --> eval_and_assign(Evaluate equation and assign to variable map)
+deter_assign_op -- no --> eval_and_display(Evaluate equation)
+eval_and_display --> store_history(Store history)
+eval_and_assign --> store_history(Store history)
+store_history --> out[Console output]
+out --> in
 
-Bob-->Alice: Checking with John...
-Alice->John: Yes... John, how are you?
 ```
 
-And this will produce a flow chart:
+### User input and tokenization
+1. I used the [GNU readline](https://linux.die.net/man/3/readline) library to read user input from console.
+2.  The line is then split into smaller strings based on what type of token they are (Operators? operands? Variables?). The type is determined by the program and the info (token string and type) is stored inside a token vector.
+3. It will then do free form optimization (Adding \* for terms like ab -> a\*b and a(b) -> a\* (b))
 
-```mermaid
-graph LR
-A[Square Rect] -- Link text --> B((Circle))
-A --> C(Round Rect)
-B --> D{Rhombus}
-C --> D
-```
+### Token parsing
+1. The tokenized string is then passed through a parser, where it will give additional context and value to said tokens.
+2. The parser will iterate through the tokenized string
+3. For every token it encounters, it will construct the corresponding class with for the token type. (the token string "124" will become a RationalNumber(1234) class token)
+4. It will also determine if the last token is a question mark `?`. This will tell the evaluator if its a assignment operation or computation operation
+
+### Variable and function expansion
+1. The expander will iterate through the parsed tokens to find and variables and functions that need to be expanded. It will try to expand the variables and functions if possible.
+2. It will validate the position and the value of the tokens in the list
+
+### Evaluation of tokens
+1. Populate the tokens according to BODMAS rules. (Add parentheses around every term which needs to be prioritized first)
+2. Pair the tokens for the binary parse tree
+3. After the tokens are done populated, generate the token evaluation tree using these [rules](https://www.shmoop.com/computer-science/cs-trees/math-expressions.html)
+4. After the parse tree is formed, evaluate the parse tree
