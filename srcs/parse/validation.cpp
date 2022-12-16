@@ -24,11 +24,24 @@ void	validate_tokens(std::vector<BaseAssignmentType *> tokens, bool is_compute_a
 		if ((i != tokens.begin()) && i != tokens.end() - 1 && is_operator(curr_token) && (is_operator(*(i-1)) || is_operator(*(i+1))))
 			throw Ft_error("Operators cant be next to each other");
 
-		// operator cant be nxt to qmark TODO
-  
-		// left of operator cant be left parenthesis TODO
+		if (is_operator(curr_token))
+		{
+			if (i != tokens.end() - 1)
+			{
+				// operator cant be nxt to qmark 
+				if ((*(i + 1))->getType() == Q_MARK) throw Ft_error("Operators cant be next to QMARK");
+				// right of operator cant be right parenthesis 
+				if ((*(i + 1))->getType() == R_PARENTHESIS) throw Ft_error("Right of operator cant be R_PARENTHESES");
+			}
+			if (i != tokens.begin())
+			{
+				// operator cant be nxt to qmark 
+				if ((*(i - 1))->getType() == Q_MARK) throw Ft_error("Operators cant be next to QMARK");
+				// left of operator cant be left parenthesis 
+				if ((*(i - 1))->getType() == L_PARENTHESIS) throw Ft_error("Left of operator cant be L_PARENTHESES");
+			}
 
-		// right of operator cant be right parenthesis TODO
+		}
 
 		// operators cant be at the end 
 		if (is_operator(curr_token) && i == tokens.end() - 1) throw Ft_error("Term expected after operator");
