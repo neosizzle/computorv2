@@ -7,7 +7,7 @@ INCS_OPS = inc/mixed_operators
 INCS_READLINE = /usr/local/opt/readline/include
 BUILDDIR=build/
 CPP_INCS= -I${INCS_ROOT} -I${INCS_CORE} -I${INCS_MISC} -I${INCS_OPS} -I${INCS_READLINE}
-CPP_FLAGS = -lreadline -L/usr/local/opt/readline/lib -lm -Wall -Wextra
+CPP_FLAGS = -lreadline -L/usr/local/opt/readline/lib -lm 
 SRCS = ${wildcard srcs/*.cpp srcs/parse/*.cpp srcs/os/*.cpp srcs/evaluate/*.cpp srcs/misc/*.cpp srcs/builtins/*.cpp srcs/mixed_operators/*.cpp srcs/core_types/*.cpp srcs/polynomial/*.cpp}
 OBJS= ${SRCS:.cpp=.o}
 OBJS_TARGET=${addprefix ${BUILDDIR},${subst /,_,${OBJS}}}
@@ -21,20 +21,19 @@ PURPLE=\033[0;35m
 CYAN=\033[0;36m
 NC=\033[0m # No Color
 
+# @${CPP} ${SRCS} ${CPP_FLAGS} -o ${NAME}
+# g++  build/*.o -fsanitize=address -Iinc -Iinc/core_types -Iinc/misc_types -Iinc/mixed_operators -I/usr/local/opt/readline/include -lreadline -L/usr/local/opt/readline/lib -lm
 all : ${NAME}
-	@echo "${GREEN}✔️  Done building..${NC}"
+	@echo "${GREEN}✔️  Done compiling..${NC}"
 
 bonus : ${NAME}
 
-${NAME}: ${OBJS_TARGET}
+${NAME}: ${SRCS} ${OBJS}
 	@echo "${GREEN}📇  Compiling All sources..${NC}"
-	@echo "${GREEN}😏  Linking..${NC}"
-	@${CPP} ${BUILDDIR}*.o ${CPP_FLAGS} -o ${NAME}
+	@echo "Linking..."
+	@${CPP} ${BUILDDIR}*.o ${CPP_FLAGS}-o ${NAME}
 
-build/%.o : ${OBJS}
-	@echo "${GREEN}📇  Compile finish..${NC}"
-
-.cpp.o :
+.cpp.o : 
 	@echo "${GREEN}📇  Compiling $<..${NC}"
 	@${CPP} ${CPP_FLAGS} -c ${CPP_INCS} $< -o ${BUILDDIR}${subst /,_,$@}
 

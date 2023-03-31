@@ -18,11 +18,11 @@ void	ft_perror(Ft_error err);
 */
 void	Matrix::add_row(std::vector<BaseAssignmentType *> row)
 {
-	if (this->num_cols != 0 && row.size() != this->num_cols)
+	if (this->num_cols != 0 && std::size_t(row.size()) != this->num_cols)
 		throw Ft_error("Invalid row to add");
 	this->matrix.push_back(row);
 	++this->num_rows;
-	this->num_cols = row.size();
+	this->num_cols = std::size_t(row.size());
 }
 
 /**

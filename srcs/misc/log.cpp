@@ -112,7 +112,7 @@ static void	print_tree_helper(ParseTreeNode *curr, int space)
 	print_tree_helper(curr->right, space);
 
 	// print
-	for (size_t i = 0; i < space; i++)
+	for (int i = 0; i < space; i++)
 		std::cout << " ";
 	
 	std::cout << curr->toString() << "\n";

@@ -198,7 +198,6 @@ static void	token_pairing(std::vector<BaseAssignmentType *> &tokens, std::vector
 	int start_offset;
 	int	end_offset;
 	int	curr_end_offset;
-	int	curr_start_offset;
 
 	curr_start = start;
 	curr_end = start;
@@ -212,7 +211,6 @@ static void	token_pairing(std::vector<BaseAssignmentType *> &tokens, std::vector
 			curr_end = find_parenthesis_pair(curr_start, end);
 
 			// save iterators
-			// curr_start_offset = curr_start - tokens.begin();
 			curr_end_offset = tokens.end() - curr_end;
 
 			// recursive call and trim parenthesis

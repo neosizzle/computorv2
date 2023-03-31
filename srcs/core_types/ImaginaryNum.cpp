@@ -221,6 +221,7 @@ BaseAssignmentType *ImaginaryNumber::pow(BaseAssignmentType *rhs)
 
 BaseAssignmentType *ImaginaryNumber::matmult(BaseAssignmentType *rhs)
 {
+	(void) rhs;
 	return nullptr;
 }
 
@@ -323,7 +324,7 @@ ImaginaryNumber ImaginaryNumber::operator/(ImaginaryNumber rhs)
 		}
 		res.power = 1;
 	}
-	else if (lhs_simplified.power == 0 && rhs_simplified.power == 1 || lhs_simplified.power == 1 && rhs_simplified.power == 1)
+	else if ((lhs_simplified.power == 0 && rhs_simplified.power == 1) || (lhs_simplified.power == 1 && rhs_simplified.power == 1))
 	{
 		ImaginaryNumber inverse(rhs_simplified);
 		inverse.imaginary_part = inverse.imaginary_part * -1;

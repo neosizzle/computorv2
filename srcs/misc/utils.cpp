@@ -19,12 +19,12 @@
  */
 std::size_t find_delims_in_str(std::string string, std::vector<std::string> delims, int &found_delim_pos)
 {
-	int	i;
+	std::size_t	i;
 	std::size_t res;
 
-	i = -1;
+	i = 0;
 	res = std::string::npos;
-	while (++i < delims.size())
+	while (i++ < delims.size())
 	{
 		res = string.find(delims[i]);
 		if (res != std::string::npos)
@@ -192,10 +192,10 @@ std::vector<BaseAssignmentType *> clone_tokens(std::vector<BaseAssignmentType *>
 {
 	std::vector<BaseAssignmentType *> res;
 	BaseAssignmentType *temp;
-	int	i;
+	std::size_t	i;
 
-	i = -1;
-	while(++i < tokens.size()){
+	i = 0;
+	while(i++ < tokens.size()){
 		temp = clone_token(tokens[i]);
 		res.push_back(temp);
 	}

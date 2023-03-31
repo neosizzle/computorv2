@@ -36,12 +36,12 @@ std::string Function::toString()
     return tokens_to_str(this->tokens.begin(), this->tokens.end());
 }
 
-BaseAssignmentType * Function::add(BaseAssignmentType *rhs){return nullptr;}
-BaseAssignmentType * Function::sub(BaseAssignmentType *rhs){return nullptr;}
-BaseAssignmentType * Function::mult(BaseAssignmentType *rhs){return nullptr;}
-BaseAssignmentType * Function::div(BaseAssignmentType *rhs){return nullptr;}
-BaseAssignmentType * Function::mod(BaseAssignmentType *rhs){return nullptr;}
-BaseAssignmentType * Function::pow(BaseAssignmentType *rhs){return nullptr;}
+BaseAssignmentType * Function::add(BaseAssignmentType *rhs){(void) rhs; return nullptr;}
+BaseAssignmentType * Function::sub(BaseAssignmentType *rhs){(void) rhs; return nullptr;}
+BaseAssignmentType * Function::mult(BaseAssignmentType *rhs){(void) rhs; return nullptr;}
+BaseAssignmentType * Function::div(BaseAssignmentType *rhs){(void) rhs; return nullptr;}
+BaseAssignmentType * Function::mod(BaseAssignmentType *rhs){(void) rhs; return nullptr;}
+BaseAssignmentType * Function::pow(BaseAssignmentType *rhs){(void) rhs; return nullptr;}
 
 /**
  * @brief extract func name from string
@@ -70,7 +70,6 @@ std::string Function::_extract_name(std::string str)
  */
 BaseAssignmentType * Function::_extract_object(std::string str)
 {
-    BaseAssignmentType *res;
     int         type;
     std::string token_str;
     std::size_t pos_lb;

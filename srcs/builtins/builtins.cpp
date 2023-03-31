@@ -14,7 +14,6 @@ void	handle_builtin(std::string line, std::map<std::string, std::string> history
 			std::cout << (*variables_iter).first << " = " << (*variables_iter).second->toString() << "\n";
 			variables_iter++;
 		}
-		
 	}
 	else if (line == "history")
 	{
