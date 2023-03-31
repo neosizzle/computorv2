@@ -76,3 +76,4 @@ out --> in
 1. After result is obtained (usually will just be one token)
 2. If its a computation action, print result to console
 3. If its a assignment action, store result in variable
+4. Record the result and command as history

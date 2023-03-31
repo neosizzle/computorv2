@@ -41,8 +41,14 @@ std::vector<BaseAssignmentType *> parse_tokens(std::vector<TokenBase> tokens)
 		// craete new imaginery number type
 		else if (curr_token_base.type == N_IMAGINARY)
 		{
-		parsed_tokens.push_back(curr_token_base.string.find('.') != std::string::npos ? new ImaginaryNumber((float)atof(curr_token_base.string.c_str()))
-			: new ImaginaryNumber(atoi(curr_token_base.string.c_str())));
+			// edge case for i
+			if (curr_token_base.string == "i")
+				parsed_tokens.push_back(new ImaginaryNumber(1));
+			else
+			{
+				parsed_tokens.push_back(curr_token_base.string.find('.') != std::string::npos ? new ImaginaryNumber((float)atof(curr_token_base.string.c_str()))
+							: new ImaginaryNumber(atoi(curr_token_base.string.c_str())));
+			}
 		}
 		// create new matrix type
 		else if (curr_token_base.type == N_MATRIX)
@@ -140,6 +146,16 @@ std::vector<TokenBase> tokenize(std::string line)
 				.type = found_key_iter->second,
 				.string = std::string(1, CURR_CHAR)
 			});
+
+			// if next up its a -, insert a 0
+			if (*(line_iter + 1) == '-')
+			{
+				tokens.push_back({
+					.type = N_RATIONAL,
+					.string = "0"
+				});
+			}
+			
 			++line_iter;
 			continue;
 		}
@@ -175,6 +191,17 @@ std::vector<TokenBase> tokenize(std::string line)
 				.string = num_str
 			});
 			line_iter += num_str.size();
+			continue;
+		}
+
+		// check for i
+		if (CURR_CHAR == 'i')
+		{
+			tokens.push_back({
+				.type = N_IMAGINARY,
+				.string = "i"
+			});
+			++line_iter;
 			continue;
 		}
 
@@ -245,6 +272,14 @@ std::vector<TokenBase> tokenize(std::string line)
 				i = tokens.insert(i + 1, {.type = OPERATOR_MULT, .string = "*"});
 		}
 	}
+
+	// // edge case for a = -n
+	// if (tokens.size() > 2)
+	// {
+	// 	if (tokens[1].type == OPERATOR_EQ && tokens[2].type == OPERATOR_MINUS)
+	// 		tokens.insert(tokens.begin() + 2, {.type = N_RATIONAL, .string = "0"});
+	// }
+	
 
 	return tokens;
 }

@@ -32,6 +32,9 @@ ImaginaryNumber operator - (RationalNumber lhs, ImaginaryNumber rhs)
 		res.real_part = RationalNumber(lhs.float_value) - rhs.real_part;
 	else
 		res.real_part = RationalNumber(lhs.int_value) - rhs.real_part;
+	
+	if (rhs.real_part == 0)
+		res.imaginary_part = res.imaginary_part * -1;
 	return res;
 }
 

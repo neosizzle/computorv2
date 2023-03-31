@@ -22,6 +22,9 @@ ImaginaryNumber operator * (ImaginaryNumber lhs, RationalNumber rhs);
 // imaginary / rational
 ImaginaryNumber operator / (ImaginaryNumber lhs, RationalNumber rhs);
 
+// imaginary ^ rational
+ImaginaryNumber operator ^ (ImaginaryNumber lhs, RationalNumber rhs);
+
 // imaginary + matrix
 // imaginary - matrix
 

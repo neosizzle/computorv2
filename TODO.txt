@@ -1,7 +1,7 @@
-Complete validation
+can try to convert to =? computation withotu breaking computorv1
+fix makefile
 
 HIGH
-documentation 
+documentation
 more verbose error message
 cleanup
-power 0

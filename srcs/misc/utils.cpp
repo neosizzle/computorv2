@@ -333,7 +333,7 @@ int derive_token_type(std::string str)
 	
 	// check operators
 	auto found_iter = OPERATORS_MAP.find(str);
-	if(found_iter!= OPERATORS_MAP.end()) {
+	if(found_iter != OPERATORS_MAP.end()) {
 		return found_iter->second;
 	}
 

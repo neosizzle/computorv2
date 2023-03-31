@@ -64,11 +64,17 @@ ImaginaryNumber operator / (ImaginaryNumber lhs, RationalNumber rhs)
 ImaginaryNumber operator ^ (ImaginaryNumber lhs, RationalNumber rhs)
 {
 	ImaginaryNumber res(lhs);
+	RationalNumber newPower = RationalNumber(lhs.power) + rhs;
 
 	if (rhs.is_float)
 		res.real_part = lhs.real_part ^ RationalNumber(rhs.float_value);
 	else
 		res.real_part = lhs.real_part ^ RationalNumber(rhs.int_value);
+	
+	if (newPower.is_float)
+		res.power = newPower.float_value;
+	else
+		res.power = newPower.int_value;
 	return res;
 }
 

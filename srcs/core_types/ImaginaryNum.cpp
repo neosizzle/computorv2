@@ -47,8 +47,38 @@ std::string ImaginaryNumber::toString()
 	if (cycle == 1)
 	{
 		if (real_part != RationalNumber(0))
-			res.append(real_part.toString() + "+");
-		res.append(imaginary_part.toString() + "i");
+		{
+			if (imaginary_part.int_value >= 0)
+			{
+				if (imaginary_part.int_value != 0)
+					res.append(real_part.toString() + "+");
+				else
+					res.append(real_part.toString());
+			}
+			else
+				res.append(real_part.toString());
+
+			if (imaginary_part != RationalNumber(0))
+			{
+				if (imaginary_part == RationalNumber(1))
+					res.append("i");
+				else if (imaginary_part == RationalNumber(-1))
+					res.append("-i");
+				else
+					res.append(imaginary_part.toString() + "i");
+			}
+		}
+		else
+		{
+			if (imaginary_part == RationalNumber(1))
+				res.append("i");
+			else if (imaginary_part == RationalNumber(-1))
+				res.append("-i");
+			else if (imaginary_part == RationalNumber(0))
+				res.append("0");
+			else
+				res.append(imaginary_part.toString() + "i");
+		}
 	}
 	// a + b(-1) = a - b
 	else if (cycle == 2)
@@ -63,7 +93,12 @@ std::string ImaginaryNumber::toString()
 	{
 		if (real_part != RationalNumber(0))
 			res.append(real_part.toString());
-		res.append("-" + imaginary_part.toString() + "i");
+		if (imaginary_part == RationalNumber(1))
+			res.append("-i");
+		else if (imaginary_part == RationalNumber(-1))
+			res.append("i");
+		else if (imaginary_part != RationalNumber(0))
+			res.append("-" + imaginary_part.toString() + "i");
 	}
 	// a + b(1) = a + b
 	else if (cycle == 0)
@@ -178,7 +213,7 @@ BaseAssignmentType *ImaginaryNumber::pow(BaseAssignmentType *rhs)
 	else if (rhs->getType() == N_RATIONAL)
 	{
 		RationalNumber *curr_token = dynamic_cast<RationalNumber *>(rhs);
-		ImaginaryNumber res = *this ^ *(curr_token);
+		ImaginaryNumber res = *this ^ RationalNumber(*curr_token);
 		return new ImaginaryNumber(res);
 	}
 	return nullptr;
