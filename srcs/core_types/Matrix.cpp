@@ -18,11 +18,11 @@ void	ft_perror(Ft_error err);
 */
 void	Matrix::add_row(std::vector<BaseAssignmentType *> row)
 {
-	if (this->num_cols != 0 && std::size_t(row.size()) != this->num_cols)
+	if (this->num_cols != 0 && row.size() != std::size_t(this->num_cols))
 		throw Ft_error("Invalid row to add");
 	this->matrix.push_back(row);
 	++this->num_rows;
-	this->num_cols = std::size_t(row.size());
+	this->num_cols = row.size();
 }
 
 /**
@@ -56,10 +56,10 @@ Matrix Matrix::_term_to_term_mult(Matrix m)
 	if ((m.get_num_cols() != this->num_cols) || (m.get_num_rows() != this->num_rows))
 		throw Ft_error("Expecting equal dimension matrix");
 
-	for (size_t row_num = 0; row_num < m.get_num_rows(); row_num++)
+	for (int row_num = 0; row_num < m.get_num_rows(); row_num++)
 	{
 		std::vector<BaseAssignmentType *> row;
-		for (size_t col_num = 0; col_num < m.get_num_cols(); col_num++)
+		for (int col_num = 0; col_num < m.get_num_cols(); col_num++)
 		{
 			BaseAssignmentType *curr_term;
 
@@ -87,7 +87,7 @@ BaseAssignmentType * Matrix::_get_dot_product(Matrix lhs, Matrix rhs, int res_ro
 	res = new RationalNumber(0);
 
 	// loop through each column of lhs at res_row
-	for (size_t i = 0; i < lhs.get_num_cols(); i++)
+	for (int i = 0; i < lhs.get_num_cols(); i++)
 	{
 		BaseAssignmentType *curr_num_lhs = lhs.matrix[res_row][i];
 		BaseAssignmentType *curr_num_rhs = rhs.matrix[i][res_col];
@@ -140,15 +140,15 @@ BaseAssignmentType * Matrix::get_determinant(Matrix mat)
 	}
 
 	// for every col in first list
-	for (size_t first_row_col = 0; first_row_col < mat.get_num_cols(); first_row_col++)
+	for (int first_row_col = 0; first_row_col < mat.get_num_cols(); first_row_col++)
 	{
 		// form another matrix w/o row and col
 		Matrix child;
-		for (size_t child_row_num = 1; child_row_num < mat.get_num_rows(); child_row_num++)
+		for (int child_row_num = 1; child_row_num < mat.get_num_rows(); child_row_num++)
 		{
 			std::vector<BaseAssignmentType *> child_row;
 
-			for (size_t child_col = 0; child_col < mat.get_num_cols(); child_col++)
+			for (int child_col = 0; child_col < mat.get_num_cols(); child_col++)
 			{
 				// if current child col is equal to first row col, continue
 				if (child_col == first_row_col) continue ;
@@ -261,12 +261,12 @@ Matrix Matrix::transpose_matrix(Matrix mat)
 	Matrix child_matrix;
 
 	//iterate from first row
-	for (size_t child_mat_row = 1; child_mat_row < mat.get_num_rows(); child_mat_row++)
+	for (int child_mat_row = 1; child_mat_row < mat.get_num_rows(); child_mat_row++)
 	{
 		std::vector<BaseAssignmentType *> row;
 
 		// iterator from first column
-		for (size_t child_mat_col = 1; child_mat_col < mat.get_num_cols(); child_mat_col++)
+		for (int child_mat_col = 1; child_mat_col < mat.get_num_cols(); child_mat_col++)
 			row.push_back(clone_token(mat.matrix[child_mat_row][child_mat_col]));
 		child_matrix.add_row(row);
 	}
@@ -275,10 +275,10 @@ Matrix Matrix::transpose_matrix(Matrix mat)
 	Matrix child_transposed = this->transpose_matrix(child_matrix);
 
 	// once return, apply new elements to input matrix's submatrix
-	for (size_t child_mat_row = 0; child_mat_row < child_transposed.get_num_rows(); child_mat_row++)
+	for (int child_mat_row = 0; child_mat_row < child_transposed.get_num_rows(); child_mat_row++)
 	{
 		// free here?
-		for (size_t child_mat_col = 0; child_mat_col < child_transposed.get_num_cols(); child_mat_col++)
+		for (int child_mat_col = 0; child_mat_col < child_transposed.get_num_cols(); child_mat_col++)
 		{
 			free_token(mat.matrix[child_mat_row + 1][child_mat_col + 1]);
 			mat.matrix[child_mat_row + 1][child_mat_col + 1] = clone_token(child_transposed.matrix[child_mat_row][child_mat_col]); 
@@ -287,7 +287,7 @@ Matrix Matrix::transpose_matrix(Matrix mat)
 		
 
 	// loop through first row and switch values with column
-	for (size_t mat_row = 0; mat_row < mat.get_num_rows(); mat_row++)
+	for (int mat_row = 0; mat_row < mat.get_num_rows(); mat_row++)
 	{
 		BaseAssignmentType *temp;
 		BaseAssignmentType *aux;
@@ -318,9 +318,9 @@ Matrix *Matrix::get_inverse_matrix(Matrix mt)
 	Matrix minors(this->_get_minors(mt));
 
 	// get matrix of cofactors
-	for (size_t row = 0; row < minors.get_num_rows(); row++)
+	for (int row = 0; row < minors.get_num_rows(); row++)
 	{
-		for (size_t col = 0; col < minors.get_num_cols(); col++)
+		for (int col = 0; col < minors.get_num_cols(); col++)
 		{
 			// (if row is even and col is odd) or (row is odd and col is even)
 			if ((row % 2 == 0 && col % 2 != 0) || (row % 2 != 0 && col % 2 == 0))
@@ -375,7 +375,7 @@ std::string Matrix::toString()
 		for (size_t col = 0; col < this->matrix[row].size(); col++)
 		{
 			res.append(" " + this->matrix[row][col]->toString() + " ");
-			if (col + 1 !=  this->matrix[row].size())
+			if (std::size_t(col + 1) !=  this->matrix[row].size())
 				res.append(",");
 		}
 		res.append("]\n");
@@ -452,8 +452,8 @@ BaseAssignmentType * Matrix::div(BaseAssignmentType *rhs){
 	}
 	return nullptr;
 }
-BaseAssignmentType * Matrix::mod(BaseAssignmentType *rhs){return nullptr;}
-BaseAssignmentType * Matrix::pow(BaseAssignmentType *rhs){return nullptr;}
+BaseAssignmentType * Matrix::mod(BaseAssignmentType *rhs){(void) rhs; return nullptr;}
+BaseAssignmentType * Matrix::pow(BaseAssignmentType *rhs){(void) rhs; return nullptr;}
 
 BaseAssignmentType * Matrix::matmult(BaseAssignmentType *rhs){
 	if (rhs->getType() == N_MATRIX)
@@ -475,10 +475,10 @@ Matrix Matrix::operator+(const Matrix &rhs)
 
 	if ((this->num_rows != rhs.num_rows) || (this->num_cols != rhs.num_cols)) 
 		throw Ft_error("Cannot perform operation on bad size");
-	for (size_t i = 0; i < this->num_rows; i++)
+	for (int i = 0; i < this->num_rows; i++)
 	{
 		std::vector<BaseAssignmentType *> row;
-		for (size_t j = 0; j < this->num_cols; j++)
+		for (int j = 0; j < this->num_cols; j++)
 		{
 			try
 			{
@@ -503,10 +503,10 @@ Matrix Matrix::operator-(const Matrix &rhs)
 
 	if ((this->num_rows != rhs.num_rows) || (this->num_cols != rhs.num_cols)) 
 		throw Ft_error("Cannot perform operation on bad size");
-	for (size_t i = 0; i < this->num_rows; i++)
+	for (int i = 0; i < this->num_rows; i++)
 	{
 		std::vector<BaseAssignmentType *> row;
-		for (size_t j = 0; j < this->num_cols; j++)
+		for (int j = 0; j < this->num_cols; j++)
 		{
 			try
 			{
@@ -536,10 +536,10 @@ Matrix Matrix::operator*(const Matrix &rhs)
 	total_rows = this->get_num_rows();
 	total_cols = rhs.get_num_cols();
 
-	for (size_t curr_row_num = 0; curr_row_num < total_rows; curr_row_num++)
+	for (int curr_row_num = 0; curr_row_num < total_rows; curr_row_num++)
 	{
 		std::vector<BaseAssignmentType *> row;
-		for (size_t curr_col_num = 0; curr_col_num < total_cols; curr_col_num++)
+		for (int curr_col_num = 0; curr_col_num < total_cols; curr_col_num++)
 		{
 			row.push_back(this->_get_dot_product(*this, rhs, curr_row_num, curr_col_num));
 		}
@@ -627,21 +627,24 @@ Matrix::Matrix(std::string str)
 	std::vector<std::string> row_strs;
 	int	row_idx;
 	int	col_idx;
+	int is_neg;
 
+	is_neg = 0;
 	row_idx = -1;
 
+	if (str[0] == '-') is_neg = 1;
 	// trim first and last brackets
 	std::string::iterator new_end =  std::remove_if(str.begin(), str.end(), isspace);
 	// remove_if changes end() pointer
 	str.erase(new_end, str.end());
-	str.erase(0, 1);
+	str.erase(0, 1 + is_neg);
 	str.erase(str.size() - 1);
 
 	// split the string into row strings by ';'
 	row_strs = ft_split(str, {";"});
 
 	// loop through rows
-	while (++row_idx < row_strs.size())
+	while (std::size_t(++row_idx) < row_strs.size())
 	{
 		std::vector<std::string> col_strs;
 		std::vector<BaseAssignmentType *> row;
@@ -659,15 +662,15 @@ Matrix::Matrix(std::string str)
 		// generate columns
 		col_strs = ft_split(row_str, {","});
 		col_idx = -1;
-		while (++col_idx < col_strs.size())
+		while (std::size_t(++col_idx) < col_strs.size())
 		{
 			// generate token
 			const int type = derive_token_type(col_strs[col_idx]);
 
 			// for now, only accept rational number and imaginary number
 			if (type != N_RATIONAL && type != N_IMAGINARY) throw Ft_error("Matrix only accepts rational numbers");
-			else if (type == N_RATIONAL) token = new RationalNumber(atoi(col_strs[col_idx].c_str()));
-			else if (type == N_IMAGINARY) token = new ImaginaryNumber(atoi(col_strs[col_idx].c_str()));	
+			else if (type == N_RATIONAL) token = new RationalNumber(atoi(col_strs[col_idx].c_str()) * (is_neg? -1 : 1));
+			else if (type == N_IMAGINARY) token = new ImaginaryNumber(atoi(col_strs[col_idx].c_str()) * (is_neg? -1 : 1));	
 
 			row.push_back(token);
 		}

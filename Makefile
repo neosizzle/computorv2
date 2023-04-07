@@ -27,7 +27,6 @@ all : ${NAME}
 bonus : ${NAME}
 
 ${NAME}: ${OBJS_TARGET}
-	@echo "${GREEN}📇  Compiling All sources..${NC}"
 	@echo "${GREEN}😏  Linking..${NC}"
 	@${CPP} ${BUILDDIR}*.o ${CPP_FLAGS} -o ${NAME}
 

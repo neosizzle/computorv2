@@ -4,6 +4,18 @@ std::string solution_to_str(Solution sol)
 {
 	std::string res;
 
+	// print all possible solutions
+	if (sol.all_interger_solution && sol.for_degree == 0)
+	{
+		res += (std::string(BOLDWHITE) + std::string("Number of solutions: " )+ std::string(RESET) + "All integers");
+		return res;
+	}
+	else if (!sol.all_interger_solution && sol.for_degree == 0)
+	{
+		res += (std::string(BOLDWHITE) + std::string("Number of solutions: " )+ std::string(RESET) + "Impossible");
+		return res;
+	}
+
 	// print number of solutions
 	res += std::string(BOLDWHITE) + std::string("Number of solutions: " )+ std::string(RESET) + std::to_string(sol.num_sols) + "\n";
 
@@ -36,12 +48,3 @@ std::string solution_to_str(Solution sol)
 	}
 	return res;
 }
-/**
- * @brief prints something without typing std::cout
- * 
- * @param message 
- */
-// void print(std::string message)
-// {
-// 	std::cout << message << "\n";
-// }

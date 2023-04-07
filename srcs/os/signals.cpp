@@ -10,8 +10,8 @@
  */
 void sigint_handler(int signal)
 {
-	
-	std::cout << signal << "\n";
+	if (!signal) return;
+	std::cout << "\n";
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();

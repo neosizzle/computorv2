@@ -34,7 +34,9 @@ public:
 	float imaginary_coefficient;
 	int num_sols;
 	bool neg_discriminant;
+	bool zero_discriminant;
 	int for_degree;
+	int all_interger_solution;
 };
 
 /**
@@ -62,7 +64,7 @@ extern std::vector<char> TERM_SYMBOLS;
  * @brief Math utils
  *
  */
-int ft_abs(int a, int b);
+float ft_abs(float a, float b);
 float ft_sqrt(float x, float guess);
 float ft_pow(float a, int power);
 Solution evaluate_equation(std::vector<Term> terms);
@@ -72,7 +74,7 @@ Solution evaluate_equation(std::vector<Term> terms);
  *
  */
 bool compare_powers(Term one, Term two);
-int count_digit(int number);
+int scount_digit(const char *str);
 
 /**
  * @brief Term operations

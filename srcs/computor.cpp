@@ -1,5 +1,7 @@
 #include "computor.hpp"
 
+// dev remove this
+void print_unparsed_tokens(std::vector<TokenBase> tokens);
 
 void computor()
 {
@@ -52,6 +54,8 @@ void computor()
 				continue ;
 			}
 			
+			// print_unparsed_tokens(tokenize(line));
+
 			// determine if last token is qmark
 			if(tokens.size() > 1 && tokens.back()->getType() == Q_MARK )
 				is_compute_action = true;

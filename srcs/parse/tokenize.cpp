@@ -17,6 +17,7 @@
 #include "ft_error.hpp"
 #include "Function.hpp"
 
+void	free_tokens(std::vector<BaseAssignmentType *> tokens);
 // ADD TYPE
 /**
  * @brief Creates a list of typed value tokens
@@ -28,55 +29,64 @@ std::vector<BaseAssignmentType *> parse_tokens(std::vector<TokenBase> tokens)
 {
 	std::vector<BaseAssignmentType *> parsed_tokens;
 
-	for (std::vector<TokenBase>::iterator iter = tokens.begin(); iter != tokens.end(); ++iter)
+	try
 	{
-		const TokenBase curr_token_base = *iter;
+		for (std::vector<TokenBase>::iterator iter = tokens.begin(); iter != tokens.end(); ++iter)
+		{
+			const TokenBase curr_token_base = *iter;
 
-		// create new rational number type
-		if (curr_token_base.type == N_RATIONAL)
-		{
-		parsed_tokens.push_back(curr_token_base.string.find('.') != std::string::npos ? new RationalNumber((float)atof(curr_token_base.string.c_str()))
-			: new RationalNumber(atoi(curr_token_base.string.c_str())));
-		}
-		// craete new imaginery number type
-		else if (curr_token_base.type == N_IMAGINARY)
-		{
-			// edge case for i
-			if (curr_token_base.string == "i")
-				parsed_tokens.push_back(new ImaginaryNumber(1));
+			// create new rational number type
+			if (curr_token_base.type == N_RATIONAL)
+			{
+			parsed_tokens.push_back(curr_token_base.string.find('.') != std::string::npos ? new RationalNumber((float)atof(curr_token_base.string.c_str()))
+				: new RationalNumber(atoi(curr_token_base.string.c_str())));
+			}
+			// craete new imaginery number type
+			else if (curr_token_base.type == N_IMAGINARY)
+			{
+				// edge case for i
+				if (curr_token_base.string == "i")
+					parsed_tokens.push_back(new ImaginaryNumber(1));
+				else
+				{
+					parsed_tokens.push_back(curr_token_base.string.find('.') != std::string::npos ? new ImaginaryNumber((float)atof(curr_token_base.string.c_str()))
+								: new ImaginaryNumber(atoi(curr_token_base.string.c_str())));
+				}
+			}
+			// create new matrix type
+			else if (curr_token_base.type == N_MATRIX)
+			{
+			parsed_tokens.push_back(curr_token_base.string.find('.') != std::string::npos ? new Matrix(curr_token_base.string)
+				: new Matrix(curr_token_base.string));
+			}
+			// create new operator type
+			else if (OPERATORS_MAP.find(curr_token_base.string) != OPERATORS_MAP.end())
+				parsed_tokens.push_back(new Operator(curr_token_base.string));
+			// create new variable type
+			else if (curr_token_base.type == VAR)
+				parsed_tokens.push_back(new Variable(curr_token_base.string));
+			// create parentheses type
+			else if (curr_token_base.type == L_PARENTHESIS || curr_token_base.type == R_PARENTHESIS)
+				parsed_tokens.push_back(new Parenthesis(curr_token_base.string));
+			// create qmark type
+			else if (curr_token_base.type == Q_MARK)
+				parsed_tokens.push_back(new QMark());
+			// create function type
+			else if (curr_token_base.type == FUNC)
+				parsed_tokens.push_back(new Function(curr_token_base.string));
+			// others
 			else
 			{
-				parsed_tokens.push_back(curr_token_base.string.find('.') != std::string::npos ? new ImaginaryNumber((float)atof(curr_token_base.string.c_str()))
-							: new ImaginaryNumber(atoi(curr_token_base.string.c_str())));
+				parsed_tokens.push_back(nullptr);
 			}
 		}
-		// create new matrix type
-		else if (curr_token_base.type == N_MATRIX)
-		{
-		parsed_tokens.push_back(curr_token_base.string.find('.') != std::string::npos ? new Matrix(curr_token_base.string)
-			: new Matrix(curr_token_base.string));
-		}
-		// create new operator type
-		else if (OPERATORS_MAP.find(curr_token_base.string) != OPERATORS_MAP.end())
-			parsed_tokens.push_back(new Operator(curr_token_base.string));
-		// create new variable type
-		else if (curr_token_base.type == VAR)
-			parsed_tokens.push_back(new Variable(curr_token_base.string));
-		// create parentheses type
-		else if (curr_token_base.type == L_PARENTHESIS || curr_token_base.type == R_PARENTHESIS)
-			parsed_tokens.push_back(new Parenthesis(curr_token_base.string));
-		// create qmark type
-		else if (curr_token_base.type == Q_MARK)
-			parsed_tokens.push_back(new QMark());
-		// create function type
-		else if (curr_token_base.type == FUNC)
-			parsed_tokens.push_back(new Function(curr_token_base.string));
-		// others
-		else
-		{
-			parsed_tokens.push_back(nullptr);
-		}
 	}
+	catch(const Ft_error &e)
+	{
+		free_tokens(parsed_tokens);
+		throw e;
+	}
+	
 	return parsed_tokens;
 }
 
@@ -98,9 +108,10 @@ std::vector<TokenBase> tokenize(std::string line)
 	while (line_iter != line.end())
 	{
 		const char CURR_CHAR = *line_iter;
+		const char NEXT_CHAR = *(line_iter + 1);
 
 		// check for **
-		if (CURR_CHAR == '*' && *(line_iter + 1) == '*')
+		if (CURR_CHAR == '*' && NEXT_CHAR == '*')
 		{
 			tokens.push_back({
 				.type = OPERATOR_MAT_MULT,
@@ -111,13 +122,18 @@ std::vector<TokenBase> tokenize(std::string line)
 		}
 
 		// check for matrix
-		if (CURR_CHAR == '[')
+		if (
+			CURR_CHAR == '[' || 
+			(CURR_CHAR == '-' && NEXT_CHAR == '[')
+			)
 		{
 			int bracket_stack;
 			std::string::iterator mat_iter;
 
+			// TODO handle negative matrix
 			bracket_stack = 1;
 			mat_iter = line_iter + 1;
+			if (CURR_CHAR == '-') ++mat_iter;
 			while (mat_iter != line.end() && bracket_stack != 0)
 			{
 				if (*mat_iter == '[')
@@ -136,32 +152,11 @@ std::vector<TokenBase> tokenize(std::string line)
 			continue;
 		}
 
-		// check for lex tokens
-		std::map<std::string, int>::const_iterator found_key_iter =
-			LEX_TOKENS_MAP.find(std::string(1, CURR_CHAR));
-
-		if (found_key_iter != LEX_TOKENS_MAP.end())
-		{
-			tokens.push_back({
-				.type = found_key_iter->second,
-				.string = std::string(1, CURR_CHAR)
-			});
-
-			// if next up its a -, insert a 0
-			if (*(line_iter + 1) == '-')
-			{
-				tokens.push_back({
-					.type = N_RATIONAL,
-					.string = "0"
-				});
-			}
-			
-			++line_iter;
-			continue;
-		}
-
 		// check for number if char isdigit
-		if (isdigit(CURR_CHAR))
+		if (
+			isdigit(CURR_CHAR) || 
+			(CURR_CHAR == '-' && isdigit(NEXT_CHAR))
+			)
 		{
 			// extract number
 			int is_imaginery;
@@ -169,6 +164,7 @@ std::vector<TokenBase> tokenize(std::string line)
 
 			is_imaginery = 0;
 			num_iter = line_iter;
+			if (CURR_CHAR == '-') ++num_iter;
 			while (num_iter != line.end() && isdigit(*num_iter))
 				++num_iter;
 
@@ -186,11 +182,55 @@ std::vector<TokenBase> tokenize(std::string line)
 			}
 
 			const std::string num_str = std::string(line_iter, num_iter);
+
+			// if prev token is not operator, push +
+			if (line_iter != line.begin())
+			{
+				const char PREV_CHAR = *(line_iter - 1);
+				std::map<std::string, int>::const_iterator found_key_iter =
+				LEX_TOKENS_MAP.find(std::string(1, PREV_CHAR));
+
+				if (found_key_iter == LEX_TOKENS_MAP.end())
+				{
+					tokens.push_back({
+						.type = OPERATOR_PLUS,
+						.string = "+"
+					});
+				}
+			}
+			
 			tokens.push_back({
 				.type = is_imaginery ? N_IMAGINARY : N_RATIONAL,
 				.string = num_str
 			});
 			line_iter += num_str.size();
+			continue;
+		}
+
+		// check for lex tokens
+		std::map<std::string, int>::const_iterator found_key_iter =
+			LEX_TOKENS_MAP.find(std::string(1, CURR_CHAR));
+
+		if (found_key_iter != LEX_TOKENS_MAP.end())
+		{
+			// if current is a -, add + if prev token is non op
+			
+
+			tokens.push_back({
+				.type = found_key_iter->second,
+				.string = std::string(1, CURR_CHAR)
+			});
+
+			// if next up its a -, insert a 0
+			// if (*(NEXT_CHAR) == '-')
+			// {
+			// 	tokens.push_back({
+			// 		.type = N_RATIONAL,
+			// 		.string = "0"
+			// 	});
+			// }
+			
+			++line_iter;
 			continue;
 		}
 

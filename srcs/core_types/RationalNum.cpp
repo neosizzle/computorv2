@@ -123,6 +123,7 @@ BaseAssignmentType * RationalNumber::pow (BaseAssignmentType *rhs)
 
 BaseAssignmentType * RationalNumber::matmult (BaseAssignmentType *rhs)
 {
+	(void) rhs;
 	return nullptr;
 }
 
@@ -159,7 +160,6 @@ RationalNumber RationalNumber::operator*(const RationalNumber &rhs)
 RationalNumber RationalNumber::operator/(const RationalNumber &rhs)
 {
 	RationalNumber res;
-	float divResult;
 
 	if (rhs.float_value == 0 && rhs.int_value == 0)
 		throw Ft_error("Division by 0"); 

@@ -1,5 +1,10 @@
 #include "evaluate.hpp"
 
+//dev remove this
+void print_parsed_tokens(std::vector<BaseAssignmentType *> tokens);
+void print_parsed_tokens_no_format(std::vector<BaseAssignmentType *> tokens);
+void	print_tree(ParseTreeNode *head);
+
 /**
  * @brief Evaluates current token list and returns result to be printed
  * 
@@ -52,9 +57,10 @@ std::string evalaute(std::vector<BaseAssignmentType *> &tokens, bool is_compute_
 	// preprocess tokens (populate and pair tokens)
 	token_preprocess(tokens, is_compute_action);
 
+	// print_parsed_tokens_no_format(tokens);
 	// generate parse tree
 	head = generate_parse_tree(tokens, is_compute_action);
-
+	// print_tree(head);
 	// evaluate parse tree
 	try
 	{
