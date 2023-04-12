@@ -35,7 +35,7 @@ build/%.o : ${OBJS}
 
 .cpp.o :
 	@echo "${GREEN}📇  Compiling $<..${NC}"
-	@${CPP} ${CPP_FLAGS} -c ${CPP_INCS} $< -o ${BUILDDIR}${subst /,_,$@}
+	@${CPP} -c ${CPP_INCS} $< -o ${BUILDDIR}${subst /,_,$@}
 
 clean : 
 	@echo "${YELLOW}🗑️  Removing Objects..${NC}"
