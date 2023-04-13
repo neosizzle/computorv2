@@ -346,7 +346,7 @@ int derive_token_type(std::string str)
 		std::string s(1, str[i]);
 		auto found_iter = OPERATORS_MAP.find(s);
 		if(found_iter != OPERATORS_MAP.end()) {
-			throw Ft_error("Multiple terms to test");
+			throw Ft_error("derive_token_type: Multiple terms to test");
 		}
 	}
 	

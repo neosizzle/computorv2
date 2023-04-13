@@ -142,7 +142,7 @@ std::vector<TokenBase> tokenize(std::string line)
 					--bracket_stack;
 				++mat_iter;
 			}
-			if (bracket_stack != 0) throw Ft_error("Invalid matrix brackets");
+			if (bracket_stack != 0) throw Ft_error("tokenize: Invalid matrix brackets");
 			const std::string mat_str = std::string(line_iter, mat_iter);
 			tokens.push_back({
 				.type = N_MATRIX,
@@ -221,15 +221,6 @@ std::vector<TokenBase> tokenize(std::string line)
 				.string = std::string(1, CURR_CHAR)
 			});
 
-			// if next up its a -, insert a 0
-			// if (*(NEXT_CHAR) == '-')
-			// {
-			// 	tokens.push_back({
-			// 		.type = N_RATIONAL,
-			// 		.string = "0"
-			// 	});
-			// }
-			
 			++line_iter;
 			continue;
 		}
@@ -266,7 +257,7 @@ std::vector<TokenBase> tokenize(std::string line)
 					++var_iter;
 				if (var_iter == line.end())
 				{
-					throw Ft_error("Invalid function syntax");
+					throw Ft_error("tokenize: Invalid function syntax");
 				}
 				
 				if (var_iter != line.end())

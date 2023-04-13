@@ -81,7 +81,7 @@ BaseAssignmentType * Matrix::_get_dot_product(Matrix lhs, Matrix rhs, int res_ro
 	BaseAssignmentType *temp;
 	
 	// if lhs column num != rhs row num, throw err
-	if (lhs.get_num_cols() != rhs.get_num_rows()) throw Ft_error("Invalid matrix for dot product");
+	if (lhs.get_num_cols() != rhs.get_num_rows()) throw Ft_error("Matrix::_get_dot_product: Invalid matrix for dot product");
 
 	// initiaize res
 	res = new RationalNumber(0);
@@ -113,7 +113,7 @@ BaseAssignmentType * Matrix::get_determinant(Matrix mat)
 	BaseAssignmentType *temp;
 
 	// if matrix is not square, throw error
-	if (mat.get_num_cols() != mat.get_num_rows()) throw Ft_error("Expected square matrix");
+	if (mat.get_num_cols() != mat.get_num_rows()) throw Ft_error("Matrix::get_determinant: Expected square matrix");
 
 	res = new RationalNumber(0);
 
@@ -251,7 +251,7 @@ Matrix Matrix::transpose_matrix(Matrix mat)
 {
 
 	// throw error if not a square matrix
-	if (mat.get_num_cols() != mat.get_num_rows()) throw Ft_error("Square matrix expected");
+	if (mat.get_num_cols() != mat.get_num_rows()) throw Ft_error("Matrix::transpose_matrix: Square matrix expected");
 
 	// base case - mat has 1 row and 1 col
 	if (mat.get_num_cols() == 1 && mat.get_num_rows() == 1)
@@ -474,7 +474,7 @@ Matrix Matrix::operator+(const Matrix &rhs)
 	BaseAssignmentType *curr_res;
 
 	if ((this->num_rows != rhs.num_rows) || (this->num_cols != rhs.num_cols)) 
-		throw Ft_error("Cannot perform operation on bad size");
+		throw Ft_error("Matrix::operator+: Cannot perform operation on bad size");
 	for (int i = 0; i < this->num_rows; i++)
 	{
 		std::vector<BaseAssignmentType *> row;
@@ -502,7 +502,7 @@ Matrix Matrix::operator-(const Matrix &rhs)
 	BaseAssignmentType *curr_res;
 
 	if ((this->num_rows != rhs.num_rows) || (this->num_cols != rhs.num_cols)) 
-		throw Ft_error("Cannot perform operation on bad size");
+		throw Ft_error("Matrix::operator-: Cannot perform operation on bad size");
 	for (int i = 0; i < this->num_rows; i++)
 	{
 		std::vector<BaseAssignmentType *> row;
@@ -595,7 +595,7 @@ void	Matrix::set_matrix(std::vector<std::vector<BaseAssignmentType *>> matrix)
 	for (size_t i = 1; i < matrix.size(); ++i)
 	{
 		if (matrix[i].size() != matrix[i - 1].size())
-			throw Ft_error("Invalid matrix to be set");
+			throw Ft_error("Matrix::set_matrix: Invalid matrix to be set");
 	}
 	
 

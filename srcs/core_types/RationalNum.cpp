@@ -172,7 +172,7 @@ RationalNumber RationalNumber::operator/(const RationalNumber &rhs)
 	RationalNumber res;
 
 	if (rhs.float_value == 0 && rhs.int_value == 0)
-		throw Ft_error("Division by 0"); 
+		throw Ft_error("RationalNumber::operator/: Division by 0"); 
 	res.int_value = this->int_value / rhs.int_value;
 	res.float_value = this->float_value / rhs.float_value;
 	if (this->float_value != 0 && this->int_value % rhs.int_value == 0 &&
