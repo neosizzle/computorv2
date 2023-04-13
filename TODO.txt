@@ -1,5 +1,4 @@
 negative matrices
-memleak invalid matrices a = [[2+1 , 2]]
 
 HIGH
 documentation

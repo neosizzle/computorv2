@@ -1,5 +1,5 @@
 # Computorv2
- **ComputorV2**. Is calculator shell which is inspired by the unix program; [bc](https://manpages.ubuntu.com/manpages/impish/man1/bc.1.html).
+ **ComputorV2**. Is calculator shell which is inspired by the unix program; [bc](https://manpages.ubuntu.com/manpages/impish/man1/bc.1.html) and the Lisp interperter.
 
 ![image](https://github.com/neosizzle/computorv2/blob/main/demo.gif)
 
@@ -66,7 +66,7 @@ out --> in
 1. The expander will iterate through the parsed tokens to find and variables and functions that need to be expanded. It will try to expand the variables and functions if possible.
 2. It will validate the position and the value of the tokens in the list
 
-### Evaluation of tokens
+### Evaluation of tokens (normal order eval)
 1. Populate the tokens according to BODMAS rules. (Add parentheses around every term which needs to be prioritized first)
 2. Pair the tokens for the binary parse tree
 3. After the tokens are done populated, generate the token evaluation tree using these [rules](https://www.shmoop.com/computer-science/cs-trees/math-expressions.html)
