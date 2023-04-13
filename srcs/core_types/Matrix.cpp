@@ -19,7 +19,7 @@ void	ft_perror(Ft_error err);
 void	Matrix::add_row(std::vector<BaseAssignmentType *> row)
 {
 	if (this->num_cols != 0 && row.size() != std::size_t(this->num_cols))
-		throw Ft_error("Invalid row to add");
+		throw Ft_error("Matrix::add_row: Invalid row to add");
 	this->matrix.push_back(row);
 	++this->num_rows;
 	this->num_cols = row.size();
@@ -54,7 +54,7 @@ Matrix Matrix::_term_to_term_mult(Matrix m)
 
 	// throw err if dimensions different
 	if ((m.get_num_cols() != this->num_cols) || (m.get_num_rows() != this->num_rows))
-		throw Ft_error("Expecting equal dimension matrix");
+		throw Ft_error("Matrix::_term_to_term_mult Expecting equal dimension matrix");
 
 	for (int row_num = 0; row_num < m.get_num_rows(); row_num++)
 	{
@@ -668,9 +668,36 @@ Matrix::Matrix(std::string str)
 			const int type = derive_token_type(col_strs[col_idx]);
 
 			// for now, only accept rational number and imaginary number
-			if (type != N_RATIONAL && type != N_IMAGINARY) throw Ft_error("Matrix only accepts rational numbers");
-			else if (type == N_RATIONAL) token = new RationalNumber(atoi(col_strs[col_idx].c_str()) * (is_neg? -1 : 1));
-			else if (type == N_IMAGINARY) token = new ImaginaryNumber(atoi(col_strs[col_idx].c_str()) * (is_neg? -1 : 1));	
+			if (type != N_RATIONAL && type != N_IMAGINARY) throw Ft_error("Matrix only accepts numbers");
+			else if (type == N_RATIONAL) token = new RationalNumber(float(atof(col_strs[col_idx].c_str())) * (is_neg? -1 : 1));
+			else if (type == N_IMAGINARY)
+			{
+				ImaginaryNumber *res_im = new ImaginaryNumber();
+
+ 				// split the big string into 2 small strngs
+        		std::vector<std::string> col_tokens = ft_split(col_strs[col_idx], {"+", "-"});
+
+				// only i
+				if (col_tokens.size() == 1 && col_tokens[0] == "i")
+				{
+					res_im->imaginary_part = RationalNumber(1);
+					res_im->real_part = RationalNumber(0);
+				}
+				// determine which is the imaginary part [0] or [1]
+				else if (col_tokens[0].find("i") != std::string::npos)
+				{
+					res_im->imaginary_part = RationalNumber(atoi(col_tokens[0].c_str()));
+					if (col_tokens.size() != 1)
+						res_im->real_part = RationalNumber(atoi(col_tokens[1].c_str()));
+				}
+				else
+				{
+					res_im->imaginary_part = RationalNumber(atoi(col_tokens[1].c_str()));
+					res_im->real_part = RationalNumber(atoi(col_tokens[0].c_str()));
+				}
+
+				token = res_im;
+			}
 
 			row.push_back(token);
 		}

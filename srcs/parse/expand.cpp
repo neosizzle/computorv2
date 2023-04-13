@@ -127,8 +127,8 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 			found_var_iter = variables.find(ft_tolower(func_token->get_name()));
 
 			// if function cant be found throw error
-			if (found_var_iter == variables.end()) throw Ft_error(std::string("Function not found (expand): ") + func_token->toString());
-			if (found_var_iter->second->getType() != FUNC) throw Ft_error(std::string("Not a function (expand): ") + func_token->toString());
+			if (found_var_iter == variables.end()) throw Ft_error(std::string("expand_variables: Function not found (expand): ") + func_token->toString());
+			if (found_var_iter->second->getType() != FUNC) throw Ft_error(std::string("expand_variables: Not a function (expand): ") + func_token->toString());
 
 			// clone and replace function object
 			func_obj = clone_token(func_token->get_object());
@@ -165,7 +165,7 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 						tokens.erase(++iter_to_del_func_assign);
 						tokens_iter = tokens.begin() + iter_offset;
 						tokens_iter_init = tokens.begin() + tokens_iter_init_offset;	
-						throw Ft_error("Image evaluation failed");
+						throw Ft_error("evaluate_image: Image evaluation failed");
 					}
 					iter_to_del_func_assign = tokens.insert(tokens_iter, evaluated_image);
 					tokens.erase(++iter_to_del_func_assign);
@@ -202,14 +202,14 @@ void expand_variables(std::vector<BaseAssignmentType *> &tokens, std::map<std::s
 	{
 		// all leftoever variables must be the function variable 
 		for (size_t i = 0; i < leftover_vars.size(); ++i)
-			if (leftover_vars[i] != func_assign_var) throw Ft_error(std::string("Token not found (compute): ") + leftover_vars[i]);
+			if (leftover_vars[i] != func_assign_var) throw Ft_error(std::string("expand_variables: Token not found (compute): ") + leftover_vars[i]);
 
 	}
 	// if its a compute action, only one leftoever varaible is allowed
 	else if (is_compute_action)
 	{
-		if (leftover_vars.size() > 1 ) throw Ft_error(std::string("Token not found (compute): ") + leftover_vars.back());
+		if (leftover_vars.size() > 1 ) throw Ft_error(std::string("expand_variables: Token not found (compute): ") + leftover_vars.back());
 	}
 	else if (leftover_vars.size() > 0)
-		throw Ft_error(std::string("Token not found (assign): ") + leftover_vars.back());
+		throw Ft_error(std::string("expand_variables: Token not found (assign): ") + leftover_vars.back());
 }

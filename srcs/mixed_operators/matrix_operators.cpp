@@ -24,7 +24,7 @@ Matrix operator * (Matrix lhs, RationalNumber rhs)
 		for (int j = 0; j < lhs.get_num_cols(); j++)
 		{
 			BaseAssignmentType *res_term = matrix[i][j]->mult(&rhs);
-			if (res_term == nullptr) throw Ft_error("Invalid operation");
+			if (res_term == nullptr) throw Ft_error("Matrix operator *: Invalid operation");
 		
 			row.push_back(res_term);
 		}
@@ -46,7 +46,7 @@ Matrix operator * (Matrix lhs, ImaginaryNumber rhs)
 		for (int j = 0; j < lhs.get_num_cols(); j++)
 		{
 			BaseAssignmentType *res_term = matrix[i][j]->mult(&rhs);
-			if (res_term == nullptr) throw Ft_error("Invalid operation");
+			if (res_term == nullptr) throw Ft_error("Matrix operator *: Invalid operation");
 		
 			row.push_back(res_term);
 		}
@@ -68,7 +68,7 @@ Matrix operator / (Matrix lhs, RationalNumber rhs)
 		for (int j = 0; j < lhs.get_num_cols(); j++)
 		{
 			BaseAssignmentType *res_term = matrix[i][j]->div(&rhs);
-			if (res_term == nullptr) throw Ft_error("Invalid operation");
+			if (res_term == nullptr) throw Ft_error("Matrix operator /: Invalid operation");
 		
 			row.push_back(res_term);
 		}
@@ -90,7 +90,7 @@ Matrix operator / (Matrix lhs, ImaginaryNumber rhs)
 		for (int j = 0; j < lhs.get_num_cols(); j++)
 		{
 			BaseAssignmentType *res_term = matrix[i][j]->div(&rhs);
-			if (res_term == nullptr) throw Ft_error("Invalid operation");
+			if (res_term == nullptr) throw Ft_error("Matrix operator /: Invalid operation");
 		
 			row.push_back(res_term);
 		}

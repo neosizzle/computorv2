@@ -379,7 +379,7 @@ void extract_terms(std::string str, std::vector<Term> &terms)
 				// return 1 here
 				if (validate_term(curr_term_str))
 				{
-					throw Ft_error(std::string( "Bad token: ") + curr_term_str);
+					throw Ft_error(std::string( "compute_polynomial: Bad token: ") + curr_term_str);
 					exit(1);
 				}
 
@@ -409,7 +409,7 @@ void extract_terms(std::string str, std::vector<Term> &terms)
 				// return 1 here
 				if (validate_term(curr_term_str))
 				{
-					throw Ft_error(std::string( "Bad token: ") + curr_term_str);
+					throw Ft_error(std::string( "compute_polynomial: Bad token: ") + curr_term_str);
 					exit(1);
 				}
 
@@ -425,7 +425,6 @@ void extract_terms(std::string str, std::vector<Term> &terms)
 
 	// move rhs to lhs (group terms)
 	group_terms(terms, rhs_terms);
-	// print_terms(rhs_terms);
 
 	// sort terms by power
 	std::sort(terms.begin(), terms.end(), compare_powers);
@@ -438,14 +437,14 @@ int validate_equation(std::vector<Term> terms)
 	// check if max power is 2
 	if (terms[0].power > 2)
 	{
-		throw Ft_error("Degree must not be more than 2");
+		throw Ft_error("compute_polynomial: Degree must not be more than 2");
 		return 1;
 	}
 
 	// check if min power is 0
 	if (terms[0].power < 0)
 	{
-		throw Ft_error("Degree must be at least 0");
+		throw Ft_error("compute_polynomial: Degree must be at least 0");
 		return 1;
 	}
 

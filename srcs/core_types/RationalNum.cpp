@@ -8,7 +8,17 @@ std::string RationalNumber::toString()
 {
 	if (!this->is_float) return std::to_string(this->int_value);
 	if (this->float_value - static_cast<int>(this->float_value) == 0) return std::to_string(static_cast<int>(this->float_value));
-	return std::to_string(float_value);
+
+	std::string res = std::to_string(float_value);
+
+	// trim trailing zeroes
+	size_t index_to_trim = res.find_last_not_of("0");
+	res.erase(index_to_trim + 1);
+
+	// if last character is '.', remove it also
+	if (res[res.size() - 1] == 0)
+		res.erase(res.size() - 2);
+	return res;
 }
 
 // ADD TYPE

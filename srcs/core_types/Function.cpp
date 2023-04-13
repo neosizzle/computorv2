@@ -86,7 +86,7 @@ BaseAssignmentType * Function::_extract_object(std::string str)
     // create objects accordingly to type
     // for now, only accept rational and im numbers as objects
     if (type == N_RATIONAL)
-        return new RationalNumber(atoi(token_str.c_str()));
+        return new RationalNumber(float(atof(token_str.c_str())));
     if (type == N_IMAGINARY)
     {
         ImaginaryNumber *res_im;

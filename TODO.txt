@@ -1,6 +1,2 @@
-negative matrices
-
 HIGH
 documentation
-more verbose error message
-cleanup

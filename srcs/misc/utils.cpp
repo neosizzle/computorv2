@@ -8,6 +8,7 @@
 #include "ParseTreeNode.hpp"
 #include "constants.hpp"
 #include "Function.hpp"
+#include "ft_error.hpp"
 
 /**
  * @brief Given a string and a list of strings to search for, find the
@@ -324,7 +325,7 @@ int derive_token_type(std::string str)
 	if (str[init_idx] == '-') ++init_idx;
 	for (size_t i = init_idx; i < str.size(); i++)
 	{
-		if (str[i] > '9' || str[i] < '0')
+		if ((str[i] > '9' || str[i] < '0' ) && str[i] != '.') // untested '.'
 		{
 			--num_only;
 			break;
@@ -339,6 +340,16 @@ int derive_token_type(std::string str)
 		return found_iter->second;
 	}
 
+	// check if var consist of any operator
+	for (size_t i = 0; i < str.size(); i++)
+	{
+		std::string s(1, str[i]);
+		auto found_iter = OPERATORS_MAP.find(s);
+		if(found_iter != OPERATORS_MAP.end()) {
+			throw Ft_error("Multiple terms to test");
+		}
+	}
+	
 	// return var
 	return VAR;
 }

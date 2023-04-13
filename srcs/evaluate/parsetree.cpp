@@ -91,7 +91,7 @@ BaseAssignmentType * do_op(BaseAssignmentType *lhs, BaseAssignmentType *rhs, int
 	else if (operation == OPERATOR_MAT_MULT)
 		res = lhs->matmult(rhs);
 	if (res == nullptr)
-		throw Ft_error("Invalid operation");
+		throw Ft_error("do_op: Invalid operation");
 	return res;
 }
 
@@ -160,7 +160,7 @@ void	evaluate_parse_tree_helper(ParseTreeNode **curr)
 		BaseAssignmentType *res_token = do_op((*curr)->left->value, (*curr)->right->value, (*curr)->value->getType());
 
 		// throw error if operation is not valid
-		if (res_token == nullptr) throw Ft_error("Operation not valid");
+		if (res_token == nullptr) throw Ft_error("evaluate_parse_tree_helper: Operation not valid");
 
 		//reaplce node
 		replace_node(curr, res_token);

@@ -27,11 +27,11 @@ std::string compute_polynomial(std::string arg)
 	// validate symbols
 	const char invalid_symbol = validate_symbols(arg);
 	if (invalid_symbol)
-		throw Ft_error(std::string("Invalid symbol \'") + invalid_symbol + std::string("\'"));
+		throw Ft_error(std::string("compute_polynomial: Invalid symbol \'") + invalid_symbol + std::string("\'"));
 
 	// can only have one '='
 	if (std::count(arg.begin(), arg.end(), '=') != 1)
-		throw Ft_error(std::string("Invalid number of  \'") + EQ_SYMBOL + std::string("\'"));
+		throw Ft_error(std::string("compute_polynomial: Invalid number of  \'") + EQ_SYMBOL + std::string("\'"));
 
 	// extract and group terms
 	extract_terms(arg, terms);
@@ -41,7 +41,7 @@ std::string compute_polynomial(std::string arg)
 
 	// validate equation
 	if (validate_equation(terms))
-		throw Ft_error("Equation not valid");
+		throw Ft_error("compute_polynomial: Equation not valid");
 
 	const Solution solution = evaluate_equation(terms);
 	// print_solution(solutipon);

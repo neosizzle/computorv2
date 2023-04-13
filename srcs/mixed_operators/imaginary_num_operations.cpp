@@ -91,7 +91,7 @@ Matrix operator * (ImaginaryNumber lhs, Matrix rhs)
 		for (int j = 0; j < rhs.get_num_cols(); j++)
 		{
 			BaseAssignmentType *res_term = lhs.mult(matrix[i][j]);
-			if (res_term == nullptr) throw Ft_error("Invalid operation");
+			if (res_term == nullptr) throw Ft_error("Matrix operator *: Invalid operation");
 		
 			row.push_back(res_term);
 		}
